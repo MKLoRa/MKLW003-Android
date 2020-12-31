@@ -1,0 +1,171 @@
+package com.moko.support.lw003.entity;
+
+
+import java.io.Serializable;
+
+public enum ParamsKeyEnum implements Serializable {
+    // 时间同步间隔
+    KEY_TIME_SYNC_INTERVAL(0x1E),
+    // 读取当前设备时间
+    KEY_CURRENT_TIME(0x1F),
+    // 广播
+    KEY_IBEACON_UUID(0x20),
+    KEY_IBEACON_MAJOR(0x21),
+    KEY_IBEACON_MINOR(0x22),
+    KEY_MEASURE_POWER(0x23),
+    KEY_TRANSMISSION(0x24),
+    KEY_ADV_INTERVAL(0x25),
+    KEY_ADV_NAME(0x26),
+    // 密码
+    KEY_PASSWORD(0x27),
+    // 设备时间
+    KEY_TIME(0x28),
+    // 扫描开关与扫描窗口
+    KEY_SCAN_WINDOW(0x29),
+    // 设备蓝牙连接状态
+    KEY_CONNECTABLE(0x2A),
+    // lora
+    KEY_LORA_MODE(0x2B),
+    KEY_LORA_REGION(0x2C),
+    KEY_LORA_DEV_EUI(0x2D),
+    KEY_LORA_APP_EUI(0x2E),
+    KEY_LORA_APP_KEY(0x2F),
+    KEY_LORA_DEV_ADDR(0x30),
+    KEY_LORA_APP_SKEY(0x31),
+    KEY_LORA_NWK_SKEY(0x32),
+    KEY_LORA_CH(0x33),
+    KEY_LORA_DR(0x34),
+    KEY_LORA_ADR(0x35),
+    KEY_LORA_MESSAGE_TYPE(0x36),
+    // lorawan网络状态
+    KEY_NETWORK_STATUS(0x37),
+    // 网络检测间隔
+    KEY_NETWORK_CHECK_INTERVAL(0x38),
+    // 报警RSSI值
+    KEY_ALARM_RSSI(0x39),
+    // 报警提醒功能
+    KEY_ALARM_NOTIFY(0x3A),
+    // 马达
+    KEY_VIBRATION_INTENSITY(0x3B),
+    KEY_VIBRATION_DURATION(0x3C),
+    KEY_VIBRATION_CYCLE(0x3D),
+    KEY_VIBRATION_NUMBER(0x3E),
+
+    KEY_DEVICE_MAC(0x3F),
+    KEY_BATTERY(0x40),
+    // 低电报警报警电量百分比
+    KEY_LOW_POWER_PERCENT(0x41),
+    // 扫描数据定时上报时间
+    KEY_LORA_REPORT_INTERVAL(0x42),
+    // tracking filter
+    KEY_TRACKING_FILTER_RSSI_A(0x43),
+    KEY_TRACKING_FILTER_ADV_NAME_A(0x44),
+    KEY_TRACKING_FILTER_MAC_A(0x45),
+    KEY_TRACKING_FILTER_MAJOR_RANGE_A(0x46),
+    KEY_TRACKING_FILTER_MINOR_RANGE_A(0x47),
+    KEY_TRACKING_FILTER_UUID_A(0x48),
+    KEY_TRACKING_FILTER_ADV_RAW_DATA_A(0x49),
+
+    KEY_TRACKING_FILTER_RSSI_B(0x4A),
+    KEY_TRACKING_FILTER_ADV_NAME_B(0x4B),
+    KEY_TRACKING_FILTER_MAC_B(0x4C),
+    KEY_TRACKING_FILTER_MAJOR_RANGE_B(0x4D),
+    KEY_TRACKING_FILTER_MINOR_RANGE_B(0x4E),
+    KEY_TRACKING_FILTER_UUID_B(0x4F),
+    KEY_TRACKING_FILTER_ADV_RAW_DATA_B(0x50),
+
+    KEY_TRACKING_FILTER_SWITCH_A(0x51),
+    KEY_TRACKING_FILTER_SWITCH_B(0x52),
+    KEY_TRACKING_FILTER_A_B_RELATION(0x53),
+    KEY_TRACKING_FILTER_REPEAT(0x54),
+    // 扫描有效数据筛选间隔
+    KEY_FILTER_VALID_INTERVAL(0x55),
+    // 设备信息同步间隔
+    KEY_DEVICE_INFO_INTERVAL(0X56),
+    // 读取设备信息包
+    KEY_DEVICE_INFO(0X57),
+    // 人员聚集报警RSSI
+    KEY_WARNING_RSSI(0x58),
+
+    KEY_CH_DR_RESET(0x5B),
+    KEY_LORA_CONNECT(0x5C),
+    KEY_CLOSE(0x5D),
+    KEY_RESET(0x5E),
+
+    // location filter
+    KEY_LOCATION_FILTER_RSSI_A(0x5F),
+    KEY_LOCATION_FILTER_ADV_NAME_A(0x60),
+    KEY_LOCATION_FILTER_MAC_A(0x61),
+    KEY_LOCATION_FILTER_MAJOR_RANGE_A(0x62),
+    KEY_LOCATION_FILTER_MINOR_RANGE_A(0x63),
+    KEY_LOCATION_FILTER_UUID_A(0x64),
+    KEY_LOCATION_FILTER_ADV_RAW_DATA_A(0x65),
+
+    KEY_LOCATION_FILTER_RSSI_B(0x66),
+    KEY_LOCATION_FILTER_ADV_NAME_B(0x67),
+    KEY_LOCATION_FILTER_MAC_B(0x68),
+    KEY_LOCATION_FILTER_MAJOR_RANGE_B(0x69),
+    KEY_LOCATION_FILTER_MINOR_RANGE_B(0x6A),
+    KEY_LOCATION_FILTER_UUID_B(0x6B),
+    KEY_LOCATION_FILTER_ADV_RAW_DATA_B(0x6C),
+
+    KEY_LOCATION_FILTER_SWITCH_A(0x6D),
+    KEY_LOCATION_FILTER_SWITCH_B(0x6E),
+    KEY_LOCATION_FILTER_A_B_RELATION(0x6F),
+    KEY_LOCATION_FILTER_REPEAT(0x70),
+
+    // payload
+    // 警报和定时上报数据包内容可选项
+    KEY_OPTIONAL_PAYLOAD_TRACKING(0x71),
+    // 上报beacon设备数量
+    KEY_REPORT_BEACONS(0x72),
+
+    // 三轴采样率
+    KEY_THREE_AXIS_SAMPLE_RATE(0x73),
+    // 三轴重力加速度参考值
+    KEY_THREE_AXIS_G(0x74),
+    // 三轴触发灵敏度
+    KEY_THREE_AXIS_TRIGGER_SENSITIVITY(0x75),
+    // 三轴功能开关
+    KEY_THREE_AXIS_ENABLE(0x76),
+    // 三轴数据上报间隔
+    KEY_THREE_AXIS_REPORT_INTERVAL(0x77),
+    // APP打开三轴开关
+    KEY_THREE_AXIS_DATA_ENABLE(0x78),
+    // 三轴上报数据包内容可选项
+    KEY_OPTIONAL_PAYLOAD_THREE_AXIS(0x7A),
+
+    KEY_SOS_ENABLE(0X7B),
+    KEY_SOS_REPORT_INTERVAL(0X7C),
+    KEY_OPTIONAL_PAYLOAD_SOS(0x7D),
+
+    KEY_GPS_FUNCTION_STATUS(0x7E),
+    KEY_GPS_FUNCTION_SWITCH(0x7F),
+    KEY_GPS_SATELLITE_SEARCH_TIME(0x80),
+    KEY_GPS_REPORT_INTERVAL(0x81),
+    KEY_OPTIONAL_PAYLOAD_GPS(0x82),
+
+    KEY_LORA_UPLINK_DELL_TIME(0x83),
+    KEY_LORA_DUTY_CYCLE_ENABLE(0x84),
+    ;
+
+    private int paramsKey;
+
+    ParamsKeyEnum(int paramsKey) {
+        this.paramsKey = paramsKey;
+    }
+
+
+    public int getParamsKey() {
+        return paramsKey;
+    }
+
+    public static ParamsKeyEnum fromParamKey(int paramsKey) {
+        for (ParamsKeyEnum paramsKeyEnum : ParamsKeyEnum.values()) {
+            if (paramsKeyEnum.getParamsKey() == paramsKey) {
+                return paramsKeyEnum;
+            }
+        }
+        return null;
+    }
+}
