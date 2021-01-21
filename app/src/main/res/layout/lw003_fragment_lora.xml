@@ -16,8 +16,8 @@
             android:layout_height="40dp"
             android:clickable="true"
             android:gravity="center_vertical"
-            android:onClick="onAdvInfo"
-            android:text="Advertiser"
+            android:onClick="onLoraSetting"
+            android:text="@string/lora_setting"
             android:textColor="@color/lw003_black_333333"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_adv_info"
+            android:id="@+id/tv_lora_info"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:drawableRight="@drawable/lw003_ic_arrow_right"
@@ -45,75 +45,24 @@
             android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_adv_info" />
-
-        <TextView
-            android:id="@+id/tv_change_password"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            android:drawableRight="@drawable/lw003_ic_arrow_right"
-            android:gravity="center_vertical"
-            android:onClick="onChangePassword"
-            android:text="Change Password"
-            android:textColor="@color/lw003_black_333333"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_adv_info" />
-
-        <View
-            style="@style/lw003_divider_line"
-            android:layout_width="0dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_change_password" />
-
-
-        <TextView
-            android:id="@+id/tv_local_data_sync"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
-            android:drawableRight="@drawable/lw003_ic_arrow_right"
-            android:gravity="center_vertical"
-            android:onClick="onLocalDataSync"
-            android:text="Local Data Sync"
-            android:textColor="@color/lw003_black_333333"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_change_password" />
-
-
-        <View
-            style="@style/lw003_divider_line"
-            android:layout_width="0dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_local_data_sync" />
+            app:layout_constraintTop_toBottomOf="@id/tv_lora_info" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:clickable="true"
             android:gravity="center_vertical"
-            android:onClick="onTamperDetection"
-            android:text="Tamper Detection"
+            android:onClick="onNetworkCheck"
+            android:text="Network Check"
             android:textColor="@color/lw003_black_333333"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_tamper_detection"
-            app:layout_constraintLeft_toLeftOf="parent" />
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_network_check"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
-            android:id="@+id/tv_tamper_detection"
+            android:id="@+id/tv_network_check"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
@@ -125,7 +74,7 @@
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_local_data_sync" />
+            app:layout_constraintTop_toBottomOf="@id/tv_lora_info" />
 
         <View
             style="@style/lw003_divider_line"
@@ -133,37 +82,79 @@
             android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_tamper_detection" />
+            app:layout_constraintTop_toBottomOf="@id/tv_network_check" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:onClick="onMulticastSetting"
+            android:text="Multicast Setting"
+            android:textColor="@color/lw003_black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_multicast_setting"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_multicast_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:drawableRight="@drawable/lw003_ic_arrow_right"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text=""
+            android:textColor="@color/lw003_black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_network_check" />
+
+        <View
+            style="@style/lw003_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_multicast_setting" />
+
+        <EditText
+            android:id="@+id/et_time_sync_interval"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
+            android:gravity="center"
+            android:hint="0~240"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textColor="@color/lw003_black_333333"
+            android:textSize="15sp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_multicast_setting" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="H"
+            android:textColor="@color/lw003_black_333333"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/et_time_sync_interval"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="Default Power Status"
+            android:text="Time Sync Interval"
             android:textColor="@color/lw003_black_333333"
             android:textSize="15sp"
             android:textStyle="bold"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_default_power_status"
+            app:layout_constraintBaseline_toBaselineOf="@id/et_time_sync_interval"
             app:layout_constraintLeft_toLeftOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_default_power_status"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/lw003_shape_radius_blue_btn_bg"
-            android:clickable="true"
-            android:gravity="center"
-            android:minWidth="90dp"
-            android:onClick="onPowerStatus"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="Revert to last status"
-            android:textColor="@color/lw003_white_ffffff"
-            android:textSize="15sp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_tamper_detection" />
 
         <View
             style="@style/lw003_divider_line"
@@ -171,6 +162,32 @@
             android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_default_power_status" />
+            app:layout_constraintTop_toBottomOf="@id/et_time_sync_interval" />
+
+        <TextView
+            android:id="@+id/tv_uplink_payload"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:onClick="onUplinkPayload"
+            android:drawableRight="@drawable/lw003_ic_arrow_right"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="Uplink Payload"
+            android:textColor="@color/lw003_black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_time_sync_interval" />
+
+        <View
+            style="@style/lw003_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_uplink_payload" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

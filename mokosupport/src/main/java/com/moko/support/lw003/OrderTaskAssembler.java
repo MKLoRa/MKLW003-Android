@@ -2,6 +2,7 @@ package com.moko.support.lw003;
 
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.support.lw003.entity.ParamsKeyEnum;
+import com.moko.support.lw003.task.GetBatteryTask;
 import com.moko.support.lw003.task.GetFirmwareRevisionTask;
 import com.moko.support.lw003.task.GetHardwareRevisionTask;
 import com.moko.support.lw003.task.GetManufacturerNameTask;
@@ -43,38 +44,13 @@ public class OrderTaskAssembler {
     }
 
     public static OrderTask getBattery() {
-        ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_BATTERY);
-        return task;
+        GetBatteryTask getBatteryTask = new GetBatteryTask();
+        return getBatteryTask;
     }
 
-    public static OrderTask getiBeaconUUID() {
+    public static OrderTask getMacAddress() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_IBEACON_UUID);
-        return task;
-    }
-
-    public static OrderTask getiBeaconMajor() {
-        ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_IBEACON_MAJOR);
-        return task;
-    }
-
-    public static OrderTask getIBeaconMinor() {
-        ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_IBEACON_MINOR);
-        return task;
-    }
-
-    public static OrderTask getMeasurePower() {
-        ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_MEASURE_POWER);
-        return task;
-    }
-
-    public static OrderTask getTransmission() {
-        ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_TRANSMISSION);
+        task.setData(ParamsKeyEnum.KEY_DEVICE_MAC);
         return task;
     }
 
@@ -90,45 +66,39 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getScanInterval() {
+    public static OrderTask getScanEnable() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_FILTER_VALID_INTERVAL);
+        task.setData(ParamsKeyEnum.KEY_SCAN_ENABLE);
         return task;
     }
 
-    public static OrderTask getAlarmNotify() {
+    public static OrderTask getScanParams() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_ALARM_NOTIFY);
+        task.setData(ParamsKeyEnum.KEY_SCAN_PARAMS);
         return task;
     }
 
-    public static OrderTask getAlarmRssi() {
+    public static OrderTask getOverLimitEnable() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_ALARM_RSSI);
+        task.setData(ParamsKeyEnum.KEY_OVER_LIMIT_ENABLE);
         return task;
     }
 
-    public static OrderTask getVibrationIntansity() {
+    public static OrderTask getOverLimitRssi() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_VIBRATION_INTENSITY);
+        task.setData(ParamsKeyEnum.KEY_OVER_LIMIT_RSSI);
         return task;
     }
 
-    public static OrderTask getVibrationCycle() {
+    public static OrderTask getOverLimitQty() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_VIBRATION_CYCLE);
+        task.setData(ParamsKeyEnum.KEY_OVER_LIMIT_QTY);
         return task;
     }
 
-    public static OrderTask getVibrationDuration() {
+    public static OrderTask getOverLimitDuration() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_VIBRATION_DURATION);
-        return task;
-    }
-
-    public static OrderTask getWarningRssi() {
-        ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_WARNING_RSSI);
+        task.setData(ParamsKeyEnum.KEY_OVER_LIMIT_DURATION);
         return task;
     }
 
@@ -138,23 +108,18 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getScanWindow() {
+    public static OrderTask getTamperDetection() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_SCAN_WINDOW);
+        task.setData(ParamsKeyEnum.KEY_TAMPER_DETECTION);
         return task;
     }
 
-    public static OrderTask getConnectable() {
+    public static OrderTask getDefaultPowerStatus() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_CONNECTABLE);
+        task.setData(ParamsKeyEnum.KEY_POWER_STATUS);
         return task;
     }
 
-    public static OrderTask getLowBattery() {
-        ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOW_POWER_PERCENT);
-        return task;
-    }
 
     public static OrderTask getDeviceInfoInterval() {
         ParamsTask task = new ParamsTask();
@@ -162,117 +127,147 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getMacAddress() {
+    public static OrderTask getDataReportInterval() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_DEVICE_MAC);
+        task.setData(ParamsKeyEnum.KEY_DATA_REPORT_INTERVAL);
+        return task;
+    }
+
+    public static OrderTask getUplinkDataType() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_UPLINK_DATA_TYPE);
+        return task;
+    }
+
+    public static OrderTask getUplinkDataMaxLength() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_UPLINK_DATA_MAX_LENGTH);
+        return task;
+    }
+
+    public static OrderTask getUplinkDataContent() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_UPLINK_DATA_CONTENT);
         return task;
     }
 
     public static OrderTask getFilterSwitchA() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_SWITCH_A);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_SWITCH_A);
         return task;
     }
 
     public static OrderTask getFilterRssiA() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_RSSI_A);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_RSSI_A);
         return task;
     }
 
     public static OrderTask getFilterMacA() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_MAC_A);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_MAC_A);
         return task;
     }
 
     public static OrderTask getFilterNameA() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_NAME_A);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_NAME_A);
         return task;
     }
 
     public static OrderTask getFilterUUIDA() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_UUID_A);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_UUID_A);
         return task;
     }
 
     public static OrderTask getFilterAdvRawDataA() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_RAW_DATA_A);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_RAW_DATA_A);
         return task;
     }
 
     public static OrderTask getFilterMajorRangeA() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_MAJOR_RANGE_A);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_MAJOR_RANGE_A);
         return task;
     }
 
     public static OrderTask getFilterMinorRangeA() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_MINOR_RANGE_A);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_MINOR_RANGE_A);
         return task;
     }
 
     public static OrderTask getFilterSwitchB() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_SWITCH_B);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_SWITCH_B);
         return task;
     }
 
     public static OrderTask getFilterRssiB() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_RSSI_B);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_RSSI_B);
         return task;
     }
 
     public static OrderTask getFilterMacB() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_MAC_B);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_MAC_B);
         return task;
     }
 
     public static OrderTask getFilterNameB() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_NAME_B);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_NAME_B);
         return task;
     }
 
     public static OrderTask getFilterUUIDB() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_UUID_B);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_UUID_B);
         return task;
     }
 
     public static OrderTask getFilterAdvRawDataB() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_RAW_DATA_B);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_RAW_DATA_B);
         return task;
     }
 
     public static OrderTask getFilterMajorRangeB() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_MAJOR_RANGE_B);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_MAJOR_RANGE_B);
         return task;
     }
 
     public static OrderTask getFilterMinorRangeB() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_MINOR_RANGE_B);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_MINOR_RANGE_B);
         return task;
     }
 
     public static OrderTask getFilterABRelation() {
         ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LOCATION_FILTER_A_B_RELATION);
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_A_B_RELATION);
+        return task;
+    }
+
+    public static OrderTask getFilterRepeat() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_TRACKING_FILTER_REPEAT);
         return task;
     }
 
     public static OrderTask getLoraMode() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_LORA_MODE);
+        return task;
+    }
+
+    public static OrderTask getLoraClassType() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_LORA_CLASS_TYPE);
         return task;
     }
 
@@ -318,12 +313,6 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getLoraReportInterval() {
-        ParamsTask task = new ParamsTask();
-        task.setData(ParamsKeyEnum.KEY_LORA_REPORT_INTERVAL);
-        return task;
-    }
-
     public static OrderTask getLoraMessageType() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_LORA_MESSAGE_TYPE);
@@ -336,6 +325,12 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getLoraDutyCycleEnable() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_LORA_DUTY_CYCLE_ENABLE);
+        return task;
+    }
+
     public static OrderTask getLoraDR() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_LORA_DR);
@@ -345,6 +340,48 @@ public class OrderTaskAssembler {
     public static OrderTask getLoraADR() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_LORA_ADR);
+        return task;
+    }
+
+    public static OrderTask getLoraUplinkDellTime() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_LORA_UPLINK_DELL_TIME);
+        return task;
+    }
+
+    public static OrderTask getTimeSyncInterval() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_TIME_SYNC_INTERVAL);
+        return task;
+    }
+
+    public static OrderTask getNetworkInterval() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_NETWORK_CHECK_INTERVAL);
+        return task;
+    }
+
+    public static OrderTask getMulticastEnable() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_MULTICAST_ENABLE);
+        return task;
+    }
+
+    public static OrderTask getMulticastAddr() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_MULTICAST_ADDR);
+        return task;
+    }
+
+    public static OrderTask getMulticastAppSKey() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_MULTICAST_APPSKEY);
+        return task;
+    }
+
+    public static OrderTask getMulticastNwkSkey() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_MULTICAST_NWKSKEY);
         return task;
     }
 
@@ -376,82 +413,39 @@ public class OrderTaskAssembler {
         return writeConfigTask;
     }
 
-    public static OrderTask setUUID(String uuid) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setUUID(uuid);
-        return writeConfigTask;
-    }
-
-    public static OrderTask setMajor(int major) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setMajor(major);
-        return writeConfigTask;
-    }
-
-    public static OrderTask setMinor(int minor) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setMinor(minor);
-        return writeConfigTask;
-    }
-
     public static OrderTask setAdvInterval(int advInterval) {
         ParamsTask writeConfigTask = new ParamsTask();
         writeConfigTask.setAdvInterval(advInterval);
         return writeConfigTask;
     }
 
-
-    public static OrderTask setTransmission(int transmission) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setTransmission(transmission);
-        return writeConfigTask;
-    }
-
-    public static OrderTask setMeasurePower(int measurePower) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setMeasurePower(measurePower);
-        return writeConfigTask;
-    }
-
-    public static ParamsTask setScanInterval(int seconds) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setScanInterval(seconds);
-        return writeConfigTask;
-    }
-
-    public static ParamsTask setAlarmNotify(int notify) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setAlarmNotify(notify);
-        return writeConfigTask;
-    }
-
-    public static ParamsTask setWarningRssi(int rssi) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setWarningRssi(rssi);
-        return writeConfigTask;
-    }
-
-    public static ParamsTask setAlarmTriggerRssi(int rssi) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setAlarmTirggerRssi(rssi);
-        return writeConfigTask;
-    }
-
-    public static OrderTask setConnectionMode(int connectionMode) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setConnectable(connectionMode);
-        return writeConfigTask;
-    }
-
-    public static OrderTask setLowBattery(int lowBattery) {
-        ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setLowBattery(lowBattery);
-        return writeConfigTask;
-    }
-
     public static OrderTask setDeviceInfoInterval(int interval) {
         ParamsTask writeConfigTask = new ParamsTask();
         writeConfigTask.setDeviceInfoInterval(interval);
+        return writeConfigTask;
+    }
+
+    public static OrderTask setDataReportInterval(int interval) {
+        ParamsTask writeConfigTask = new ParamsTask();
+        writeConfigTask.setDataReportInterval(interval);
+        return writeConfigTask;
+    }
+
+    public static OrderTask setUplinkDataType(int type) {
+        ParamsTask writeConfigTask = new ParamsTask();
+        writeConfigTask.setUplinkDataType(type);
+        return writeConfigTask;
+    }
+
+    public static OrderTask setUplinkDataMaxLength(int maxLength) {
+        ParamsTask writeConfigTask = new ParamsTask();
+        writeConfigTask.setUplinkDataMaxLength(maxLength);
+        return writeConfigTask;
+    }
+
+    public static OrderTask setUplinkDataContent(int content) {
+        ParamsTask writeConfigTask = new ParamsTask();
+        writeConfigTask.setUplinkDataContent(content);
         return writeConfigTask;
     }
 
@@ -467,16 +461,40 @@ public class OrderTaskAssembler {
         return writeConfigTask;
     }
 
-    public static OrderTask setScanWindow(int scannerState, int startTime) {
+    public static OrderTask setScanEnable(int enable) {
         ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setScanWinow(scannerState, startTime);
+        writeConfigTask.setScanEnable(enable);
         return writeConfigTask;
     }
 
-    public static OrderTask closePower() {
-        ParamsTask task = new ParamsTask();
-        task.setClosePower();
-        return task;
+    public static OrderTask setScanParams(int interval, int window) {
+        ParamsTask writeConfigTask = new ParamsTask();
+        writeConfigTask.setScanParams(interval, window);
+        return writeConfigTask;
+    }
+
+    public static OrderTask setOverLimitEnable(int enable) {
+        ParamsTask writeConfigTask = new ParamsTask();
+        writeConfigTask.setOverLimitEnable(enable);
+        return writeConfigTask;
+    }
+
+    public static OrderTask setOverLimitRssi(int rssi) {
+        ParamsTask writeConfigTask = new ParamsTask();
+        writeConfigTask.setOverLimitRssi(rssi);
+        return writeConfigTask;
+    }
+
+    public static OrderTask setOverLimitQty(int qty) {
+        ParamsTask writeConfigTask = new ParamsTask();
+        writeConfigTask.setOverLimitQty(qty);
+        return writeConfigTask;
+    }
+
+    public static OrderTask setOverLimitDuration(int duration) {
+        ParamsTask writeConfigTask = new ParamsTask();
+        writeConfigTask.setOverLimitDuration(duration);
+        return writeConfigTask;
     }
 
     public static OrderTask setFilterRssiA(int rssi) {
@@ -581,6 +599,12 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setFilterRepeat(int relation) {
+        ParamsTask task = new ParamsTask();
+        task.setFilterRepeat(relation);
+        return task;
+    }
+
     public static OrderTask setLoraDevAddr(String devAddr) {
         ParamsTask task = new ParamsTask();
         task.setLoraDevAddr(devAddr);
@@ -623,12 +647,6 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setLoraUploadInterval(int interval) {
-        ParamsTask task = new ParamsTask();
-        task.setLoraUploadInterval(interval);
-        return task;
-    }
-
     public static OrderTask setLoraMessageType(int type) {
         ParamsTask task = new ParamsTask();
         task.setLoraMessageType(type);
@@ -647,6 +665,12 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setLoraDutyCycleEnable(int enable) {
+        ParamsTask task = new ParamsTask();
+        task.setLoraDutyCycleEnable(enable);
+        return task;
+    }
+
     public static OrderTask setLoraDR(int dr1) {
         ParamsTask task = new ParamsTask();
         task.setLoraDR(dr1);
@@ -659,27 +683,52 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setLoraConnect() {
+    public static OrderTask setLoraUplinkDellTime(int uplinkDellTime) {
         ParamsTask task = new ParamsTask();
-        task.setLoraConnect();
+        task.setLoraUplinkDellTime(uplinkDellTime);
         return task;
     }
 
-    public static OrderTask setVibrationIntensity(int intensity) {
+    public static OrderTask setTimeSyncInterval(int timeSyncInterval) {
         ParamsTask task = new ParamsTask();
-        task.setVibrationIntensity(intensity);
+        task.setTimeSyncInterval(timeSyncInterval);
         return task;
     }
 
-    public static OrderTask setVibrationDuration(int duration) {
+    public static OrderTask setNetworkCheckInterval(int interval) {
         ParamsTask task = new ParamsTask();
-        task.setVibrationDuration(duration);
+        task.setNetworkCheckInterval(interval);
         return task;
     }
 
-    public static OrderTask setVibrationCycle(int cycle) {
+    public static OrderTask setMulticastEnable(int enable) {
         ParamsTask task = new ParamsTask();
-        task.setVibrationCycle(cycle);
+        task.setMulticastEnable(enable);
         return task;
     }
+
+    public static OrderTask setMulticastAddr(String addr) {
+        ParamsTask task = new ParamsTask();
+        task.setMulticastAddr(addr);
+        return task;
+    }
+
+    public static OrderTask setMulticastAppSKey(String appSkey) {
+        ParamsTask task = new ParamsTask();
+        task.setMulticastAppSKey(appSkey);
+        return task;
+    }
+
+    public static OrderTask setMulticastNwkSKey(String nwkSkey) {
+        ParamsTask task = new ParamsTask();
+        task.setMulticastNwkSKey(nwkSkey);
+        return task;
+    }
+
+    public static OrderTask setPowerStatus(int status) {
+        ParamsTask task = new ParamsTask();
+        task.setPowerStatus(status);
+        return task;
+    }
+
 }

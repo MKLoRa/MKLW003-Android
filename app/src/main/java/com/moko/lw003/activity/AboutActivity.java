@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.moko.lw003.BuildConfig;
 import com.moko.lw003.R;
 import com.moko.lw003.R2;
 import com.moko.lw003.utils.Utils;
@@ -23,7 +24,9 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lw003_activity_about);
         ButterKnife.bind(this);
-        appVersion.setText(String.format("Version:V%s", Utils.getVersionInfo(this)));
+        if (!BuildConfig.IS_LIBRARY) {
+            appVersion.setText(String.format("Version:V%s", Utils.getVersionInfo(this)));
+        }
     }
 
     public void onBack(View view) {

@@ -84,6 +84,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
     private Animation animation = null;
     private MokoBleScanner mokoBleScanner;
     public Handler mHandler;
+    private boolean isPasswordError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,6 +231,25 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
         }
     }
 
+    public void onBack(View view) {
+        back();
+    }
+
+    private void back() {
+        if (animation != null) {
+            mHandler.removeMessages(0);
+            mokoBleScanner.stopScanDevice();
+        }
+        if (BuildConfig.IS_LIBRARY) {
+            finish();
+        } else {
+            AlertMessageDialog dialog = new AlertMessageDialog();
+            dialog.setMessage(R.string.main_exit_tips);
+            dialog.setOnAlertConfirmListener(() -> LoRaLW003MainActivity.this.finish());
+            dialog.show(getSupportFragmentManager());
+        }
+    }
+
     public void onAbout(View view) {
         startActivity(new Intent(this, AboutActivity.class));
     }
@@ -308,7 +328,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
             return;
         }
         BeaconInfo beaconInfo = (BeaconInfo) adapter.getItem(position);
-        if (beaconInfo != null && beaconInfo.connectable == 1 && !isFinishing()) {
+        if (beaconInfo != null && !isFinishing()) {
             if (animation != null) {
                 mHandler.removeMessages(0);
                 mokoBleScanner.stopScanDevice();
@@ -384,7 +404,11 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
             mPassword = "";
             dismissLoadingProgressDialog();
             dismissLoadingMessageDialog();
-            ToastUtils.showToast(LoRaLW003MainActivity.this, "Connection Failed");
+            if (isPasswordError) {
+                isPasswordError = false;
+            } else {
+                ToastUtils.showToast(LoRaLW003MainActivity.this, "Connection Failed");
+            }
             if (animation == null) {
                 startScan();
             }
@@ -433,6 +457,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
                                 startActivityForResult(i, AppConstants.REQUEST_CODE_DEVICE_INFO);
                             }
                             if (0 == result) {
+                                isPasswordError = true;
                                 ToastUtils.showToast(LoRaLW003MainActivity.this, "Password Error");
                                 LoRaLW003MokoSupport.getInstance().disConnectBle();
                             }
@@ -484,14 +509,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
 
     @Override
     public void onBackPressed() {
-        if (BuildConfig.IS_LIBRARY) {
-            finish();
-        } else {
-            AlertMessageDialog dialog = new AlertMessageDialog();
-            dialog.setMessage(R.string.main_exit_tips);
-            dialog.setOnAlertConfirmListener(() -> LoRaLW003MainActivity.this.finish());
-            dialog.show(getSupportFragmentManager());
-        }
+        back();
     }
 
     @Override

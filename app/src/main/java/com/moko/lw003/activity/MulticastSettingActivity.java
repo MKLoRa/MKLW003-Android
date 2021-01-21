@@ -7,19 +7,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.lw003.AppConstants;
+import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.lw003.R;
 import com.moko.lw003.R2;
 import com.moko.lw003.dialog.AlertMessageDialog;
-import com.moko.lw003.dialog.BottomDialog;
 import com.moko.lw003.dialog.LoadingMessageDialog;
 import com.moko.lw003.utils.ToastUtils;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
@@ -32,66 +33,53 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FilterOptionsActivity extends BaseActivity {
+public class MulticastSettingActivity extends BaseActivity {
 
-    @BindView(R2.id.tv_condition_a)
-    TextView tvConditionA;
-    @BindView(R2.id.tv_condition_b)
-    TextView tvConditionB;
-    @BindView(R2.id.tv_relation)
-    TextView tvRelation;
-    @BindView(R2.id.tv_repeat)
-    TextView tvRepeat;
+    @BindView(R2.id.cb_multicast_group)
+    CheckBox cbMulticastGroup;
+    @BindView(R2.id.et_mc_addr)
+    EditText etMcAddr;
+    @BindView(R2.id.et_mc_app_skey)
+    EditText etMcAppSkey;
+    @BindView(R2.id.et_mc_nwk_skey)
+    EditText etMcNwkSkey;
+    @BindView(R2.id.cl_multicast_group)
+    ConstraintLayout clMulticastGroup;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
-    private ArrayList<String> mValues;
-    private int mSelected;
-    private ArrayList<String> mRepeatValues;
-    private int mRepeatSelected;
-
-    private boolean isFilterAEnable;
-    private boolean isFilterBEnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lw003_activity_filter_relation);
+        setContentView(R.layout.lw003_activity_multicast_group);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+        cbMulticastGroup.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            clMulticastGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
-        if (!LoRaLW003MokoSupport.getInstance().isBluetoothOpen()) {
-            LoRaLW003MokoSupport.getInstance().enableBluetooth();
-        } else {
-            showSyncingProgressDialog();
-            List<OrderTask> orderTasks = new ArrayList<>();
-            orderTasks.add(OrderTaskAssembler.getFilterSwitchA());
-            orderTasks.add(OrderTaskAssembler.getFilterSwitchB());
-            orderTasks.add(OrderTaskAssembler.getFilterABRelation());
-            orderTasks.add(OrderTaskAssembler.getFilterRepeat());
-            LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
-        }
-        mValues = new ArrayList<>();
-        mValues.add("And");
-        mValues.add("Or");
-        mRepeatValues = new ArrayList<>();
-        mRepeatValues.add("No");
-        mRepeatValues.add("MAC");
-        mRepeatValues.add("MAC+Data Type");
-        mRepeatValues.add("MAC+Raw Data");
+        showSyncingProgressDialog();
+        List<OrderTask> orderTasks = new ArrayList<>();
+        orderTasks.add(OrderTaskAssembler.getMulticastEnable());
+        orderTasks.add(OrderTaskAssembler.getMulticastAddr());
+        orderTasks.add(OrderTaskAssembler.getMulticastAppSKey());
+        orderTasks.add(OrderTaskAssembler.getMulticastNwkSkey());
+        LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
-    public void onConneStatusEvent(ConnectStatusEvent event) {
+    public void onConnectStatusEvent(ConnectStatusEvent event) {
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
@@ -133,13 +121,19 @@ public class FilterOptionsActivity extends BaseActivity {
                                 // write
                                 int result = value[4] & 0xFF;
                                 switch (configKeyEnum) {
-                                    case KEY_TRACKING_FILTER_REPEAT:
-                                    case KEY_TRACKING_FILTER_A_B_RELATION:
+                                    case KEY_MULTICAST_ADDR:
+                                    case KEY_MULTICAST_APPSKEY:
+                                    case KEY_MULTICAST_NWKSKEY:
+                                        if (result != 1) {
+                                            savedParamsError = true;
+                                        }
+                                        break;
+                                    case KEY_MULTICAST_ENABLE:
                                         if (result != 1) {
                                             savedParamsError = true;
                                         }
                                         if (savedParamsError) {
-                                            ToastUtils.showToast(FilterOptionsActivity.this, "Opps！Save failed. Please check the input characters and try again.");
+                                            ToastUtils.showToast(MulticastSettingActivity.this, "Opps！Save failed. Please check the input characters and try again.");
                                         } else {
                                             AlertMessageDialog dialog = new AlertMessageDialog();
                                             dialog.setMessage("Saved Successfully！");
@@ -153,37 +147,31 @@ public class FilterOptionsActivity extends BaseActivity {
                             if (flag == 0x00) {
                                 // read
                                 switch (configKeyEnum) {
-                                    case KEY_TRACKING_FILTER_SWITCH_A:
-                                        if (length == 1) {
-                                            final int enable = value[4] & 0xFF;
-                                            tvConditionA.setText(enable == 0 ? "OFF" : "ON");
-                                            isFilterAEnable = enable == 1;
+                                    case KEY_MULTICAST_ENABLE:
+                                        if (length > 0) {
+                                            int enable = value[4] & 0xFF;
+                                            cbMulticastGroup.setChecked(enable == 1);
                                         }
                                         break;
-                                    case KEY_TRACKING_FILTER_SWITCH_B:
-                                        if (length == 1) {
-                                            final int enable = value[4] & 0xFF;
-                                            tvConditionB.setText(enable == 0 ? "OFF" : "ON");
-                                            isFilterBEnable = enable == 1;
-                                            if (isFilterAEnable && isFilterBEnable) {
-                                                tvRelation.setEnabled(true);
-                                            } else {
-                                                tvRelation.setEnabled(false);
-                                            }
+                                    case KEY_MULTICAST_ADDR:
+                                        if (length > 0) {
+                                            byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
+                                            String addrStr = MokoUtils.bytesToHexString(rawDataBytes);
+                                            etMcAddr.setText(addrStr);
                                         }
                                         break;
-                                    case KEY_TRACKING_FILTER_A_B_RELATION:
-                                        if (length == 1) {
-                                            final int relation = value[4] & 0xFF;
-                                            tvRelation.setText(relation == 0 ? "And" : "Or");
-                                            mSelected = relation;
+                                    case KEY_MULTICAST_APPSKEY:
+                                        if (length > 0) {
+                                            byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
+                                            String appSkeyStr = MokoUtils.bytesToHexString(rawDataBytes);
+                                            etMcAppSkey.setText(appSkeyStr);
                                         }
                                         break;
-                                    case KEY_TRACKING_FILTER_REPEAT:
-                                        if (length == 1) {
-                                            final int repeat = value[4] & 0xFF;
-                                            tvRepeat.setText(mRepeatValues.get(repeat));
-                                            mRepeatSelected = repeat;
+                                    case KEY_MULTICAST_NWKSKEY:
+                                        if (length > 0) {
+                                            byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
+                                            String nwkSkey = MokoUtils.bytesToHexString(rawDataBytes);
+                                            etMcNwkSkey.setText(nwkSkey);
                                         }
                                         break;
                                 }
@@ -193,6 +181,59 @@ public class FilterOptionsActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    public void onSave(View view) {
+        if (isValid()) {
+            showSyncingProgressDialog();
+            saveParams();
+        } else {
+            ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
+        }
+    }
+
+    private boolean isValid() {
+        if (cbMulticastGroup.isChecked()) {
+            final String addrStr = etMcAddr.getText().toString();
+            if (TextUtils.isEmpty(addrStr))
+                return false;
+            if (addrStr.length() != 8) {
+                return false;
+            }
+            final String appSkeyStr = etMcAppSkey.getText().toString();
+            if (TextUtils.isEmpty(appSkeyStr))
+                return false;
+            if (appSkeyStr.length() != 32) {
+                return false;
+            }
+            final String nwkSkeyStr = etMcNwkSkey.getText().toString();
+            if (TextUtils.isEmpty(nwkSkeyStr))
+                return false;
+            if (nwkSkeyStr.length() != 32) {
+                return false;
+            }
+            return true;
+        } else {
+            return true;
+        }
+    }
+
+
+    private void saveParams() {
+        if (cbMulticastGroup.isChecked()) {
+            final String addrStr = etMcAddr.getText().toString();
+            final String appSkeyStr = etMcAppSkey.getText().toString();
+            final String nwkSkeyStr = etMcNwkSkey.getText().toString();
+            List<OrderTask> orderTasks = new ArrayList<>();
+            orderTasks.add(OrderTaskAssembler.setMulticastAddr(addrStr));
+            orderTasks.add(OrderTaskAssembler.setMulticastAppSKey(appSkeyStr));
+            orderTasks.add(OrderTaskAssembler.setMulticastNwkSKey(nwkSkeyStr));
+            orderTasks.add(OrderTaskAssembler.setMulticastEnable(1));
+            LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+        } else {
+            LoRaLW003MokoSupport.getInstance().sendOrder(
+                    OrderTaskAssembler.setMulticastEnable(0));
+        }
     }
 
 
@@ -208,7 +249,7 @@ public class FilterOptionsActivity extends BaseActivity {
                     switch (blueState) {
                         case BluetoothAdapter.STATE_TURNING_OFF:
                             dismissSyncProgressDialog();
-                            FilterOptionsActivity.this.setResult(RESULT_OK);
+                            MulticastSettingActivity.this.setResult(RESULT_OK);
                             finish();
                             break;
                     }
@@ -243,53 +284,16 @@ public class FilterOptionsActivity extends BaseActivity {
     }
 
     public void onBack(View view) {
-        finish();
+        backHome();
     }
-
-    public void onRelation(View view) {
-        BottomDialog dialog = new BottomDialog();
-        dialog.setDatas(mValues, mSelected);
-        dialog.setListener(value -> {
-            tvRelation.setText(value == 0 ? "And" : "Or");
-            mSelected = value;
-            showSyncingProgressDialog();
-            LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setFilterABRelation(value));
-        });
-        dialog.show(getSupportFragmentManager());
-    }
-
-    public void onRepeat(View view) {
-        BottomDialog dialog = new BottomDialog();
-        dialog.setDatas(mRepeatValues, mRepeatSelected);
-        dialog.setListener(value -> {
-            tvRepeat.setText(mRepeatValues.get(value));
-            mRepeatSelected = value;
-            showSyncingProgressDialog();
-            LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setFilterRepeat(value));
-        });
-        dialog.show(getSupportFragmentManager());
-    }
-
-    public void onFilterA(View view) {
-        startActivityForResult(new Intent(this, FilterOptionsAActivity.class), AppConstants.REQUEST_CODE_FILTER);
-    }
-
-    public void onFilterB(View view) {
-        startActivityForResult(new Intent(this, FilterOptionsBActivity.class), AppConstants.REQUEST_CODE_FILTER);
-    }
-
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConstants.REQUEST_CODE_FILTER) {
-            tvRelation.postDelayed(() -> {
-                showSyncingProgressDialog();
-                List<OrderTask> orderTasks = new ArrayList<>();
-                orderTasks.add(OrderTaskAssembler.getFilterSwitchA());
-                orderTasks.add(OrderTaskAssembler.getFilterSwitchB());
-                orderTasks.add(OrderTaskAssembler.getFilterABRelation());
-                LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
-            }, 500);
-        }
+    public void onBackPressed() {
+        super.onBackPressed();
+        backHome();
+    }
+
+    private void backHome() {
+        setResult(RESULT_OK);
+        finish();
     }
 }

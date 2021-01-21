@@ -20,23 +20,10 @@ public class BeaconListAdapter extends BaseQuickAdapter<BeaconInfo, BaseViewHold
         helper.setText(R.id.tv_name, name);
         helper.setText(R.id.tv_mac, String.format("MAC:%s", item.mac));
         helper.setText(R.id.tv_battery, String.format("%d%%", item.battery));
-        final String txPower = String.format("Tx Power:%ddBm", item.txPower);
-        helper.setText(R.id.tv_tx_power, txPower);
-        helper.setVisible(R.id.tv_connect, item.connectable == 1);
-        final String track = String.format("Track:%s", item.track == 0 ? "OFF" : "ON");
-        helper.setText(R.id.tv_track, track);
         final String intervalTime = item.intervalTime == 0 ? "<->N/A" : String.format("<->%dms", item.intervalTime);
         helper.setText(R.id.tv_track_interval, intervalTime);
-        final String uuid = TextUtils.isEmpty(item.uuid) ? "N/A" : item.uuid;
-        helper.setText(R.id.tv_uuid, uuid);
-        final String major = TextUtils.isEmpty(item.major) ? "N/A" : item.major;
-        helper.setText(R.id.tv_major, major);
-        final String minor = TextUtils.isEmpty(item.minor) ? "N/A" : item.minor;
-        helper.setText(R.id.tv_minor, minor);
-        final String rssi_1m = String.format("%ddBm", item.rssi_1m);
-        helper.setText(R.id.tv_rssi_1m, rssi_1m);
-        final String proximity = TextUtils.isEmpty(item.proximity) ? "N/A" : item.proximity;
-        helper.setText(R.id.tv_proximity, proximity);
-        helper.addOnClickListener(R.id.tv_connect);
+        helper.setText(R.id.tv_temp, String.format("%s℃", TextUtils.isEmpty(item.temp) ? "N/A" : item.temp));
+        helper.setText(R.id.tv_humi, String.format("%s%%RH", TextUtils.isEmpty(item.humi) ? "N/A" : item.humi));
+        helper.addOnClickListener(R.id.iv_connect);
     }
 }

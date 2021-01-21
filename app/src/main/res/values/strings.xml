@@ -32,11 +32,11 @@
     <string name="permission_location_close_content">Please find it in cellphone setting- permission, and allow LW003 use the Location and Storage permission</string>
     <string name="permission_location_need_title">Turn on Location permission</string>
     <string name="permission_location_need_content">After that, LW003 could search and connect with the device</string>
-    <string name="title_advertiser">ADVERTISER</string>
+    <string name="title_lora">LORA</string>
     <string name="title_scanner">SCANNER</string>
     <string name="title_setting">SETTINGS</string>
     <string name="title_device">DEVICE</string>
-    <string name="lora_setting">LoRa Settings</string>
+    <string name="lora_setting">LoRa Setting</string>
     <string name="scan_window_tips">The setting of the scanning window represents the proportion of the scanning time. If you set to 0, the device will stop scanning.</string>
     <string name="warning_range">(-127~%ddBm)</string>
     <string name="warning_tips">* People gathering warning will take effect，when the BLE RSSI scanned is greater than %ddbm.</string>
@@ -68,6 +68,7 @@
         <item>IN865</item>
         <item>CN470PREQUEL</item>
         <item>STE920</item>
+        <item>RU864</item>
     </string-array>
     <string-array name="upload_mode">
         <item>ABP</item>

@@ -23,7 +23,7 @@ final class MokoBleConfig extends MokoBleManager {
     private BluetoothGattCharacteristic passwordCharacteristic;
     private BluetoothGattCharacteristic disconnectedCharacteristic;
     private BluetoothGattCharacteristic paramsCharacteristic;
-    private BluetoothGattCharacteristic threeAxisCharacteristic;
+    private BluetoothGattCharacteristic storageDataCharacteristic;
 
     public MokoBleConfig(@NonNull Context context, MokoResponseCallback callback) {
         super(context);
@@ -36,11 +36,11 @@ final class MokoBleConfig extends MokoBleManager {
         if (service != null) {
             passwordCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_PASSWORD.getUuid());
             disconnectedCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_DISCONNECTED_NOTIFY.getUuid());
-            threeAxisCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_THREE_AXIS.getUuid());
+            storageDataCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_STORAGE_DATA_NOTIFY.getUuid());
             paramsCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_PARAMS.getUuid());
             enablePasswordNotify();
             enableDisconnectedNotify();
-            enableThreeAxisNotify();
+            enableStorageDataNotify();
             enableParamNotify();
             return true;
         }
@@ -76,7 +76,7 @@ final class MokoBleConfig extends MokoBleManager {
 
     @Override
     public void onDeviceFailedToConnect(@NonNull BluetoothDevice device, int reason) {
-
+        mMokoResponseCallback.onDeviceDisconnected(device, reason);
     }
 
     @Override
@@ -119,21 +119,21 @@ final class MokoBleConfig extends MokoBleManager {
     }
 
     public void disableDisconnectedNotify() {
-        disableNotifications(threeAxisCharacteristic).enqueue();
+        disableNotifications(storageDataCharacteristic).enqueue();
     }
 
-    public void enableThreeAxisNotify() {
-        setIndicationCallback(threeAxisCharacteristic).with((device, data) -> {
+    public void enableStorageDataNotify() {
+        setIndicationCallback(storageDataCharacteristic).with((device, data) -> {
             final byte[] value = data.getValue();
             XLog.e("onDataReceived");
             XLog.e("device to app : " + MokoUtils.bytesToHexString(value));
-            mMokoResponseCallback.onCharacteristicChanged(threeAxisCharacteristic, value);
+            mMokoResponseCallback.onCharacteristicChanged(storageDataCharacteristic, value);
         });
-        enableNotifications(threeAxisCharacteristic).enqueue();
+        enableNotifications(storageDataCharacteristic).enqueue();
     }
 
     public void disableThreeAxisNotify() {
-        disableNotifications(threeAxisCharacteristic).enqueue();
+        disableNotifications(storageDataCharacteristic).enqueue();
     }
 
     public void enableParamNotify() {

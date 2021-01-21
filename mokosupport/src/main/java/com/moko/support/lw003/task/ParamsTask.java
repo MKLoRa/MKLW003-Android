@@ -26,116 +26,67 @@ public class ParamsTask extends OrderTask {
 
     public void setData(ParamsKeyEnum key) {
         switch (key) {
-            case KEY_TIME_SYNC_INTERVAL:
-            case KEY_CURRENT_TIME:
+            case KEY_DEVICE_INFO_INTERVAL:
+            case KEY_POWER_STATUS:
+            case KEY_TAMPER_DETECTION:
+            case KEY_DATA_REPORT_INTERVAL:
+            case KEY_DATA_SAVED_INTERVAL:
+            case KEY_TRACKING_FILTER_REPEAT:
+            case KEY_UPLINK_DATA_TYPE:
+            case KEY_UPLINK_DATA_MAX_LENGTH:
+            case KEY_DEVICE_MAC:
+            case KEY_UPLINK_DATA_CONTENT:
+            case KEY_OVER_LIMIT_ENABLE:
+            case KEY_OVER_LIMIT_DURATION:
+            case KEY_OVER_LIMIT_QTY:
+            case KEY_OVER_LIMIT_RSSI:
 
-            case KEY_IBEACON_UUID:
-            case KEY_IBEACON_MAJOR:
-            case KEY_IBEACON_MINOR:
-            case KEY_MEASURE_POWER:
-            case KEY_ADV_INTERVAL:
-            case KEY_TRANSMISSION:
-            case KEY_ADV_NAME:
-
-            case KEY_TIME:
-
-            case KEY_SCAN_WINDOW:
-            case KEY_CONNECTABLE:
-
-            case KEY_LORA_MODE:
             case KEY_LORA_REGION:
+            case KEY_LORA_MODE:
+            case KEY_LORA_CLASS_TYPE:
+            case KEY_NETWORK_STATUS:
             case KEY_LORA_DEV_EUI:
             case KEY_LORA_APP_EUI:
             case KEY_LORA_APP_KEY:
             case KEY_LORA_DEV_ADDR:
             case KEY_LORA_APP_SKEY:
             case KEY_LORA_NWK_SKEY:
+            case KEY_LORA_MESSAGE_TYPE:
             case KEY_LORA_CH:
             case KEY_LORA_DR:
             case KEY_LORA_ADR:
-            case KEY_LORA_MESSAGE_TYPE:
-            case KEY_NETWORK_STATUS:
+            case KEY_MULTICAST_ENABLE:
+            case KEY_MULTICAST_ADDR:
+            case KEY_MULTICAST_APPSKEY:
+            case KEY_MULTICAST_NWKSKEY:
             case KEY_NETWORK_CHECK_INTERVAL:
-            case KEY_ALARM_RSSI:
-            case KEY_ALARM_NOTIFY:
-
-            case KEY_VIBRATION_INTENSITY:
-            case KEY_VIBRATION_CYCLE:
-            case KEY_VIBRATION_DURATION:
-
-            case KEY_DEVICE_MAC:
-            case KEY_BATTERY:
-            case KEY_LOW_POWER_PERCENT:
-            case KEY_LORA_REPORT_INTERVAL:
-
-            case KEY_TRACKING_FILTER_RSSI_A:
-            case KEY_TRACKING_FILTER_MAC_A:
-            case KEY_TRACKING_FILTER_ADV_NAME_A:
-            case KEY_TRACKING_FILTER_UUID_A:
-            case KEY_TRACKING_FILTER_MAJOR_RANGE_A:
-            case KEY_TRACKING_FILTER_MINOR_RANGE_A:
-
-            case KEY_TRACKING_FILTER_RSSI_B:
-            case KEY_TRACKING_FILTER_MAC_B:
-            case KEY_TRACKING_FILTER_ADV_NAME_B:
-            case KEY_TRACKING_FILTER_UUID_B:
-            case KEY_TRACKING_FILTER_MAJOR_RANGE_B:
-            case KEY_TRACKING_FILTER_MINOR_RANGE_B:
-
-            case KEY_TRACKING_FILTER_SWITCH_A:
-            case KEY_TRACKING_FILTER_SWITCH_B:
-            case KEY_TRACKING_FILTER_A_B_RELATION:
-            case KEY_TRACKING_FILTER_REPEAT:
-
-            case KEY_FILTER_VALID_INTERVAL:
-            case KEY_DEVICE_INFO_INTERVAL:
-            case KEY_DEVICE_INFO:
-            case KEY_WARNING_RSSI:
-
-            case KEY_LOCATION_FILTER_RSSI_A:
-            case KEY_LOCATION_FILTER_MAC_A:
-            case KEY_LOCATION_FILTER_ADV_NAME_A:
-            case KEY_LOCATION_FILTER_UUID_A:
-            case KEY_LOCATION_FILTER_MAJOR_RANGE_A:
-            case KEY_LOCATION_FILTER_MINOR_RANGE_A:
-
-            case KEY_LOCATION_FILTER_RSSI_B:
-            case KEY_LOCATION_FILTER_MAC_B:
-            case KEY_LOCATION_FILTER_ADV_NAME_B:
-            case KEY_LOCATION_FILTER_UUID_B:
-            case KEY_LOCATION_FILTER_MAJOR_RANGE_B:
-            case KEY_LOCATION_FILTER_MINOR_RANGE_B:
-
-            case KEY_LOCATION_FILTER_SWITCH_A:
-            case KEY_LOCATION_FILTER_SWITCH_B:
-            case KEY_LOCATION_FILTER_A_B_RELATION:
-            case KEY_LOCATION_FILTER_REPEAT:
-
-            case KEY_OPTIONAL_PAYLOAD_TRACKING:
-            case KEY_REPORT_BEACONS:
-
-            case KEY_THREE_AXIS_SAMPLE_RATE:
-            case KEY_THREE_AXIS_G:
-            case KEY_THREE_AXIS_TRIGGER_SENSITIVITY:
-            case KEY_THREE_AXIS_ENABLE:
-            case KEY_THREE_AXIS_REPORT_INTERVAL:
-            case KEY_THREE_AXIS_DATA_ENABLE:
-            case KEY_OPTIONAL_PAYLOAD_THREE_AXIS:
-
-            case KEY_SOS_ENABLE:
-            case KEY_SOS_REPORT_INTERVAL:
-            case KEY_OPTIONAL_PAYLOAD_SOS:
-
-            case KEY_GPS_FUNCTION_STATUS:
-            case KEY_GPS_FUNCTION_SWITCH:
-            case KEY_GPS_SATELLITE_SEARCH_TIME:
-            case KEY_GPS_REPORT_INTERVAL:
-            case KEY_OPTIONAL_PAYLOAD_GPS:
-
             case KEY_LORA_UPLINK_DELL_TIME:
             case KEY_LORA_DUTY_CYCLE_ENABLE:
+            case KEY_TIME_SYNC_INTERVAL:
 
+            case KEY_ADV_NAME:
+            case KEY_ADV_INTERVAL:
+            case KEY_SCAN_ENABLE:
+            case KEY_SCAN_PARAMS:
 
+            case KEY_TRACKING_FILTER_A_B_RELATION:
+            case KEY_TRACKING_FILTER_SWITCH_A:
+            case KEY_TRACKING_FILTER_ADV_NAME_A:
+            case KEY_TRACKING_FILTER_MAC_A:
+            case KEY_TRACKING_FILTER_MAJOR_RANGE_A:
+            case KEY_TRACKING_FILTER_MINOR_RANGE_A:
+            case KEY_TRACKING_FILTER_ADV_RAW_DATA_A:
+            case KEY_TRACKING_FILTER_UUID_A:
+            case KEY_TRACKING_FILTER_RSSI_A:
+
+            case KEY_TRACKING_FILTER_SWITCH_B:
+            case KEY_TRACKING_FILTER_ADV_NAME_B:
+            case KEY_TRACKING_FILTER_MAC_B:
+            case KEY_TRACKING_FILTER_MAJOR_RANGE_B:
+            case KEY_TRACKING_FILTER_MINOR_RANGE_B:
+            case KEY_TRACKING_FILTER_ADV_RAW_DATA_B:
+            case KEY_TRACKING_FILTER_UUID_B:
+            case KEY_TRACKING_FILTER_RSSI_B:
                 createGetConfigData(key.getParamsKey());
                 break;
         }
@@ -150,60 +101,23 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-    public void setScanInterval(@IntRange(from = 1, to = 600) int seconds) {
-        byte[] intervalBytes = MokoUtils.toByteArray(seconds, 2);
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_FILTER_VALID_INTERVAL.getParamsKey(),
-                (byte) 0x02,
-                intervalBytes[0],
-                intervalBytes[1]
-        };
-    }
-
-    public void setAlarmNotify(@IntRange(from = 0, to = 3) int notify) {
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_ALARM_NOTIFY.getParamsKey(),
-                (byte) 0x01,
-                (byte) notify
-        };
-    }
-
-    public void setAlarmTirggerRssi(@IntRange(from = -127, to = 0) int rssi) {
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_ALARM_RSSI.getParamsKey(),
-                (byte) 0x01,
-                (byte) rssi,
-        };
-
-    }
 
     public void setTime() {
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int date = calendar.get(Calendar.DATE);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        int second = calendar.get(Calendar.SECOND);
-        byte[] yearBytes = MokoUtils.toByteArray(year, 2);
+        long time = calendar.getTimeInMillis();
+        byte[] bytes = new byte[4];
+        for (int i = 0; i < 4; ++i) {
+            bytes[i] = (byte) (time >> 8 * (3 - i) & 255);
+        }
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_TIME.getParamsKey(),
-                (byte) 0x07,
-                yearBytes[0],
-                yearBytes[1],
-                (byte) month,
-                (byte) date,
-                (byte) hour,
-                (byte) minute,
-                (byte) second,
+                (byte) 0x04,
+                bytes[0],
+                bytes[1],
+                bytes[2],
+                bytes[3],
         };
     }
 
@@ -211,7 +125,7 @@ public class ParamsTask extends OrderTask {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_RSSI_A.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_RSSI_A.getParamsKey(),
                 (byte) 0x01,
                 (byte) rssi
         };
@@ -222,7 +136,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MAC_A.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MAC_A.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -233,7 +147,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[4 + length];
             data[0] = (byte) 0xED;
             data[1] = (byte) 0x01;
-            data[2] = (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MAC_A.getParamsKey();
+            data[2] = (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MAC_A.getParamsKey();
             data[3] = (byte) length;
             data[4] = (byte) (isReverse ? 0x02 : 0x01);
             for (int i = 0; i < macBytes.length; i++) {
@@ -247,7 +161,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_NAME_A.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_NAME_A.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -257,7 +171,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[4 + length];
             data[0] = (byte) 0xED;
             data[1] = (byte) 0x01;
-            data[2] = (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_NAME_A.getParamsKey();
+            data[2] = (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_NAME_A.getParamsKey();
             data[3] = (byte) length;
             data[4] = (byte) (isReverse ? 0x02 : 0x01);
             for (int i = 0; i < nameBytes.length; i++) {
@@ -271,7 +185,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_UUID_A.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_UUID_A.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -281,7 +195,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[4 + length];
             data[0] = (byte) 0xED;
             data[1] = (byte) 0x01;
-            data[2] = (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_UUID_A.getParamsKey();
+            data[2] = (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_UUID_A.getParamsKey();
             data[3] = (byte) length;
             data[4] = (byte) (isReverse ? 0x02 : 0x01);
             for (int i = 0; i < uuidBytes.length; i++) {
@@ -298,7 +212,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MAJOR_RANGE_A.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MAJOR_RANGE_A.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -308,7 +222,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MAJOR_RANGE_A.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MAJOR_RANGE_A.getParamsKey(),
                     (byte) 0x05,
                     (byte) (isReverse ? 0x02 : 0x01),
                     majorMinBytes[0],
@@ -327,7 +241,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MINOR_RANGE_A.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MINOR_RANGE_A.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -337,7 +251,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MINOR_RANGE_A.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MINOR_RANGE_A.getParamsKey(),
                     (byte) 0x05,
                     (byte) (isReverse ? 0x02 : 0x01),
                     minorMinBytes[0],
@@ -353,7 +267,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_RAW_DATA_A.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_RAW_DATA_A.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -367,7 +281,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[length + 4];
             data[0] = (byte) 0xED;
             data[1] = (byte) 0x01;
-            data[2] = (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_RAW_DATA_A.getParamsKey();
+            data[2] = (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_RAW_DATA_A.getParamsKey();
             data[3] = (byte) length;
             data[4] = (byte) (isReverse ? 0x02 : 0x01);
             for (int i = 0; i < mRawDatas.length; i++) {
@@ -380,7 +294,7 @@ public class ParamsTask extends OrderTask {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_SWITCH_A.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_SWITCH_A.getParamsKey(),
                 (byte) 0x01,
                 (byte) enable,
         };
@@ -390,7 +304,7 @@ public class ParamsTask extends OrderTask {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_RSSI_B.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_RSSI_B.getParamsKey(),
                 (byte) 0x01,
                 (byte) rssi
         };
@@ -401,7 +315,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MAC_B.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MAC_B.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -412,7 +326,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[4 + length];
             data[0] = (byte) 0xED;
             data[1] = (byte) 0x01;
-            data[2] = (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MAC_B.getParamsKey();
+            data[2] = (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MAC_B.getParamsKey();
             data[3] = (byte) length;
             data[4] = (byte) (isReverse ? 0x02 : 0x01);
             for (int i = 0; i < macBytes.length; i++) {
@@ -426,7 +340,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_NAME_B.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_NAME_B.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -436,7 +350,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[4 + length];
             data[0] = (byte) 0xED;
             data[1] = (byte) 0x01;
-            data[2] = (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_NAME_B.getParamsKey();
+            data[2] = (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_NAME_B.getParamsKey();
             data[3] = (byte) length;
             data[4] = (byte) (isReverse ? 0x02 : 0x01);
             for (int i = 0; i < nameBytes.length; i++) {
@@ -450,7 +364,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_UUID_B.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_UUID_B.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -460,7 +374,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[4 + length];
             data[0] = (byte) 0xED;
             data[1] = (byte) 0x01;
-            data[2] = (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_UUID_B.getParamsKey();
+            data[2] = (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_UUID_B.getParamsKey();
             data[3] = (byte) length;
             data[4] = (byte) (isReverse ? 0x02 : 0x01);
             for (int i = 0; i < uuidBytes.length; i++) {
@@ -477,7 +391,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MAJOR_RANGE_B.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MAJOR_RANGE_B.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -487,7 +401,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MAJOR_RANGE_B.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MAJOR_RANGE_B.getParamsKey(),
                     (byte) 0x05,
                     (byte) (isReverse ? 0x02 : 0x01),
                     majorMinBytes[0],
@@ -506,7 +420,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MINOR_RANGE_B.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MINOR_RANGE_B.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -516,7 +430,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_MINOR_RANGE_B.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_MINOR_RANGE_B.getParamsKey(),
                     (byte) 0x05,
                     (byte) (isReverse ? 0x02 : 0x01),
                     minorMinBytes[0],
@@ -532,7 +446,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
-                    (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_RAW_DATA_B.getParamsKey(),
+                    (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_RAW_DATA_B.getParamsKey(),
                     (byte) 0x01,
                     (byte) 0x00,
             };
@@ -546,7 +460,7 @@ public class ParamsTask extends OrderTask {
             data = new byte[length + 4];
             data[0] = (byte) 0xED;
             data[1] = (byte) 0x01;
-            data[2] = (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_ADV_RAW_DATA_B.getParamsKey();
+            data[2] = (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_ADV_RAW_DATA_B.getParamsKey();
             data[3] = (byte) length;
             data[4] = (byte) (isReverse ? 0x02 : 0x01);
             for (int i = 0; i < mRawDatas.length; i++) {
@@ -559,7 +473,7 @@ public class ParamsTask extends OrderTask {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_SWITCH_B.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_SWITCH_B.getParamsKey(),
                 (byte) 0x01,
                 (byte) enable,
         };
@@ -569,9 +483,19 @@ public class ParamsTask extends OrderTask {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_LOCATION_FILTER_A_B_RELATION.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_A_B_RELATION.getParamsKey(),
                 (byte) 0x01,
                 (byte) relation,
+        };
+    }
+
+    public void setFilterRepeat(@IntRange(from = 0, to = 3) int repeat) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_TRACKING_FILTER_REPEAT.getParamsKey(),
+                (byte) 0x01,
+                (byte) repeat,
         };
     }
 
@@ -588,41 +512,6 @@ public class ParamsTask extends OrderTask {
         }
     }
 
-    public void setUUID(String uuid) {
-        byte[] uuidBytes = MokoUtils.hex2bytes(uuid);
-        data = new byte[20];
-        data[0] = (byte) 0xED;
-        data[1] = (byte) 0x01;
-        data[2] = (byte) ParamsKeyEnum.KEY_IBEACON_UUID.getParamsKey();
-        data[3] = (byte) 0x10;
-        for (int i = 0; i < uuidBytes.length; i++) {
-            data[i + 4] = uuidBytes[i];
-        }
-    }
-
-    public void setMajor(int major) {
-        byte[] majorBytes = MokoUtils.toByteArray(major, 2);
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_IBEACON_MAJOR.getParamsKey(),
-                (byte) 0x02,
-                majorBytes[0],
-                majorBytes[1]
-        };
-    }
-
-    public void setMinor(int minor) {
-        byte[] minorBytes = MokoUtils.toByteArray(minor, 2);
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_IBEACON_MINOR.getParamsKey(),
-                (byte) 0x02,
-                minorBytes[0],
-                minorBytes[1]
-        };
-    }
 
     public void setAdvInterval(int advInterval) {
         data = new byte[]{
@@ -634,63 +523,58 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-    public void setTransmission(int transmission) {
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_TRANSMISSION.getParamsKey(),
-                (byte) 0x01,
-                (byte) transmission
-        };
-    }
 
-    public void setMeasurePower(int measurePower) {
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_MEASURE_POWER.getParamsKey(),
-                (byte) 0x01,
-                (byte) measurePower
-        };
-    }
-
-    public void setConnectable(int connectionMode) {
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_CONNECTABLE.getParamsKey(),
-                (byte) 0x01,
-                (byte) connectionMode
-        };
-    }
-
-    public void setLowBattery(int lowBattery) {
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_LOW_POWER_PERCENT.getParamsKey(),
-                (byte) 0x01,
-                (byte) lowBattery
-        };
-    }
-
-    public void setDeviceInfoInterval(int interval) {
+    public void setDeviceInfoInterval(@IntRange(from = 1, to = 14400) int interval) {
+        byte[] intervalBytes = MokoUtils.toByteArray(interval, 2);
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_DEVICE_INFO_INTERVAL.getParamsKey(),
-                (byte) 0x01,
-                (byte) interval
+                (byte) 0x02,
+                intervalBytes[0],
+                intervalBytes[1]
         };
     }
 
-    public void setClosePower() {
+    public void setDataReportInterval(@IntRange(from = 10, to = 65535) int interval) {
+        byte[] intervalBytes = MokoUtils.toByteArray(interval, 2);
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_CLOSE.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_DATA_REPORT_INTERVAL.getParamsKey(),
+                (byte) 0x02,
+                intervalBytes[0],
+                intervalBytes[1]
+        };
+    }
+
+    public void setUplinkDataType(@IntRange(from = 0, to = 255) int payload) {
+        data = new byte[]{
+                (byte) 0xED,
                 (byte) 0x01,
-                (byte) 0x01
+                (byte) ParamsKeyEnum.KEY_UPLINK_DATA_TYPE.getParamsKey(),
+                (byte) 0x01,
+                (byte) payload
+        };
+    }
+
+    public void setUplinkDataMaxLength(@IntRange(from = 0, to = 1) int maxLength) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_UPLINK_DATA_MAX_LENGTH.getParamsKey(),
+                (byte) 0x01,
+                (byte) maxLength
+        };
+    }
+
+    public void setUplinkDataContent(@IntRange(from = 0, to = 255) int payload) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_UPLINK_DATA_CONTENT.getParamsKey(),
+                (byte) 0x01,
+                (byte) payload
         };
     }
 
@@ -717,15 +601,67 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-
-    public void setScanWinow(int scannerState, int startTime) {
+    public void setScanEnable(@IntRange(from = 0, to = 1) int enable) {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_SCAN_WINDOW.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_SCAN_ENABLE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setScanParams(@IntRange(from = 1, to = 20) int interval,
+                              @IntRange(from = 1, to = 20) int window) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_SCAN_PARAMS.getParamsKey(),
                 (byte) 0x02,
-                (byte) scannerState,
-                (byte) startTime
+                (byte) interval,
+                (byte) window
+        };
+    }
+
+    public void setOverLimitEnable(@IntRange(from = 0, to = 1) int enable) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_OVER_LIMIT_ENABLE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setOverLimitRssi(@IntRange(from = -127, to = 0) int rssi) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_OVER_LIMIT_RSSI.getParamsKey(),
+                (byte) 0x01,
+                (byte) rssi
+        };
+    }
+
+    public void setOverLimitQty(@IntRange(from = 1, to = 255) int qty) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_OVER_LIMIT_QTY.getParamsKey(),
+                (byte) 0x01,
+                (byte) qty
+        };
+    }
+
+    public void setOverLimitDuration(@IntRange(from = 1, to = 600) int duration) {
+        byte[] rawDataBytes = MokoUtils.toByteArray(duration, 2);
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_OVER_LIMIT_DURATION.getParamsKey(),
+                (byte) 0x02,
+                rawDataBytes[0],
+                rawDataBytes[1]
         };
     }
 
@@ -817,16 +753,6 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-    public void setLoraUploadInterval(int interval) {
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_LORA_REPORT_INTERVAL.getParamsKey(),
-                (byte) 0x01,
-                (byte) interval
-        };
-    }
-
     public void setLoraMessageType(int type) {
         data = new byte[]{
                 (byte) 0xED,
@@ -858,6 +784,16 @@ public class ParamsTask extends OrderTask {
         };
     }
 
+    public void setLoraDutyCycleEnable(@IntRange(from = 0, to = 1) int enable) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_LORA_DUTY_CYCLE_ENABLE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
     public void setLoraDR(int dr1) {
         data = new byte[]{
                 (byte) 0xED,
@@ -878,55 +814,94 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-    public void setLoraConnect() {
+    public void setLoraUplinkDellTime(@IntRange(from = 0, to = 1) int uplinkDellTime) {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_LORA_CONNECT.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_LORA_UPLINK_DELL_TIME.getParamsKey(),
                 (byte) 0x01,
-                (byte) 0x01
+                (byte) uplinkDellTime
         };
     }
 
-    public void setVibrationIntensity(@IntRange(from = 0, to = 100) int intensity) {
+
+    public void setTimeSyncInterval(@IntRange(from = 0, to = 240) int timeSyncInterval) {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_VIBRATION_INTENSITY.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_TIME_SYNC_INTERVAL.getParamsKey(),
                 (byte) 0x01,
-                (byte) intensity
+                (byte) timeSyncInterval
         };
     }
 
-    public void setVibrationDuration(@IntRange(from = 0, to = 255) int duration) {
+    public void setNetworkCheckInterval(@IntRange(from = 0, to = 240) int interval) {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_VIBRATION_DURATION.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_NETWORK_CHECK_INTERVAL.getParamsKey(),
                 (byte) 0x01,
-                (byte) duration
+                (byte) interval
         };
     }
 
-    public void setVibrationCycle(@IntRange(from = 1, to = 600) int cycle) {
-        byte[] cycleBytes = MokoUtils.toByteArray(cycle, 2);
+    public void setMulticastEnable(@IntRange(from = 0, to = 1) int enable) {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_VIBRATION_CYCLE.getParamsKey(),
-                (byte) 0x02,
-                cycleBytes[0],
-                cycleBytes[1]
+                (byte) ParamsKeyEnum.KEY_MULTICAST_ENABLE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
         };
     }
 
-    public void setWarningRssi(@IntRange(from = -127, to = 0) int rssi) {
+    public void setMulticastAddr(String addr) {
+        byte[] rawDataBytes = MokoUtils.hex2bytes(addr);
+        int length = rawDataBytes.length;
+        data = new byte[4 + length];
+        data[0] = (byte) 0xED;
+        data[1] = (byte) 0x01;
+        data[2] = (byte) ParamsKeyEnum.KEY_MULTICAST_ADDR.getParamsKey();
+        data[3] = (byte) length;
+        for (int i = 0; i < length; i++) {
+            data[i + 4] = rawDataBytes[i];
+        }
+    }
+
+    public void setMulticastAppSKey(String appSkey) {
+        byte[] rawDataBytes = MokoUtils.hex2bytes(appSkey);
+        int length = rawDataBytes.length;
+        data = new byte[4 + length];
+        data[0] = (byte) 0xED;
+        data[1] = (byte) 0x01;
+        data[2] = (byte) ParamsKeyEnum.KEY_MULTICAST_APPSKEY.getParamsKey();
+        data[3] = (byte) length;
+        for (int i = 0; i < length; i++) {
+            data[i + 4] = rawDataBytes[i];
+        }
+    }
+
+    public void setMulticastNwkSKey(String nwkSkey) {
+        byte[] rawDataBytes = MokoUtils.hex2bytes(nwkSkey);
+        int length = rawDataBytes.length;
+        data = new byte[4 + length];
+        data[0] = (byte) 0xED;
+        data[1] = (byte) 0x01;
+        data[2] = (byte) ParamsKeyEnum.KEY_MULTICAST_NWKSKEY.getParamsKey();
+        data[3] = (byte) length;
+        for (int i = 0; i < length; i++) {
+            data[i + 4] = rawDataBytes[i];
+        }
+    }
+
+
+    public void setPowerStatus(@IntRange(from = 0, to = 2) int status) {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_WARNING_RSSI.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_POWER_STATUS.getParamsKey(),
                 (byte) 0x01,
-                (byte) rssi
+                (byte) status
         };
     }
 }

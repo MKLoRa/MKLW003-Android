@@ -150,12 +150,27 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="90dp"
             android:gravity="center_vertical"
             android:text=""
             android:textColor="@color/lw003_black_333333"
             android:textSize="15sp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_software_version" />
+
+        <TextView
+            android:id="@+id/tv_dfu"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
+            android:background="@drawable/lw003_shape_radius_blue_btn_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:onClick="onUpdateFirmware"
+            android:text="DFU"
+            android:textColor="@color/lw003_white_ffffff"
+            android:textSize="15sp"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_firmware_version"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <View
             style="@style/lw003_divider_line"

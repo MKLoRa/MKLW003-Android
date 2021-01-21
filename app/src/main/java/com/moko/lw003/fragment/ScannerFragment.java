@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -15,46 +16,38 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.lw003.R;
 import com.moko.lw003.R2;
 import com.moko.lw003.activity.DeviceInfoActivity;
-import com.moko.lw003.dialog.AlertMessageDialog;
-import com.moko.lw003.dialog.BottomDialog;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.carbswang.android.numberpickerview.library.NumberPickerView;
 
 public class ScannerFragment extends Fragment {
     private static final String TAG = ScannerFragment.class.getSimpleName();
-    @BindView(R2.id.sb_scan_interval)
-    SeekBar sbScanInterval;
-    @BindView(R2.id.tv_scan_interval_value)
-    TextView tvScanIntervalValue;
-    @BindView(R2.id.tv_scan_interval_tips)
-    TextView tvScanIntervalTips;
-    @BindView(R2.id.npv_alarm_notify)
-    NumberPickerView npvAlarmNotify;
-    @BindView(R2.id.sb_alarm_trigger_rssi)
-    SeekBar sbAlarmTriggerRssi;
-    @BindView(R2.id.tv_alarm_trigger_rssi_value)
-    TextView tvAlarmTriggerRssiValue;
-    @BindView(R2.id.tv_alarm_trigger_rssi_tips)
-    TextView tvAlarmTriggerRssiTips;
-    @BindView(R2.id.et_vibration_cycle)
-    EditText etVibrationCycle;
-    @BindView(R2.id.et_vibration_duration)
-    EditText etVibrationDuration;
-    @BindView(R2.id.npv_vibration_intensity)
-    NumberPickerView npvVibrationIntensity;
-    @BindView(R2.id.tv_warning_range)
-    TextView tvWarningRange;
-    @BindView(R2.id.tv_warning_value)
-    TextView tvWarningValue;
-    @BindView(R2.id.tv_warning_tips)
-    TextView tvWarningTips;
+    @BindView(R2.id.cb_scan_switch)
+    CheckBox cbScanSwitch;
+    @BindView(R2.id.et_scan_interval)
+    EditText etScanInterval;
+    @BindView(R2.id.et_scan_window)
+    EditText etScanWindow;
+    @BindView(R2.id.cl_scan)
+    ConstraintLayout clScan;
+    @BindView(R2.id.cb_over_limit_indication)
+    CheckBox cbOverLimitIndication;
+    @BindView(R2.id.sb_over_limit_rssi)
+    SeekBar sbOverLimitRssi;
+    @BindView(R2.id.tv_over_limit_rssi_value)
+    TextView tvOverLimitRssiValue;
+    @BindView(R2.id.et_over_limit_mac_qty)
+    EditText etOverLimitMacQty;
+    @BindView(R2.id.et_over_limit_duration)
+    EditText etOverLimitDuration;
+    @BindView(R2.id.cl_over_limit)
+    ConstraintLayout clOverLimit;
+
 
     private DeviceInfoActivity activity;
 
@@ -80,58 +73,12 @@ public class ScannerFragment extends Fragment {
         View view = inflater.inflate(R.layout.lw003_fragment_scanner, container, false);
         ButterKnife.bind(this, view);
         activity = (DeviceInfoActivity) getActivity();
-        sbScanInterval.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvScanIntervalValue.setText(String.format("%ds", progress));
-                tvScanIntervalTips.setText(getString(R.string.storage_interval, progress));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+        cbScanSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            clScan.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         });
-        sbAlarmTriggerRssi.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int rssi = progress - 127;
-                tvAlarmTriggerRssiValue.setText(String.format("%dBm", rssi));
-                tvAlarmTriggerRssiTips.setText(getString(R.string.alarm_trigger_rssi, rssi));
-                warningMax = rssi;
-                tvWarningRange.setText(getString(R.string.warning_range, rssi));
-                createWarningRssiList();
-                if (warningRssiValue >= -127 && warningRssiValue > rssi - 3) {
-                    warningRssiValue = rssi - 3;
-                    tvWarningValue.setText(String.valueOf(warningRssiValue));
-                    tvWarningTips.setText(getString(R.string.warning_tips, warningRssiValue));
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
+        cbOverLimitIndication.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            clOverLimit.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         });
-        npvAlarmNotify.setDisplayedValues(getResources().getStringArray(R.array.tracking_notify));
-        npvAlarmNotify.setMaxValue(3);
-        npvAlarmNotify.setMinValue(0);
-        npvAlarmNotify.setValue(0);
-
-        npvVibrationIntensity.setDisplayedValues(getResources().getStringArray(R.array.vibration_intensity));
-        npvVibrationIntensity.setMaxValue(2);
-        npvVibrationIntensity.setMinValue(0);
-        npvVibrationIntensity.setValue(0);
         return view;
     }
 
@@ -147,156 +94,93 @@ public class ScannerFragment extends Fragment {
         super.onDestroy();
     }
 
-    public void showWarningRssiDialog() {
-        BottomDialog dialog = new BottomDialog();
-        dialog.setDatas(warningRssiList, warningRssiListIndex);
-        dialog.setListener(value -> {
-            warningRssiListIndex = value;
-            warningRssiValue = value - 127;
-            tvWarningValue.setText(String.valueOf(warningRssiValue));
-            tvWarningTips.setText(getString(R.string.warning_tips, warningRssiValue));
-        });
-        dialog.show(activity.getSupportFragmentManager());
-    }
-
     public boolean isValid() {
-        final String durationStr = etVibrationDuration.getText().toString();
-        final String cycleStr = etVibrationCycle.getText().toString();
-        if (TextUtils.isEmpty(durationStr))
-            return false;
-        if (TextUtils.isEmpty(cycleStr))
-            return false;
-        int duration = Integer.parseInt(durationStr);
-        if (duration > 10)
-            return false;
-        if (TextUtils.isEmpty(cycleStr))
-            return false;
-        int cycle = Integer.parseInt(cycleStr);
-        if (cycle < 1 || cycle > 600)
-            return false;
-        return true;
-    }
-
-    public boolean isDurationLessThanCycle() {
-        final String durationStr = etVibrationDuration.getText().toString();
-        final String cycleStr = etVibrationCycle.getText().toString();
-        int duration = Integer.parseInt(durationStr);
-        int cycle = Integer.parseInt(cycleStr);
-        if (duration > cycle) {
-            AlertMessageDialog dialog = new AlertMessageDialog();
-            dialog.setCancelGone();
-            dialog.setMessage("Vibration Cycle should be no less than Duration of  Vibration");
-            dialog.setConfirm("OK");
-            dialog.show(activity.getSupportFragmentManager());
-            return false;
+        if (cbScanSwitch.isChecked()) {
+            final String scanIntervalStr = etScanInterval.getText().toString();
+            if (TextUtils.isEmpty(scanIntervalStr))
+                return false;
+            final int interval = Integer.parseInt(scanIntervalStr);
+            if (interval < 1 || interval > 20)
+                return false;
+            final String scanWindowStr = etScanWindow.getText().toString();
+            if (TextUtils.isEmpty(scanWindowStr))
+                return false;
+            final int scanWindow = Integer.parseInt(scanWindowStr);
+            if (scanWindow < 1 || scanWindow > 20)
+                return false;
+            if (scanWindow > interval)
+                return false;
+        }
+        if (cbOverLimitIndication.isChecked()) {
+            final String qtyStr = etOverLimitMacQty.getText().toString();
+            if (TextUtils.isEmpty(qtyStr))
+                return false;
+            final int qty = Integer.parseInt(qtyStr);
+            if (qty < 1 || qty > 255)
+                return false;
+            final String durationStr = etOverLimitDuration.getText().toString();
+            if (TextUtils.isEmpty(durationStr))
+                return false;
+            final int duration = Integer.parseInt(durationStr);
+            if (duration < 1 || duration > 600)
+                return false;
         }
         return true;
     }
 
     public void saveParams() {
-        final int scanIntervalProgress = sbScanInterval.getProgress();
-        final int alarmNotify = npvAlarmNotify.getValue();
-        final int alarmTriggerRssiProgress = sbAlarmTriggerRssi.getProgress();
-        final int intensityValue = npvVibrationIntensity.getValue();
-        int intensity = 0;
-        switch (intensityValue) {
-            case 0:
-                intensity = 10;
-                break;
-            case 1:
-                intensity = 50;
-                break;
-            case 2:
-                intensity = 100;
-                break;
+        ArrayList<OrderTask> orderTasks = new ArrayList<>();
+        if (cbScanSwitch.isChecked()) {
+            final String scanIntervalStr = etScanInterval.getText().toString();
+            final String scanWindowStr = etScanWindow.getText().toString();
+            final int interval = Integer.parseInt(scanIntervalStr);
+            final int scanWindow = Integer.parseInt(scanWindowStr);
+            orderTasks.add(OrderTaskAssembler.setScanParams(interval, scanWindow));
+            orderTasks.add(OrderTaskAssembler.setScanEnable(1));
+        } else {
+            orderTasks.add(OrderTaskAssembler.setScanEnable(0));
         }
-        final String durationStr = etVibrationDuration.getText().toString();
-        final String cycleStr = etVibrationCycle.getText().toString();
-        int duration = Integer.parseInt(durationStr);
-        int cycle = Integer.parseInt(cycleStr);
-        int rssi = alarmTriggerRssiProgress - 127;
-        List<OrderTask> orderTasks = new ArrayList<>();
+        if (cbOverLimitIndication.isChecked()) {
+            final String qtyStr = etOverLimitMacQty.getText().toString();
+            final String durationStr = etOverLimitDuration.getText().toString();
+            final int qty = Integer.parseInt(qtyStr);
+            final int duration = Integer.parseInt(durationStr);
+            final int rssi = sbOverLimitRssi.getProgress() - 127;
 
-        orderTasks.add(OrderTaskAssembler.setScanInterval(scanIntervalProgress));
-        orderTasks.add(OrderTaskAssembler.setAlarmNotify(alarmNotify));
-        orderTasks.add(OrderTaskAssembler.setVibrationIntensity(intensity));
-        orderTasks.add(OrderTaskAssembler.setVibrationDuration(duration));
-        orderTasks.add(OrderTaskAssembler.setVibrationCycle(cycle));
-        orderTasks.add(OrderTaskAssembler.setWarningRssi(rssi));
-        orderTasks.add(OrderTaskAssembler.setAlarmTriggerRssi(rssi));
-
+            orderTasks.add(OrderTaskAssembler.setOverLimitRssi(rssi));
+            orderTasks.add(OrderTaskAssembler.setOverLimitQty(qty));
+            orderTasks.add(OrderTaskAssembler.setOverLimitDuration(duration));
+            orderTasks.add(OrderTaskAssembler.setOverLimitEnable(1));
+        } else {
+            orderTasks.add(OrderTaskAssembler.setOverLimitEnable(0));
+        }
         LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
-    public void setScanInterval(int time) {
-        if (time <= 600)
-            sbScanInterval.setProgress(time);
+    public void setScanEnable(int enable) {
+        cbScanSwitch.setChecked(enable == 1);
     }
 
-    public void setVibrationIntansity(int intansity) {
-        switch (intansity) {
-            case 10:
-                npvVibrationIntensity.setValue(0);
-                break;
-            case 50:
-                npvVibrationIntensity.setValue(1);
-                break;
-            case 100:
-                npvVibrationIntensity.setValue(2);
-                break;
-        }
+    public void setScanParams(int interval, int window) {
+        etScanInterval.setText(String.valueOf(interval));
+        etScanWindow.setText(String.valueOf(window));
     }
 
-    private int warningMax;
-    private int warningRssiValue;
-    private ArrayList<String> warningRssiList;
-    private int warningRssiListIndex;
+    public void setOverLimitEnable(int enable) {
+        cbOverLimitIndication.setChecked(enable == 1);
+    }
 
-    public void setAlarmTriggerRssi(int rssi) {
+
+    public void setOverLimitRssi(int rssi) {
         int progress = rssi + 127;
-        if (progress >= 0 && progress <= 127) {
-            sbAlarmTriggerRssi.setProgress(progress);
-            int value = progress - 127;
-            tvAlarmTriggerRssiValue.setText(String.format("%dBm", value));
-            tvAlarmTriggerRssiTips.setText(getString(R.string.alarm_trigger_rssi, value));
-            warningMax = rssi;
-            tvWarningRange.setText(getString(R.string.warning_range, rssi));
-            createWarningRssiList();
-        }
+        sbOverLimitRssi.setProgress(progress);
     }
 
-    private void createWarningRssiList() {
-        if (warningRssiList == null) {
-            warningRssiList = new ArrayList<>();
-        } else {
-            warningRssiList.clear();
-        }
-        int warningRssiMax = warningMax + 127;
-        for (int i = 0; i <= warningRssiMax; i++) {
-            String rssiStr = String.valueOf(i - 127);
-            warningRssiList.add(0, rssiStr);
-        }
+    public void setOverLimitQty(int qty) {
+        etOverLimitMacQty.setText(String.valueOf(qty));
     }
 
-    public void setWarningRssi(int rssi) {
-        warningRssiValue = rssi;
-        warningRssiListIndex = rssi + 127;
-        tvWarningValue.setText(String.valueOf(warningRssiValue));
-        tvWarningTips.setText(getString(R.string.warning_tips, warningRssiValue));
-    }
-
-    public void setAlarmNotify(int alarmNotify) {
-        if (alarmNotify <= 3)
-            npvAlarmNotify.setValue(alarmNotify);
-    }
-
-    public void setVibrationDuration(int duration) {
-        etVibrationDuration.setText(String.valueOf(duration));
-    }
-
-    public void setVibrationCycle(int cycle) {
-        if (cycle >= 1 && cycle <= 600) {
-            etVibrationCycle.setText(String.valueOf(cycle));
-        }
+    public void setOverLimitDuration(int duration) {
+        etOverLimitDuration.setText(String.valueOf(duration));
     }
 }

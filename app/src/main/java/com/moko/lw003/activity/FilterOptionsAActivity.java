@@ -223,7 +223,6 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 300)
     public void onOrderTaskResponseEvent(OrderTaskResponseEvent event) {
-        EventBus.getDefault().cancelEventDelivery(event);
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
@@ -232,6 +231,7 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
                 dismissSyncProgressDialog();
             }
             if (MokoConstants.ACTION_ORDER_RESULT.equals(action)) {
+                EventBus.getDefault().cancelEventDelivery(event);
                 OrderTaskResponse response = event.getResponse();
                 OrderCHAR orderCHAR = (OrderCHAR) response.orderCHAR;
                 int responseType = response.responseType;
@@ -503,30 +503,35 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
         filterMacEnable = !filterMacEnable;
         ivMacAddress.setImageResource(filterMacEnable ? R.drawable.lw003_ic_checked : R.drawable.lw003_ic_unchecked);
         etMacAddress.setVisibility(filterMacEnable ? View.VISIBLE : View.GONE);
+        cbMacAddress.setVisibility(filterMacEnable ? View.VISIBLE : View.GONE);
     }
 
     public void onAdvName(View view) {
         filterNameEnable = !filterNameEnable;
         ivAdvName.setImageResource(filterNameEnable ? R.drawable.lw003_ic_checked : R.drawable.lw003_ic_unchecked);
         etAdvName.setVisibility(filterNameEnable ? View.VISIBLE : View.GONE);
+        cbAdvName.setVisibility(filterNameEnable ? View.VISIBLE : View.GONE);
     }
 
     public void oniBeaconUUID(View view) {
         filterUUIDEnable = !filterUUIDEnable;
         ivIbeaconUuid.setImageResource(filterUUIDEnable ? R.drawable.lw003_ic_checked : R.drawable.lw003_ic_unchecked);
         etIbeaconUuid.setVisibility(filterUUIDEnable ? View.VISIBLE : View.GONE);
+        cbIbeaconUuid.setVisibility(filterUUIDEnable ? View.VISIBLE : View.GONE);
     }
 
     public void oniBeaconMajor(View view) {
         filterMajorEnable = !filterMajorEnable;
         ivIbeaconMajor.setImageResource(filterMajorEnable ? R.drawable.lw003_ic_checked : R.drawable.lw003_ic_unchecked);
         llIbeaconMajor.setVisibility(filterMajorEnable ? View.VISIBLE : View.GONE);
+        cbIbeaconMajor.setVisibility(filterMajorEnable ? View.VISIBLE : View.GONE);
     }
 
     public void oniBeaconMinor(View view) {
         filterMinorEnable = !filterMinorEnable;
         ivIbeaconMinor.setImageResource(filterMinorEnable ? R.drawable.lw003_ic_checked : R.drawable.lw003_ic_unchecked);
         llIbeaconMinor.setVisibility(filterMinorEnable ? View.VISIBLE : View.GONE);
+        cbIbeaconMinor.setVisibility(filterMinorEnable ? View.VISIBLE : View.GONE);
     }
 
     public void onRawAdvData(View view) {
@@ -535,6 +540,7 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
         llRawDataFilter.setVisibility(filterRawAdvDataEnable ? View.VISIBLE : View.GONE);
         ivRawDataAdd.setVisibility(filterRawAdvDataEnable ? View.VISIBLE : View.GONE);
         ivRawDataDel.setVisibility(filterRawAdvDataEnable ? View.VISIBLE : View.GONE);
+        cbRawAdvData.setVisibility(filterRawAdvDataEnable ? View.VISIBLE : View.GONE);
     }
 
     public void onRawDataAdd(View view) {

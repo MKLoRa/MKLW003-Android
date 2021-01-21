@@ -7,7 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.moko.ble.lib.MokoConstants;
@@ -15,11 +18,9 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.lw003.AppConstants;
 import com.moko.lw003.R;
 import com.moko.lw003.R2;
 import com.moko.lw003.dialog.AlertMessageDialog;
-import com.moko.lw003.dialog.BottomDialog;
 import com.moko.lw003.dialog.LoadingMessageDialog;
 import com.moko.lw003.utils.ToastUtils;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
@@ -34,64 +35,47 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FilterOptionsActivity extends BaseActivity {
+public class NetworkCheckActivity extends BaseActivity {
 
-    @BindView(R2.id.tv_condition_a)
-    TextView tvConditionA;
-    @BindView(R2.id.tv_condition_b)
-    TextView tvConditionB;
-    @BindView(R2.id.tv_relation)
-    TextView tvRelation;
-    @BindView(R2.id.tv_repeat)
-    TextView tvRepeat;
+
+    @BindView(R2.id.cb_network_check)
+    CheckBox cbNetworkCheck;
+    @BindView(R2.id.et_network_check_interval)
+    EditText etNetworkCheckInterval;
+    @BindView(R2.id.tv_network_status)
+    TextView tvNetworkStatus;
+    @BindView(R2.id.cl_network_check_interval)
+    ConstraintLayout clNetworkCheckInterval;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
-    private ArrayList<String> mValues;
-    private int mSelected;
-    private ArrayList<String> mRepeatValues;
-    private int mRepeatSelected;
-
-    private boolean isFilterAEnable;
-    private boolean isFilterBEnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lw003_activity_filter_relation);
+        setContentView(R.layout.lw003_activity_network_check);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+        cbNetworkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            clNetworkCheckInterval.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        });
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
-        if (!LoRaLW003MokoSupport.getInstance().isBluetoothOpen()) {
-            LoRaLW003MokoSupport.getInstance().enableBluetooth();
-        } else {
-            showSyncingProgressDialog();
-            List<OrderTask> orderTasks = new ArrayList<>();
-            orderTasks.add(OrderTaskAssembler.getFilterSwitchA());
-            orderTasks.add(OrderTaskAssembler.getFilterSwitchB());
-            orderTasks.add(OrderTaskAssembler.getFilterABRelation());
-            orderTasks.add(OrderTaskAssembler.getFilterRepeat());
-            LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
-        }
-        mValues = new ArrayList<>();
-        mValues.add("And");
-        mValues.add("Or");
-        mRepeatValues = new ArrayList<>();
-        mRepeatValues.add("No");
-        mRepeatValues.add("MAC");
-        mRepeatValues.add("MAC+Data Type");
-        mRepeatValues.add("MAC+Raw Data");
+        showSyncingProgressDialog();
+        List<OrderTask> orderTasks = new ArrayList<>();
+        orderTasks.add(OrderTaskAssembler.getNetworkInterval());
+        orderTasks.add(OrderTaskAssembler.getLoRaConnectable());
+        LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
-    public void onConneStatusEvent(ConnectStatusEvent event) {
+    public void onConnectStatusEvent(ConnectStatusEvent event) {
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
@@ -133,13 +117,12 @@ public class FilterOptionsActivity extends BaseActivity {
                                 // write
                                 int result = value[4] & 0xFF;
                                 switch (configKeyEnum) {
-                                    case KEY_TRACKING_FILTER_REPEAT:
-                                    case KEY_TRACKING_FILTER_A_B_RELATION:
+                                    case KEY_NETWORK_CHECK_INTERVAL:
                                         if (result != 1) {
                                             savedParamsError = true;
                                         }
                                         if (savedParamsError) {
-                                            ToastUtils.showToast(FilterOptionsActivity.this, "Opps！Save failed. Please check the input characters and try again.");
+                                            ToastUtils.showToast(NetworkCheckActivity.this, "Opps！Save failed. Please check the input characters and try again.");
                                         } else {
                                             AlertMessageDialog dialog = new AlertMessageDialog();
                                             dialog.setMessage("Saved Successfully！");
@@ -153,37 +136,29 @@ public class FilterOptionsActivity extends BaseActivity {
                             if (flag == 0x00) {
                                 // read
                                 switch (configKeyEnum) {
-                                    case KEY_TRACKING_FILTER_SWITCH_A:
-                                        if (length == 1) {
-                                            final int enable = value[4] & 0xFF;
-                                            tvConditionA.setText(enable == 0 ? "OFF" : "ON");
-                                            isFilterAEnable = enable == 1;
+                                    case KEY_NETWORK_CHECK_INTERVAL:
+                                        if (length > 0) {
+                                            int interval = value[4] & 0xFF;
+                                            cbNetworkCheck.setChecked(interval > 0);
+                                            etNetworkCheckInterval.setText(String.valueOf(interval));
                                         }
                                         break;
-                                    case KEY_TRACKING_FILTER_SWITCH_B:
-                                        if (length == 1) {
-                                            final int enable = value[4] & 0xFF;
-                                            tvConditionB.setText(enable == 0 ? "OFF" : "ON");
-                                            isFilterBEnable = enable == 1;
-                                            if (isFilterAEnable && isFilterBEnable) {
-                                                tvRelation.setEnabled(true);
-                                            } else {
-                                                tvRelation.setEnabled(false);
+                                    case KEY_NETWORK_STATUS:
+                                        if (length > 0) {
+                                            int connectable = value[4];
+                                            String networkCheckDisPlay = "";
+                                            switch (connectable) {
+                                                case 0:
+                                                    networkCheckDisPlay = "Disconnected";
+                                                    break;
+                                                case 1:
+                                                    networkCheckDisPlay = "Connecting";
+                                                    break;
+                                                case 2:
+                                                    networkCheckDisPlay = "Connected";
+                                                    break;
                                             }
-                                        }
-                                        break;
-                                    case KEY_TRACKING_FILTER_A_B_RELATION:
-                                        if (length == 1) {
-                                            final int relation = value[4] & 0xFF;
-                                            tvRelation.setText(relation == 0 ? "And" : "Or");
-                                            mSelected = relation;
-                                        }
-                                        break;
-                                    case KEY_TRACKING_FILTER_REPEAT:
-                                        if (length == 1) {
-                                            final int repeat = value[4] & 0xFF;
-                                            tvRepeat.setText(mRepeatValues.get(repeat));
-                                            mRepeatSelected = repeat;
+                                            tvNetworkStatus.setText(networkCheckDisPlay);
                                         }
                                         break;
                                 }
@@ -193,6 +168,46 @@ public class FilterOptionsActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    public void onSave(View view) {
+        if (isValid()) {
+            showSyncingProgressDialog();
+            saveParams();
+        } else {
+            ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
+        }
+    }
+
+    private boolean isValid() {
+        if (cbNetworkCheck.isChecked()) {
+            final String intervalStr = etNetworkCheckInterval.getText().toString();
+            if (TextUtils.isEmpty(intervalStr))
+                return false;
+            final int interval = Integer.parseInt(intervalStr);
+            if (interval == 0) {
+                cbNetworkCheck.setChecked(false);
+                return true;
+            }
+            if (interval > 720)
+                return false;
+            return true;
+        } else {
+            return true;
+        }
+    }
+
+
+    private void saveParams() {
+        if (cbNetworkCheck.isChecked()) {
+            final String intervalStr = etNetworkCheckInterval.getText().toString();
+            final int interval = Integer.parseInt(intervalStr);
+            LoRaLW003MokoSupport.getInstance().sendOrder(
+                    OrderTaskAssembler.setNetworkCheckInterval(interval));
+        } else {
+            LoRaLW003MokoSupport.getInstance().sendOrder(
+                    OrderTaskAssembler.setNetworkCheckInterval(0));
+        }
     }
 
 
@@ -208,7 +223,7 @@ public class FilterOptionsActivity extends BaseActivity {
                     switch (blueState) {
                         case BluetoothAdapter.STATE_TURNING_OFF:
                             dismissSyncProgressDialog();
-                            FilterOptionsActivity.this.setResult(RESULT_OK);
+                            NetworkCheckActivity.this.setResult(RESULT_OK);
                             finish();
                             break;
                     }
@@ -242,54 +257,19 @@ public class FilterOptionsActivity extends BaseActivity {
             mLoadingMessageDialog.dismissAllowingStateLoss();
     }
 
+
     public void onBack(View view) {
-        finish();
-    }
-
-    public void onRelation(View view) {
-        BottomDialog dialog = new BottomDialog();
-        dialog.setDatas(mValues, mSelected);
-        dialog.setListener(value -> {
-            tvRelation.setText(value == 0 ? "And" : "Or");
-            mSelected = value;
-            showSyncingProgressDialog();
-            LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setFilterABRelation(value));
-        });
-        dialog.show(getSupportFragmentManager());
-    }
-
-    public void onRepeat(View view) {
-        BottomDialog dialog = new BottomDialog();
-        dialog.setDatas(mRepeatValues, mRepeatSelected);
-        dialog.setListener(value -> {
-            tvRepeat.setText(mRepeatValues.get(value));
-            mRepeatSelected = value;
-            showSyncingProgressDialog();
-            LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setFilterRepeat(value));
-        });
-        dialog.show(getSupportFragmentManager());
-    }
-
-    public void onFilterA(View view) {
-        startActivityForResult(new Intent(this, FilterOptionsAActivity.class), AppConstants.REQUEST_CODE_FILTER);
-    }
-
-    public void onFilterB(View view) {
-        startActivityForResult(new Intent(this, FilterOptionsBActivity.class), AppConstants.REQUEST_CODE_FILTER);
+        backHome();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == AppConstants.REQUEST_CODE_FILTER) {
-            tvRelation.postDelayed(() -> {
-                showSyncingProgressDialog();
-                List<OrderTask> orderTasks = new ArrayList<>();
-                orderTasks.add(OrderTaskAssembler.getFilterSwitchA());
-                orderTasks.add(OrderTaskAssembler.getFilterSwitchB());
-                orderTasks.add(OrderTaskAssembler.getFilterABRelation());
-                LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
-            }, 500);
-        }
+    public void onBackPressed() {
+        super.onBackPressed();
+        backHome();
+    }
+
+    private void backHome() {
+        setResult(RESULT_OK);
+        finish();
     }
 }
