@@ -36,22 +36,6 @@ public class TriggerSensitivityDialog extends BaseDialog<Integer> implements See
         sbSensitivity.setOnSeekBarChangeListener(this);
     }
 
-    @OnClick({R.id.tv_cancel, R.id.tv_ensure})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.tv_cancel:
-                dismiss();
-                break;
-            case R.id.tv_ensure:
-                int progress = sbSensitivity.getProgress();
-                int sensitivity = progress;
-                dismiss();
-                if (sensitivityListener != null)
-                    sensitivityListener.onEnsure(sensitivity);
-                break;
-        }
-    }
-
     private SensitivityListener sensitivityListener;
 
     public void setOnSensitivityClicked(SensitivityListener sensitivityListener) {
@@ -77,5 +61,19 @@ public class TriggerSensitivityDialog extends BaseDialog<Integer> implements See
     public interface SensitivityListener {
 
         void onEnsure(int sensitivity);
+    }
+
+    @OnClick(R2.id.tv_cancel)
+    public void onCancel(View view) {
+        dismiss();
+    }
+
+    @OnClick(R2.id.tv_ensure)
+    public void onEnsure(View view) {
+        int progress = sbSensitivity.getProgress();
+        int sensitivity = progress;
+        dismiss();
+        if (sensitivityListener != null)
+            sensitivityListener.onEnsure(sensitivity);
     }
 }
