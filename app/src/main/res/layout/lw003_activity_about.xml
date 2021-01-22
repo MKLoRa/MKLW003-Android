@@ -29,7 +29,8 @@
             android:layout_centerInParent="true"
             android:text="@string/about_title"
             android:textColor="@color/lw003_white_ffffff"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <ImageView

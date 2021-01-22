@@ -11,7 +11,7 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="22dp"
+        android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:includeFontPadding="false"
         android:text="N/A"
@@ -29,7 +29,7 @@
         android:includeFontPadding="false"
         android:text="MAC:AA:BB:CC:DD:EE:FF"
         android:textColor="@color/lw003_grey_666666"
-        android:textSize="10sp"
+        android:textSize="14sp"
         app:layout_constraintLeft_toLeftOf="@id/tv_name"
         app:layout_constraintTop_toBottomOf="@id/tv_name" />
 
@@ -42,17 +42,22 @@
         android:gravity="center_horizontal"
         android:text="N/A"
         android:textColor="@color/lw003_grey_666666"
-        android:textSize="9sp"
+        android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/tv_mac"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_name" />
 
-    <ImageView
-        android:id="@+id/iv_connect"
+    <TextView
+        android:id="@+id/tv_connect"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="17dp"
-        android:src="@drawable/lw003_ic_connect"
+        android:layout_height="35dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/lw003_shape_radius_blue_bg"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:text="CONNECT"
+        android:textColor="@color/lw003_white_ffffff"
         app:layout_constraintBottom_toBottomOf="@id/tv_mac"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_name" />
@@ -61,7 +66,7 @@
         android:id="@+id/ll_battery"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="13dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -71,7 +76,7 @@
             android:id="@+id/iv_battery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/lw003_ic_battery_1"
+            android:src="@drawable/lw003_ic_battery"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_rssi" />
 
@@ -82,7 +87,7 @@
             android:layout_marginTop="5dp"
             android:text="N/A"
             android:textColor="@color/lw003_grey_666666"
-            android:textSize="9sp" />
+            android:textSize="10sp" />
     </LinearLayout>
 
     <TextView
@@ -94,7 +99,7 @@
         android:gravity="center_vertical"
         android:text="N/A℃"
         android:textColor="@color/lw003_grey_666666"
-        android:textSize="10sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/ll_battery"
         app:layout_constraintLeft_toLeftOf="@id/tv_name"
         app:layout_constraintTop_toTopOf="@id/ll_battery" />
@@ -103,13 +108,13 @@
         android:id="@+id/tv_humi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="70dp"
+        android:layout_marginLeft="80dp"
         android:drawableLeft="@drawable/lw003_ic_humi"
         android:drawablePadding="5dp"
         android:gravity="center_vertical"
         android:text="N/A%RH"
         android:textColor="@color/lw003_grey_666666"
-        android:textSize="10sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@id/ll_battery"
         app:layout_constraintLeft_toLeftOf="@id/tv_name"
         app:layout_constraintTop_toTopOf="@id/ll_battery" />
@@ -123,7 +128,7 @@
         android:textColor="@color/lw003_grey_666666"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="@id/ll_battery"
-        app:layout_constraintLeft_toLeftOf="@id/iv_connect"
-        app:layout_constraintRight_toRightOf="@id/iv_connect"
+        app:layout_constraintLeft_toLeftOf="@id/tv_connect"
+        app:layout_constraintRight_toRightOf="@id/tv_connect"
         app:layout_constraintTop_toTopOf="@id/ll_battery" />
 </androidx.constraintlayout.widget.ConstraintLayout>

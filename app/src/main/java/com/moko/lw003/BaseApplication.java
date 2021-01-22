@@ -27,7 +27,7 @@ public class BaseApplication extends Application {
     private static final String TAG = "LW003";
     private static final String LOG_FILE = "LW003.txt";
     private static final String LOG_FOLDER = "LW003";
-    private static String PATH_LOGCAT;
+    public static String PATH_LOGCAT;
 
     @Override
     public void onCreate() {

@@ -56,8 +56,8 @@ public class BeaconInfoParseableImpl implements DeviceInfoParseable<BeaconInfo> 
         battery = manufacturerSpecificDataByte[6] & 0xFF;
         byte[] tempBytes = Arrays.copyOfRange(manufacturerSpecificDataByte, 7, 9);
         byte[] humiBytes = Arrays.copyOfRange(manufacturerSpecificDataByte, 9, 11);
-        tempStr = MokoUtils.getDecimalFormat("#.##").format(MokoUtils.toIntSigned(tempBytes));
-        humiStr = MokoUtils.getDecimalFormat("#.##").format(MokoUtils.toInt(humiBytes));
+        tempStr = MokoUtils.getDecimalFormat("#.##").format(MokoUtils.toIntSigned(tempBytes) * 0.01);
+        humiStr = MokoUtils.getDecimalFormat("#.##").format(MokoUtils.toInt(humiBytes) * 0.01);
         BeaconInfo beaconInfo;
         if (beaconInfoHashMap.containsKey(deviceInfo.mac)) {
             beaconInfo = beaconInfoHashMap.get(deviceInfo.mac);

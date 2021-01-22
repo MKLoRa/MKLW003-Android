@@ -13,11 +13,16 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.support.lw003.entity.ExportData;
 import com.moko.support.lw003.entity.OrderCHAR;
 import com.moko.support.lw003.handler.MokoCharacteristicHandler;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -146,4 +151,7 @@ public class LoRaLW003MokoSupport extends MokoBleLib {
         event.setResponse(response);
         EventBus.getDefault().post(event);
     }
+
+    public ArrayList<ExportData> exportDatas;
+    public StringBuilder storeString;
 }

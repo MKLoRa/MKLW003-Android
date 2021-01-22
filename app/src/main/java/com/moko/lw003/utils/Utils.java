@@ -8,6 +8,8 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 
+import com.moko.lw003.BuildConfig;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 import androidx.core.content.FileProvider;
 
 public class Utils {
-    
+
     public static void sendEmail(Context context, String address, String body, String subject, String tips, File... files) {
         if (files.length == 0) {
             return;
@@ -31,7 +33,11 @@ public class Utils {
             intent = new Intent(Intent.ACTION_SEND);
             Uri uri;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                uri = FileProvider.getUriForFile(context, "com.moko.lw003.fileprovider", files[0]);
+                if (BuildConfig.IS_LIBRARY) {
+                    uri = FileProvider.getUriForFile(context, "com.moko.mklora.fileprovider", files[0]);
+                } else {
+                    uri = FileProvider.getUriForFile(context, "com.moko.lw003.fileprovider", files[0]);
+                }
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             } else {
                 uri = Uri.fromFile(files[0]);

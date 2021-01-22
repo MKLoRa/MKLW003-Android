@@ -18,6 +18,7 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.lw003.R;
 import com.moko.lw003.R2;
 import com.moko.lw003.dialog.AlertMessageDialog;
@@ -33,6 +34,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -138,7 +140,8 @@ public class NetworkCheckActivity extends BaseActivity {
                                 switch (configKeyEnum) {
                                     case KEY_NETWORK_CHECK_INTERVAL:
                                         if (length > 0) {
-                                            int interval = value[4] & 0xFF;
+                                            byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
+                                            int interval = MokoUtils.toInt(rawDataBytes);
                                             cbNetworkCheck.setChecked(interval > 0);
                                             etNetworkCheckInterval.setText(String.valueOf(interval));
                                         }

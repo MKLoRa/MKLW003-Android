@@ -163,6 +163,10 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
+                if (LoRaLW003MokoSupport.getInstance().exportDatas != null) {
+                    LoRaLW003MokoSupport.getInstance().exportDatas.clear();
+                    LoRaLW003MokoSupport.getInstance().storeString = null;
+                }
                 showDisconnectDialog();
             }
             if (MokoConstants.ACTION_DISCOVER_SUCCESS.equals(action)) {
@@ -269,6 +273,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                                     case KEY_TIME_SYNC_INTERVAL:
                                     case KEY_OVER_LIMIT_ENABLE:
                                     case KEY_POWER_STATUS:
+                                    case KEY_TAMPER_DETECTION:
                                         if (result != 1) {
                                             savedParamsError = true;
                                         }
@@ -305,7 +310,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                                             String loraInfo = String.format("%s/%s/%s",
                                                     mUploadMode[mSelectUploadMode - 1],
                                                     mRegions[mSelectedRegion],
-                                                    classType == 1 ? "ClassA" : "ClassC");
+                                                    classType == 0 ? "ClassA" : "ClassC");
                                             loraFragment.setLoRaInfo(loraInfo);
                                         }
                                         break;
@@ -387,19 +392,6 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                                             settingFragment.setPowerStatus(status);
                                         }
                                         break;
-//                                    case KEY_ADV_INTERVAL:
-//                                        if (length > 0) {
-//                                            byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
-//                                            final int advInterval = MokoUtils.toInt(rawDataBytes);
-//                                            advFragment.setAdvInterval(advInterval);
-//                                        }
-//                                        break;
-//                                    case KEY_DEVICE_INFO_INTERVAL:
-//                                        if (length > 0) {
-//                                            int interval = value[4] & 0xFF;
-//                                            settingFragment.setDeviceInfoInterval(interval);
-//                                        }
-//                                        break;
                                     case KEY_DEVICE_MAC:
                                         if (length > 0) {
                                             byte[] macBytes = Arrays.copyOfRange(value, 4, 4 + length);
@@ -872,20 +864,23 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     public void onAdvInfo(View view) {
-        // TODO: 2021/1/21 广播
+        startActivity(new Intent(this, AdvInfoActivity.class));
     }
 
 
     public void onLocalDataSync(View view) {
-        // TODO: 2021/1/21 同步
+        // 同步
+        startActivity(new Intent(this, ExportDataActivity.class));
     }
 
     public void onTamperDetection(View view) {
-        // TODO: 2021/1/21 防拆
+        // 防拆
+        settingFragment.showTamperDetectionDialog();
     }
 
 
     public void onPowerStatus(View view) {
-        // TODO: 2021/1/21 上电状态
+        // 上电
+        settingFragment.showPowerStatusDialog();
     }
 }

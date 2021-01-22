@@ -18,7 +18,7 @@ public enum ParamsKeyEnum implements Serializable {
     // 数据上报间隔
     KEY_DATA_REPORT_INTERVAL(0X07),
     // 数据保存间隔
-    KEY_DATA_SAVED_INTERVAL(0X08),
+//    KEY_DATA_SAVED_INTERVAL(0X08),
     // 重复数据过滤
     KEY_TRACKING_FILTER_REPEAT(0x09),
     // 上报数据类型
@@ -37,14 +37,10 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_OVER_LIMIT_QTY(0x11),
     // 扫描MAC超限触发RSSI
     KEY_OVER_LIMIT_RSSI(0x12),
-
-//    KEY_CLOSE(0x5D),
-    // 设备蓝牙连接状态
-//    KEY_CONNECTABLE(0x2A),
     // lora
     KEY_LORA_REGION(0x21),
     KEY_LORA_MODE(0x22),
-    KEY_LORA_CLASS_TYPE(0x23),
+     KEY_LORA_CLASS_TYPE(0x23),
     // lorawan网络状态
     KEY_NETWORK_STATUS(0x24),
     KEY_LORA_DEV_EUI(0x25),
@@ -67,23 +63,6 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_LORA_DUTY_CYCLE_ENABLE(0x35),
     // 时间同步间隔
     KEY_TIME_SYNC_INTERVAL(0x36),
-
-//    // 报警RSSI值
-//    KEY_ALARM_RSSI(0x39),
-//    // 报警提醒功能
-//    KEY_ALARM_NOTIFY(0x3A),
-//    // 马达
-//    KEY_VIBRATION_INTENSITY(0x3B),
-//    KEY_VIBRATION_DURATION(0x3C),
-//    KEY_VIBRATION_CYCLE(0x3D),
-//    KEY_VIBRATION_NUMBER(0x3E),
-
-//    KEY_DEVICE_MAC(0x3F),
-//    KEY_BATTERY(0x40),
-    // 低电报警报警电量百分比
-//    KEY_LOW_POWER_PERCENT(0x41),
-    // 扫描数据定时上报时间
-//    KEY_LORA_REPORT_INTERVAL(0x42),
     // 广播
     KEY_ADV_NAME(0x50),
     KEY_ADV_INTERVAL(0x51),
@@ -110,24 +89,10 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_TRACKING_FILTER_ADV_RAW_DATA_B(0x6E),
     KEY_TRACKING_FILTER_UUID_B(0x6F),
     KEY_TRACKING_FILTER_RSSI_B(0x70),
-    // 扫描有效数据筛选间隔
-//    KEY_FILTER_VALID_INTERVAL(0x55),
-    // 读取设备信息包
-//    KEY_DEVICE_INFO(0X57),
-    // 人员聚集报警RSSI
-//    KEY_WARNING_RSSI(0x58),
-
-//    KEY_CH_DR_RESET(0x5B),
-//    KEY_LORA_CONNECT(0x5C),
-
-
-    // payload
-    // 警报和定时上报数据包内容可选项
-//    KEY_OPTIONAL_PAYLOAD_TRACKING(0x71),
-    // 上报beacon设备数量
-//    KEY_REPORT_LOCATION_BEACONS(0x72),
-
-//    KEY_REPORT_LOCATION_ENABLE(0x85),
+    // storage data
+    KEY_READ_STORAGE_DATA(0xA0),
+    KEY_CLEAR_STORAGE_DATA(0xA1),
+    KEY_SYNC_ENABLE(0xA2),
     ;
 
     private int paramsKey;

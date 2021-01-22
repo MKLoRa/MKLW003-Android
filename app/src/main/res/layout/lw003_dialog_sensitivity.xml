@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"
-            android:text="Scan Window"
+            android:text="Trigger Sensitivity"
             android:textSize="16sp" />
 
         <TextView
@@ -24,7 +24,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:gravity="center"
-            android:text="@string/scan_window_tips"
+            android:text="The larger the value, the more sensitive the device judges the movement. Trigger Sensitivity is 0, the tamper detection will be off."
             android:textSize="12sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,48 +36,49 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1/2"
+                android:text="MIN"
                 android:textColor="@color/lw003_grey_999999"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@id/sb_scan_window"
+                app:layout_constraintBottom_toTopOf="@id/sb_sensitivity"
                 app:layout_constraintLeft_toLeftOf="parent" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:text="MAX"
                 android:textColor="@color/lw003_grey_999999"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@id/sb_scan_window"
-                app:layout_constraintRight_toRightOf="@id/sb_scan_window" />
+                app:layout_constraintBottom_toTopOf="@id/sb_sensitivity"
+                app:layout_constraintRight_toRightOf="@id/sb_sensitivity" />
 
             <SeekBar
-                android:id="@+id/sb_scan_window"
+                android:id="@+id/sb_sensitivity"
                 style="@style/LW003SensitivitySeekbarStyle"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="20dp"
-                android:max="3"
+                android:max="255"
                 android:maxHeight="2dp"
                 android:minHeight="2dp"
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"
                 android:progress="0"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/tv_sensitivity_value"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tv_scan_window_value"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_sensitivity_value"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:gravity="right"
-                android:text="1/2"
+                android:text="0"
                 android:textColor="@color/lw003_black_333333"
                 android:textSize="15sp"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/sb_sensitivity"
+                app:layout_constraintLeft_toRightOf="@id/sb_sensitivity"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sb_scan_window" />
+                app:layout_constraintTop_toTopOf="@id/sb_sensitivity" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View

@@ -731,4 +731,28 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setTamperDetection(int enable, int triggerSensitivity) {
+        ParamsTask task = new ParamsTask();
+        task.setTamperDetection(enable, triggerSensitivity);
+        return task;
+    }
+
+    public static OrderTask readStorageData(int time) {
+        ParamsTask task = new ParamsTask();
+        task.readStorageData(time);
+        return task;
+    }
+
+    public static OrderTask setSyncEnable(int enable) {
+        ParamsTask task = new ParamsTask();
+        task.setSyncEnable(enable);
+        return task;
+    }
+
+    public static OrderTask clearStorageData() {
+        ParamsTask task = new ParamsTask();
+        task.clearStorageData();
+        return task;
+    }
+
 }

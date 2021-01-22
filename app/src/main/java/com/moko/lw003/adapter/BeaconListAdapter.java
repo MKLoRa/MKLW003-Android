@@ -19,11 +19,12 @@ public class BeaconListAdapter extends BaseQuickAdapter<BeaconInfo, BaseViewHold
         final String name = TextUtils.isEmpty(item.name) ? "N/A" : item.name;
         helper.setText(R.id.tv_name, name);
         helper.setText(R.id.tv_mac, String.format("MAC:%s", item.mac));
+
         helper.setText(R.id.tv_battery, String.format("%d%%", item.battery));
         final String intervalTime = item.intervalTime == 0 ? "<->N/A" : String.format("<->%dms", item.intervalTime);
         helper.setText(R.id.tv_track_interval, intervalTime);
         helper.setText(R.id.tv_temp, String.format("%s℃", TextUtils.isEmpty(item.temp) ? "N/A" : item.temp));
         helper.setText(R.id.tv_humi, String.format("%s%%RH", TextUtils.isEmpty(item.humi) ? "N/A" : item.humi));
-        helper.addOnClickListener(R.id.iv_connect);
+        helper.addOnClickListener(R.id.tv_connect);
     }
 }

@@ -107,7 +107,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     private int mSelectedUplinkDellTime;
     private int mMaxCH;
     private int mMaxDR;
-    private boolean mIsFailed;
+    private boolean savedParamsError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -223,23 +223,24 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
                                     case KEY_LORA_NWK_SKEY:
                                     case KEY_LORA_REGION:
                                     case KEY_LORA_MESSAGE_TYPE:
+                                    case KEY_LORA_CLASS_TYPE:
                                     case KEY_LORA_CH:
                                     case KEY_LORA_DUTY_CYCLE_ENABLE:
                                     case KEY_LORA_ADR:
                                     case KEY_LORA_DR:
                                     case KEY_LORA_UPLINK_DELL_TIME:
                                         if (result != 1) {
-                                            mIsFailed = true;
+                                            savedParamsError = true;
                                         }
                                         break;
                                     case KEY_RESET:
                                         if (result != 1) {
-                                            mIsFailed = true;
+                                            savedParamsError = true;
                                         }
-                                        if (!mIsFailed) {
-                                            ToastUtils.showToast(LoRaSettingActivity.this, "Success");
+                                        if (!savedParamsError) {
+                                            ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
                                         } else {
-                                            ToastUtils.showToast(LoRaSettingActivity.this, "Error");
+                                            ToastUtils.showToast(this, "Saved Successfully！");
                                         }
                                         break;
                                 }
@@ -693,7 +694,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
             orderTasks.add(OrderTaskAssembler.setLoraUploadMode(mSelectedMode + 1));
         }
         orderTasks.add(OrderTaskAssembler.setLoraMessageType(mSelectedMessageType));
-        mIsFailed = false;
+        savedParamsError = false;
         // 保存并连接
         orderTasks.add(OrderTaskAssembler.setLoraRegion(mSelectedRegion));
         orderTasks.add(OrderTaskAssembler.setLoraCH(mSelectedCh1, mSelectedCh2));

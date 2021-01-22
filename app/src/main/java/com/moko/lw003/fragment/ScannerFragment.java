@@ -25,7 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ScannerFragment extends Fragment {
+public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
     private static final String TAG = ScannerFragment.class.getSimpleName();
     @BindView(R2.id.cb_scan_switch)
     CheckBox cbScanSwitch;
@@ -73,6 +73,7 @@ public class ScannerFragment extends Fragment {
         View view = inflater.inflate(R.layout.lw003_fragment_scanner, container, false);
         ButterKnife.bind(this, view);
         activity = (DeviceInfoActivity) getActivity();
+        sbOverLimitRssi.setOnSeekBarChangeListener(this);
         cbScanSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             clScan.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         });
@@ -174,6 +175,7 @@ public class ScannerFragment extends Fragment {
     public void setOverLimitRssi(int rssi) {
         int progress = rssi + 127;
         sbOverLimitRssi.setProgress(progress);
+        tvOverLimitRssiValue.setText(String.format("%ddBm", rssi));
     }
 
     public void setOverLimitQty(int qty) {
@@ -182,5 +184,21 @@ public class ScannerFragment extends Fragment {
 
     public void setOverLimitDuration(int duration) {
         etOverLimitDuration.setText(String.valueOf(duration));
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        int value = progress - 127;
+        tvOverLimitRssiValue.setText(String.format("%ddBm", value));
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
     }
 }

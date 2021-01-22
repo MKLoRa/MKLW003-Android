@@ -3,7 +3,7 @@ package com.moko.lw003.adapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.moko.lw003.R;
-import com.moko.lw003.entity.ExportData;
+import com.moko.support.lw003.entity.ExportData;
 
 public class ExportDataListAdapter extends BaseQuickAdapter<ExportData, BaseViewHolder> {
     public ExportDataListAdapter() {

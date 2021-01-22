@@ -30,7 +30,7 @@ public class ParamsTask extends OrderTask {
             case KEY_POWER_STATUS:
             case KEY_TAMPER_DETECTION:
             case KEY_DATA_REPORT_INTERVAL:
-            case KEY_DATA_SAVED_INTERVAL:
+//            case KEY_DATA_SAVED_INTERVAL:
             case KEY_TRACKING_FILTER_REPEAT:
             case KEY_UPLINK_DATA_TYPE:
             case KEY_UPLINK_DATA_MAX_LENGTH:
@@ -104,7 +104,7 @@ public class ParamsTask extends OrderTask {
 
     public void setTime() {
         Calendar calendar = Calendar.getInstance();
-        long time = calendar.getTimeInMillis();
+        long time = calendar.getTimeInMillis() / 1000;
         byte[] bytes = new byte[4];
         for (int i = 0; i < 4; ++i) {
             bytes[i] = (byte) (time >> 8 * (3 - i) & 255);
@@ -596,8 +596,7 @@ public class ParamsTask extends OrderTask {
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_RESET.getParamsKey(),
-                (byte) 0x01,
-                (byte) 0x01
+                (byte) 0x00
         };
     }
 
@@ -835,13 +834,15 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-    public void setNetworkCheckInterval(@IntRange(from = 0, to = 240) int interval) {
+    public void setNetworkCheckInterval(@IntRange(from = 0, to = 720) int interval) {
+        byte[] rawDataBytes = MokoUtils.toByteArray(interval, 2);
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_NETWORK_CHECK_INTERVAL.getParamsKey(),
-                (byte) 0x01,
-                (byte) interval
+                (byte) 0x02,
+                rawDataBytes[0],
+                rawDataBytes[1]
         };
     }
 
@@ -902,6 +903,49 @@ public class ParamsTask extends OrderTask {
                 (byte) ParamsKeyEnum.KEY_POWER_STATUS.getParamsKey(),
                 (byte) 0x01,
                 (byte) status
+        };
+    }
+
+    public void setTamperDetection(@IntRange(from = 0, to = 1) int enable,
+                                   @IntRange(from = 0, to = 240) int triggerSensitivity) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_TAMPER_DETECTION.getParamsKey(),
+                (byte) 0x02,
+                (byte) enable,
+                (byte) triggerSensitivity
+        };
+    }
+
+    public void readStorageData(@IntRange(from = 1, to = 65535) int time) {
+        byte[] rawDataBytes = MokoUtils.toByteArray(time, 2);
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_READ_STORAGE_DATA.getParamsKey(),
+                (byte) 0x02,
+                rawDataBytes[0],
+                rawDataBytes[1]
+        };
+    }
+
+    public void setSyncEnable(@IntRange(from = 0, to = 1) int enable) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_SYNC_ENABLE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void clearStorageData() {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_CLEAR_STORAGE_DATA.getParamsKey(),
+                (byte) 0x00
         };
     }
 }

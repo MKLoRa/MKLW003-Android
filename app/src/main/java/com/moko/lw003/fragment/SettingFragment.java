@@ -12,13 +12,11 @@ import com.moko.lw003.R;
 import com.moko.lw003.R2;
 import com.moko.lw003.activity.DeviceInfoActivity;
 import com.moko.lw003.dialog.BottomDialog;
-import com.moko.lw003.dialog.ChangePasswordDialog;
+import com.moko.lw003.dialog.TriggerSensitivityDialog;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,6 +34,8 @@ public class SettingFragment extends Fragment {
 
     private DeviceInfoActivity activity;
     private ArrayList<String> mPowerStatusValues;
+    private int mSelectedPowerStatus;
+    private int mTriggerSensitivity;
 
     public SettingFragment() {
     }
@@ -84,6 +84,7 @@ public class SettingFragment extends Fragment {
     }
 
     public void setTamperDetection(int enable, int triggerSensitivity) {
+        mTriggerSensitivity = triggerSensitivity;
         if (enable == 0) {
             tvTamperDetection.setText("OFF");
         } else {
@@ -92,10 +93,32 @@ public class SettingFragment extends Fragment {
     }
 
     public void setPowerStatus(int status) {
+        mSelectedPowerStatus = status;
+        tvDefaultPowerStatus.setText(mPowerStatusValues.get(status));
+    }
+
+    public void showTamperDetectionDialog() {
+        final TriggerSensitivityDialog dialog = new TriggerSensitivityDialog(getActivity());
+        dialog.setData(mTriggerSensitivity);
+        dialog.setOnSensitivityClicked(sensitivity -> {
+            mTriggerSensitivity = sensitivity;
+            if (sensitivity == 0) {
+                tvTamperDetection.setText("OFF");
+            } else {
+                tvTamperDetection.setText(String.valueOf(sensitivity));
+            }
+            activity.showSyncingProgressDialog();
+            LoRaLW003MokoSupport.getInstance().sendOrder(
+                    OrderTaskAssembler.setTamperDetection(sensitivity == 0 ? 0 : 1, sensitivity));
+        });
+        dialog.show();
+    }
+
+    public void showPowerStatusDialog() {
         BottomDialog dialog = new BottomDialog();
-        dialog.setDatas(mPowerStatusValues, status);
+        dialog.setDatas(mPowerStatusValues, mSelectedPowerStatus);
         dialog.setListener(value -> {
-            tvDefaultPowerStatus.setText(mPowerStatusValues.get(status));
+            tvDefaultPowerStatus.setText(mPowerStatusValues.get(value));
             activity.showSyncingProgressDialog();
             LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setPowerStatus(value));
         });
