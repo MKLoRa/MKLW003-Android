@@ -19,9 +19,6 @@ import com.moko.support.lw003.handler.MokoCharacteristicHandler;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
@@ -126,14 +123,10 @@ public class LoRaLW003MokoSupport extends MokoBleLib {
         return responseUUID.equals(orderCHAR.getUuid());
     }
 
-
     @Override
-    public void orderNotify(BluetoothGattCharacteristic characteristic, byte[] value) {
+    public boolean orderNotify(BluetoothGattCharacteristic characteristic, byte[] value) {
         final UUID responseUUID = characteristic.getUuid();
         OrderCHAR orderCHAR = null;
-        if (responseUUID.equals(OrderCHAR.CHAR_PARAMS.getUuid())) {
-            orderCHAR = OrderCHAR.CHAR_PARAMS;
-        }
         if (responseUUID.equals(OrderCHAR.CHAR_DISCONNECTED_NOTIFY.getUuid())) {
             orderCHAR = OrderCHAR.CHAR_DISCONNECTED_NOTIFY;
         }
@@ -141,7 +134,7 @@ public class LoRaLW003MokoSupport extends MokoBleLib {
             orderCHAR = OrderCHAR.CHAR_STORAGE_DATA_NOTIFY;
         }
         if (orderCHAR == null)
-            return;
+            return false;
         XLog.i(orderCHAR.name());
         OrderTaskResponse response = new OrderTaskResponse();
         response.orderCHAR = orderCHAR;
@@ -150,6 +143,7 @@ public class LoRaLW003MokoSupport extends MokoBleLib {
         event.setAction(MokoConstants.ACTION_CURRENT_DATA);
         event.setResponse(response);
         EventBus.getDefault().post(event);
+        return true;
     }
 
     public ArrayList<ExportData> exportDatas;
