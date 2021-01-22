@@ -83,7 +83,6 @@ public class AdvInfoActivity extends BaseActivity {
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
-                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -225,7 +224,6 @@ public class AdvInfoActivity extends BaseActivity {
                     switch (blueState) {
                         case BluetoothAdapter.STATE_TURNING_OFF:
                             dismissSyncProgressDialog();
-                            AdvInfoActivity.this.setResult(RESULT_OK);
                             finish();
                             break;
                     }
@@ -260,6 +258,17 @@ public class AdvInfoActivity extends BaseActivity {
     }
 
     public void onBack(View view) {
+        backHome();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        backHome();
+    }
+
+    private void backHome() {
+        setResult(RESULT_OK);
         finish();
     }
 }

@@ -215,7 +215,6 @@ public class FilterOptionsBActivity extends BaseActivity implements SeekBar.OnSe
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
-                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -444,7 +443,6 @@ public class FilterOptionsBActivity extends BaseActivity implements SeekBar.OnSe
                     switch (blueState) {
                         case BluetoothAdapter.STATE_TURNING_OFF:
                             dismissSyncProgressDialog();
-                            FilterOptionsBActivity.this.setResult(RESULT_OK);
                             finish();
                             break;
                     }

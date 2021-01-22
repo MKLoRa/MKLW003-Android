@@ -81,7 +81,6 @@ public class NetworkCheckActivity extends BaseActivity {
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
-                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -226,7 +225,6 @@ public class NetworkCheckActivity extends BaseActivity {
                     switch (blueState) {
                         case BluetoothAdapter.STATE_TURNING_OFF:
                             dismissSyncProgressDialog();
-                            NetworkCheckActivity.this.setResult(RESULT_OK);
                             finish();
                             break;
                     }

@@ -47,6 +47,7 @@ public class AppConstants {
     public static final int REQUEST_CODE_NETWORK_CHECK_SETTING = 114;
     public static final int REQUEST_CODE_MULTICAST_SETTING = 115;
     public static final int REQUEST_CODE_FILTER = 116;
+    public static final int REQUEST_CODE_ADV = 117;
 
     public static final int REQUEST_CODE_PERMISSION = 120;
     public static final int REQUEST_CODE_PERMISSION_2 = 121;

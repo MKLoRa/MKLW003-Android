@@ -436,6 +436,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                 setResult(RESULT_OK);
                 finish();
             });
+            dialog.show(getSupportFragmentManager());
         } else if (disConnectType == 4) {
             AlertMessageDialog dialog = new AlertMessageDialog();
             dialog.setTitle("Factory Reset");
@@ -540,6 +541,13 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                 ivSave.postDelayed(() -> {
                     showSyncingProgressDialog();
                     LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getMulticastEnable());
+                }, 500);
+            }
+        } else if (requestCode == AppConstants.REQUEST_CODE_ADV) {
+            if (resultCode == RESULT_OK) {
+                ivSave.postDelayed(() -> {
+                    showSyncingProgressDialog();
+                    LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getAdvName());
                 }, 500);
             }
         }
@@ -864,7 +872,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     public void onAdvInfo(View view) {
-        startActivity(new Intent(this, AdvInfoActivity.class));
+        Intent intent = new Intent(this, AdvInfoActivity.class);
+        startActivityForResult(intent, AppConstants.REQUEST_CODE_ADV);
     }
 
 

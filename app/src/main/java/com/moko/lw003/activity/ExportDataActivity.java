@@ -133,7 +133,6 @@ public class ExportDataActivity extends BaseActivity {
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
-                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -251,7 +250,6 @@ public class ExportDataActivity extends BaseActivity {
                 }
             }
             if (MokoConstants.ACTION_ORDER_RESULT.equals(action)) {
-                EventBus.getDefault().cancelEventDelivery(event);
                 EventBus.getDefault().cancelEventDelivery(event);
                 OrderTaskResponse response = event.getResponse();
                 OrderCHAR orderCHAR = (OrderCHAR) response.orderCHAR;

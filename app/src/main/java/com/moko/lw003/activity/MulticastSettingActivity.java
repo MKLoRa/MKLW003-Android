@@ -83,7 +83,6 @@ public class MulticastSettingActivity extends BaseActivity {
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
-                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -249,7 +248,6 @@ public class MulticastSettingActivity extends BaseActivity {
                     switch (blueState) {
                         case BluetoothAdapter.STATE_TURNING_OFF:
                             dismissSyncProgressDialog();
-                            MulticastSettingActivity.this.setResult(RESULT_OK);
                             finish();
                             break;
                     }
