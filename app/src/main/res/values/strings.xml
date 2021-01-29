@@ -55,19 +55,15 @@
         <item>Connecting</item>
     </string-array>
     <string-array name="region">
-        <item>EU868</item>
-        <item>US915</item>
-        <item>US915HYBRID</item>
+        <item>AS923</item>
+        <item>AU915</item>
+        <item>CN470</item>
         <item>CN779</item>
         <item>EU433</item>
-        <item>AU915</item>
-        <item>AU915OLD</item>
-        <item>CN470</item>
-        <item>AS923</item>
+        <item>EU868</item>
         <item>KR920</item>
         <item>IN865</item>
-        <item>CN470PREQUEL</item>
-        <item>STE920</item>
+        <item>US915</item>
         <item>RU864</item>
     </string-array>
     <string-array name="upload_mode">

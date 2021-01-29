@@ -23,8 +23,6 @@ import com.moko.lw003.R;
 import com.moko.lw003.R2;
 import com.moko.lw003.dialog.BottomDialog;
 import com.moko.lw003.dialog.LoadingMessageDialog;
-import com.moko.lw003.dialog.RegionBottomDialog;
-import com.moko.lw003.entity.Region;
 import com.moko.lw003.utils.ToastUtils;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
@@ -92,11 +90,10 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
 
     private boolean mReceiverTag = false;
     private ArrayList<String> mModeList;
-    private ArrayList<Region> mRegionsList;
+    private ArrayList<String> mRegionsList;
     private ArrayList<String> mMessageTypeList;
     private ArrayList<String> mDeviceTypeList;
     private ArrayList<String> mUplinkDellTimeList;
-    private String[] mRegions;
     private int mSelectedMode;
     private int mSelectedRegion;
     private int mSelectedMessageType;
@@ -114,22 +111,20 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.lw003_activity_lora_setting);
         ButterKnife.bind(this);
-        mRegions = getResources().getStringArray(R.array.region);
         mModeList = new ArrayList<>();
         mModeList.add("ABP");
         mModeList.add("OTAA");
         mRegionsList = new ArrayList<>();
-        for (int i = 0; i < mRegions.length; i++) {
-            String name = mRegions[i];
-            if ("US915HYBRID".equals(name) || "AU915OLD".equals(name)
-                    || "CN470PREQUEL".equals(name) || "STE920".equals(name)) {
-                continue;
-            }
-            Region region = new Region();
-            region.value = i;
-            region.name = name;
-            mRegionsList.add(region);
-        }
+        mRegionsList.add("AS923");
+        mRegionsList.add("AU915");
+        mRegionsList.add("CN470");
+        mRegionsList.add("CN779");
+        mRegionsList.add("EU433");
+        mRegionsList.add("EU868");
+        mRegionsList.add("KR920");
+        mRegionsList.add("IN865");
+        mRegionsList.add("US915");
+        mRegionsList.add("RU864");
         mMessageTypeList = new ArrayList<>();
         mMessageTypeList.add("Unconfirmed");
         mMessageTypeList.add("Confirmed");
@@ -302,7 +297,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
                                         if (length > 0) {
                                             final int region = value[4] & 0xFF;
                                             mSelectedRegion = region;
-                                            tvRegion.setText(mRegions[region]);
+                                            tvRegion.setText(mRegionsList.get(region));
                                             initCHDRRange();
                                             initDutyCycle();
                                             initUplinkDellTime();
@@ -448,12 +443,12 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void selectRegion(View view) {
-        RegionBottomDialog bottomDialog = new RegionBottomDialog();
+        BottomDialog bottomDialog = new BottomDialog();
         bottomDialog.setDatas(mRegionsList, mSelectedRegion);
         bottomDialog.setListener(value -> {
             if (mSelectedRegion != value) {
                 mSelectedRegion = value;
-                tvRegion.setText(mRegions[mSelectedRegion]);
+                tvRegion.setText(mRegionsList.get(value));
                 initCHDRRange();
                 updateCHDR();
                 initDutyCycle();
@@ -570,6 +565,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
 
     private void initDutyCycle() {
         if (mSelectedRegion != 1 && mSelectedRegion != 5 && mSelectedRegion != 7) {
+            cbDutyCycle.setChecked(false);
             // EU868,CN779, EU433,AS923,KR920,IN865,and RU864
             llDutyCycle.setVisibility(View.VISIBLE);
         } else {
@@ -579,6 +575,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
 
     private void initUplinkDellTime() {
         if (mSelectedRegion == 5 || mSelectedRegion == 8) {
+            mSelectedUplinkDellTime = 1;
+            tvUplinkDellTime.setText(mUplinkDellTimeList.get(1));
             // AS923 and AU915
             llUplinkDellTime.setVisibility(View.VISIBLE);
         } else {

@@ -81,8 +81,8 @@ public class FilterOptionsActivity extends BaseActivity {
             LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         }
         mValues = new ArrayList<>();
-        mValues.add("And");
         mValues.add("Or");
+        mValues.add("And");
         mRepeatValues = new ArrayList<>();
         mRepeatValues.add("No");
         mRepeatValues.add("MAC");
@@ -174,7 +174,7 @@ public class FilterOptionsActivity extends BaseActivity {
                                     case KEY_TRACKING_FILTER_A_B_RELATION:
                                         if (length == 1) {
                                             final int relation = value[4] & 0xFF;
-                                            tvRelation.setText(relation == 0 ? "And" : "Or");
+                                            tvRelation.setText(relation == 1 ? "And" : "Or");
                                             mSelected = relation;
                                         }
                                         break;
@@ -248,7 +248,7 @@ public class FilterOptionsActivity extends BaseActivity {
         BottomDialog dialog = new BottomDialog();
         dialog.setDatas(mValues, mSelected);
         dialog.setListener(value -> {
-            tvRelation.setText(value == 0 ? "And" : "Or");
+            tvRelation.setText(value == 1 ? "And" : "Or");
             mSelected = value;
             showSyncingProgressDialog();
             LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setFilterABRelation(value));

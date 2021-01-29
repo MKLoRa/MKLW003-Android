@@ -32,12 +32,10 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.moko.lw003.activity.FilterOptionsAActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.moko.lw003.activity.FilterOptionsBActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.moko.lw003.activity.LoRaSettingActivity"
@@ -57,8 +55,7 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.moko.lw003.activity.UplinkPayloadActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.moko.lw003.activity.AdvInfoActivity"
             android:screenOrientation="portrait"

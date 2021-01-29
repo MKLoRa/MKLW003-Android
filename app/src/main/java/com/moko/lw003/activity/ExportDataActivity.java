@@ -281,8 +281,8 @@ public class ExportDataActivity extends BaseActivity {
                                             exportDatas.clear();
                                             adapter.replaceData(exportDatas);
                                             tvExport.setEnabled(false);
-                                            tvSum.setText("Sum:N/A");
-                                            tvCount.setText("Count:N/A");
+                                            tvSum.setText("Sum:0");
+                                            tvCount.setText("Count:0");
                                             ToastUtils.showToast(this, "Empty success!");
                                         }
                                         break;
