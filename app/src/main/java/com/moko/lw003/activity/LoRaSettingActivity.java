@@ -480,28 +480,32 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
 
     private void updateCHDR() {
         switch (mSelectedRegion) {
-            case 0:
             case 4:
-            case 9:
-            case 10:
+            case 5:
+            case 6:
+            case 7:
+                // EU443、EU868、KR920、IN865
                 mSelectedCh1 = 0;
                 mSelectedCh2 = 2;
                 mSelectedDr1 = 0;
                 break;
             case 3:
+                // CN779
                 mSelectedCh1 = 0;
                 mSelectedCh2 = 5;
                 mSelectedDr1 = 0;
                 break;
             case 1:
-            case 5:
-            case 7:
+            case 2:
+            case 8:
+                // AU915、CN470、US915
                 mSelectedCh1 = 0;
                 mSelectedCh2 = 7;
                 mSelectedDr1 = 0;
                 break;
-            case 8:
-            case 13:
+            case 0:
+            case 9:
+                // AS923、RU864
                 mSelectedCh1 = 0;
                 mSelectedCh2 = 1;
                 mSelectedDr1 = 0;
@@ -520,11 +524,11 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
         mCHList = new ArrayList<>();
         mDRList = new ArrayList<>();
         switch (mSelectedRegion) {
-            case 0:
             case 4:
-            case 9:
-            case 10:
-                // EU868、EU443、KR920、IN865
+            case 5:
+            case 6:
+            case 7:
+                // EU443、EU868、KR920、IN865
                 mMaxCH = 2;
                 mMaxDR = 5;
                 break;
@@ -533,25 +537,25 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
                 mMaxCH = 5;
                 mMaxDR = 5;
                 break;
-            case 8:
-            case 13:
-                // AS923、RU864
-                mMaxCH = 1;
-                mMaxDR = 5;
-                break;
             case 1:
-                // US915
-                mMaxCH = 63;
-                mMaxDR = 4;
-                break;
-            case 5:
                 // AU915
                 mMaxCH = 63;
                 mMaxDR = 6;
                 break;
-            case 7:
+            case 2:
                 // CN470
                 mMaxCH = 95;
+                mMaxDR = 5;
+                break;
+            case 8:
+                // US915
+                mMaxCH = 63;
+                mMaxDR = 4;
+                break;
+            case 0:
+            case 9:
+                // AS923、RU864
+                mMaxCH = 1;
                 mMaxDR = 5;
                 break;
         }
@@ -564,7 +568,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     private void initDutyCycle() {
-        if (mSelectedRegion != 1 && mSelectedRegion != 5 && mSelectedRegion != 7) {
+        if (mSelectedRegion != 1 && mSelectedRegion != 2 && mSelectedRegion != 8) {
             cbDutyCycle.setChecked(false);
             // EU868,CN779, EU433,AS923,KR920,IN865,and RU864
             llDutyCycle.setVisibility(View.VISIBLE);
@@ -574,7 +578,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     private void initUplinkDellTime() {
-        if (mSelectedRegion == 5 || mSelectedRegion == 8) {
+        if (mSelectedRegion == 0 || mSelectedRegion == 1) {
             mSelectedUplinkDellTime = 1;
             tvUplinkDellTime.setText(mUplinkDellTimeList.get(1));
             // AS923 and AU915
@@ -696,12 +700,12 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
         // 保存并连接
         orderTasks.add(OrderTaskAssembler.setLoraRegion(mSelectedRegion));
         orderTasks.add(OrderTaskAssembler.setLoraCH(mSelectedCh1, mSelectedCh2));
-        if (mSelectedRegion != 1 && mSelectedRegion != 5 && mSelectedRegion != 7) {
+        if (mSelectedRegion != 1 && mSelectedRegion != 2 && mSelectedRegion != 8) {
             orderTasks.add(OrderTaskAssembler.setLoraDutyCycleEnable(cbDutyCycle.isChecked() ? 1 : 0));
         }
         orderTasks.add(OrderTaskAssembler.setLoraDR(mSelectedDr1));
         orderTasks.add(OrderTaskAssembler.setLoraADR(cbAdr.isChecked() ? 1 : 0));
-        if (mSelectedRegion == 5 || mSelectedRegion == 8) {
+        if (mSelectedRegion == 0 || mSelectedRegion == 1) {
             orderTasks.add(OrderTaskAssembler.setLoraUplinkDellTime(mSelectedUplinkDellTime));
         }
         orderTasks.add(OrderTaskAssembler.setReset());
