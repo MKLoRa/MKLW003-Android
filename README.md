@@ -28,7 +28,7 @@ include ':app', ':mokosupport'
 **Initialize sdk at project initialization**
 
 ```
-MokoSupport.getInstance().init(getApplicationContext());
+LoRaLW003MokoSupport.getInstance().init(getApplicationContext());
 ```
 
 **SDK provides three main functions:**
@@ -42,19 +42,19 @@ MokoSupport.getInstance().init(getApplicationContext());
  **Start scanning**
 
 ```
-MokoSupport.getInstance().startScanDevice(callback);
+mokoBleScanner.startScanDevice(callback);
 ```
 
  **End scanning**
 
 ```
-MokoSupport.getInstance().stopScanDevice();
+mokoBleScanner.stopScanDevice();
 ```
  **Implement the scanning callback interface**
 
 ```java
 /**
- * @ClassPath com.moko.support.callback.MokoScanDeviceCallback
+ * @ClassPath com.moko.support.lw003.callback.MokoScanDeviceCallback
  */
 public interface MokoScanDeviceCallback {
     void onStartScan();
@@ -76,18 +76,10 @@ Device types can be distinguished by `parseDeviceInfo(DeviceInfo deviceInfo)`.Re
         Iterator iterator = map.keySet().iterator();
         if (iterator.hasNext()) {
             ParcelUuid parcelUuid = (ParcelUuid) iterator.next();
-            if (parcelUuid.toString().startsWith("0000ff03")) {
+            if (parcelUuid.toString().startsWith("0000aa00")) {
                 byte[] bytes = map.get(parcelUuid);
                 if (bytes != null) {
                     deviceType = bytes[0] & 0xFF;
-                    major = String.valueOf(MokoUtils.toInt(Arrays.copyOfRange(bytes, 1, 3)));
-                    minor = String.valueOf(MokoUtils.toInt(Arrays.copyOfRange(bytes, 3, 5)));
-                    rssi_1m = bytes[5];
-                    txPower = bytes[6];
-                    String binary = MokoUtils.hexString2binaryString(MokoUtils.byte2HexString(bytes[7]));
-                    connectable = Integer.parseInt(binary.substring(4, 5));
-                    track = Integer.parseInt(binary.substring(5, 6));
-                    battery = bytes[8] & 0xFF;
                 }
             } else {
                 return null;
@@ -100,7 +92,7 @@ Device types can be distinguished by `parseDeviceInfo(DeviceInfo deviceInfo)`.Re
 
 
 ```
-MokoSupport.getInstance().connDevice(context, address);
+LoRaLW003MokoSupport.getInstance().connDevice(address);
 ```
 
 When connecting to the device, context, MAC address and callback by EventBus.
@@ -136,46 +128,23 @@ At present, all the tasks sent from the SDK can be divided into 4 types:
 
 Encapsulated tasks are as follows:
 
-|Task Class|Task Type|Function
-|----|----|----
-|`OpenNotifyTask`|NOTIFY|Enable notification property
-
-
 Custom device information
 --
 
 |Task Class|Task Type|Function
 |----|----|----
-|`GetManufacturerTask`|READ|Get manufacturer.
-|`GetDeviceModelTask`|READ|Get product model.
-|`GetProductDateTask`|READ|Get production date.
-|`GetHardwareVersionTask`|READ|Get hardware version.
-|`GetFirmwareVersionTask`|READ|Get firmware version.
-|`GetSoftwareVersionTask`|READ|Get software version.
-|`GetBatteryTask`|READ|Get battery capacity.
-|`GetDeviceNameTask`|READ|Get adv name.
-|`GetConnectionModeTask`|READ|Get connectable.
-|`GetDeviceTypeTask`|READ|Get deviceType,5:no-3-Axis.
+|`GetManufacturerNameTask`|READ|Get manufacturer.
+|`GetModelNumberTask`|READ|Get model number.
+|`GetHardwareRevisionTask`|READ|Get hardware version.
+|`GetFirmwareRevisionTask`|READ|Get firmware version.
+|`GetSoftwareRevisionTask`|READ|Get software version.
 
 Adv iBeacon information
 --
 
 |Task Class|Task Type|Function
 |----|----|----
-|`GetMajorTask`|READ|Get major.
-|`GetMinorTask`|READ|Get minor.
-|`GetMeasurePowerTask`|READ|Get iBeacon measurePower.
-|`GetTransmissionTask`|READ|Get iBeacon transmission.
-|`GetUUIDTask`|READ|Get iBeacon UUID.
-|`GetAdvIntervalTask`|READ|Get adv interval.
-|`WriteConfigTask`|WRITE|Write `GET_ADV_MOVE_CONDITION`，get adv trigger.
-|`SetMajorTask`|WRITE|Set major.
-|`SetMinorTask`|WRITE|Set minor.
-|`SetMeasurePowerTask`|WRITE|Set iBeacon measurePower.
-|`SetTransmissionTask`|WRITE|Set iBeacon transmission.
-|`SetUUIDTask`|WRITE|Set iBeacon UUID.
-|`SetAdvIntervalTask`|WRITE|Set adv interval.
-|`WriteConfigTask`|WRITE|Call `setAdvMoveCondition(int seconds)`，set adv trigger.
+|`ParamsTask`|RESPONSE_TYPE_WRITE_NO_RESPONSE|Get or set params.
 
 ...
 
@@ -184,29 +153,24 @@ Adv iBeacon information
 Examples of creating tasks are as follows:
 
 ```
-	 // read
-    public static OrderTask getManufacturer() {
-        GetManufacturerTask getManufacturerTask = new GetManufacturerTask();
-        return getManufacturerTask;
-    }
-    // write
-    public static OrderTask setPassword(String password) {
-        SetPasswordTask setPasswordTask = new SetPasswordTask();
-        setPasswordTask.setData(password);
-        return setPasswordTask;
-    }
-    public static OrderTask setLoraConnect() {
-        WriteConfigTask task = new WriteConfigTask();
-        task.setLoraConnect();
-        return task;
-    }
+            List<OrderTask> orderTasks = new ArrayList<>();
+            // sync time after connect success;
+            orderTasks.add(OrderTaskAssembler.setTime());
+            // get lora params
+            orderTasks.add(OrderTaskAssembler.getLoraRegion());
+            orderTasks.add(OrderTaskAssembler.getLoraMode());
+            orderTasks.add(OrderTaskAssembler.getLoraClassType());
+            orderTasks.add(OrderTaskAssembler.getLoRaConnectable());
+            orderTasks.add(OrderTaskAssembler.getMulticastEnable());
+            orderTasks.add(OrderTaskAssembler.getTimeSyncInterval());
+            LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     
 ```
 
 * **Send tasks**
 
 ```
-MokoSupport.getInstance().sendOrder(OrderTask... orderTasks);
+LoRaLW003MokoSupport.getInstance().sendOrder(OrderTask... orderTasks);
 ```
 
 The task can be one or more.
@@ -249,7 +213,7 @@ String action = intent.getAction();
 ...
 if (MokoConstants.ACTION_CURRENT_DATA.equals(action)) {
     OrderTaskResponse response = event.getResponse();
-    OrderType orderType = response.orderType;
+    OrderCHAR orderCHAR = (OrderCHAR) response.orderCHAR;
     int responseType = response.responseType;
     byte[] value = response.responseValue;
     ...
@@ -261,7 +225,7 @@ Get `OrderTaskResponse` from the `OrderTaskResponseEvent`, and the corresponding
 ## 3. Special instructions
 
 > 1. AndroidManifest.xml of SDK has declared to access SD card and get Bluetooth permissions.
-> 2. The SDK comes with logging, and if you want to view the log in the SD card, please to use "LogModule". The log path is : root directory of SD card/LW003/LW003.txt. It only records the log of the day and the day before.
+> 2. The SDK comes with logging, and if you want to view the log in the SD card, please to use "XLog". The log path is : root directory of SD card/LW003/LW003.txt. It only records the log of the day and the day before.
 
 
 

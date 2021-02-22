@@ -697,9 +697,9 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
                     max = Integer.parseInt(maxStr);
                 if (min == 0 && max != 0)
                     return false;
-                if (min > 29)
+                if (min > 62)
                     return false;
-                if (max > 29)
+                if (max > 62)
                     return false;
                 if (max < min)
                     return false;
