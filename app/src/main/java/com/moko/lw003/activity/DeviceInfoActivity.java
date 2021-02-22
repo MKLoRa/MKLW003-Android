@@ -261,6 +261,9 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                                 // write
                                 int result = value[4] & 0xFF;
                                 switch (configKeyEnum) {
+                                    case KEY_TIME:
+                                        if (result == 1)
+                                            ToastUtils.showToast(DeviceInfoActivity.this, "Time sync completed!");
                                     case KEY_SCAN_ENABLE:
                                     case KEY_SCAN_PARAMS:
                                     case KEY_OVER_LIMIT_RSSI:
