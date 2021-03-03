@@ -653,6 +653,12 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setLoraClassType(int type) {
+        ParamsTask task = new ParamsTask();
+        task.setLoraClassType(type);
+        return task;
+    }
+
     public static OrderTask setLoraRegion(int region) {
         ParamsTask task = new ParamsTask();
         task.setLoraRegion(region);

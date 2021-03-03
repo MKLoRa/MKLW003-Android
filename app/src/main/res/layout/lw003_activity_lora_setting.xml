@@ -421,16 +421,20 @@
                 <View style="@style/lw003_divider_line" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_ch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:paddingTop="6dp"
-                    android:paddingBottom="6dp">
+                    android:paddingBottom="6dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
+                        android:layout_alignTop="@id/tv_ch_1"
+                        android:layout_alignBottom="@id/tv_ch_1"
+                        android:gravity="center_vertical"
                         android:text="CH"
                         android:textColor="@color/lw003_black_333333"
                         android:textSize="15sp"
@@ -462,20 +466,23 @@
                         android:text=""
                         android:textColor="@color/lw003_white_ffffff"
                         android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_ch_tips"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_ch_1"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="*It is only used for US915,AU915,CN470"
+                        android:textColor="@color/lw003_black_333333"
+                        android:textSize="15sp" />
+
+                    <View
+                        style="@style/lw003_divider_line"
+                        android:layout_below="@id/tv_ch_tips"
+                        android:layout_marginTop="10dp" />
                 </RelativeLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:text="*It is only used for US915,AU915,CN470"
-                    android:textColor="@color/lw003_black_333333"
-                    android:textSize="15sp" />
-
-                <View
-                    style="@style/lw003_divider_line"
-                    android:layout_marginTop="10dp" />
 
                 <LinearLayout
                     android:id="@+id/ll_duty_cycle"

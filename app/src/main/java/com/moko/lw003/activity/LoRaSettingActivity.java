@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.moko.ble.lib.MokoConstants;
@@ -83,6 +84,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     CheckBox cbDutyCycle;
     @BindView(R2.id.tv_uplink_dell_time)
     TextView tvUplinkDellTime;
+    @BindView(R2.id.rl_ch)
+    RelativeLayout rlCH;
     @BindView(R2.id.ll_duty_cycle)
     LinearLayout llDutyCycle;
     @BindView(R2.id.ll_uplink_dell_time)
@@ -157,6 +160,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
             orderTasks.add(OrderTaskAssembler.getLoraNwkSKey());
             orderTasks.add(OrderTaskAssembler.getLoraRegion());
             orderTasks.add(OrderTaskAssembler.getLoraMessageType());
+            orderTasks.add(OrderTaskAssembler.getLoraClassType());
             orderTasks.add(OrderTaskAssembler.getLoraCH());
             orderTasks.add(OrderTaskAssembler.getLoraDutyCycleEnable());
             orderTasks.add(OrderTaskAssembler.getLoraADR());
@@ -232,7 +236,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
                                         if (result != 1) {
                                             savedParamsError = true;
                                         }
-                                        if (!savedParamsError) {
+                                        if (savedParamsError) {
                                             ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
                                         } else {
                                             ToastUtils.showToast(this, "Saved Successfully！");
@@ -314,7 +318,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
                                         if (length > 0) {
                                             final int classType = value[4] & 0xFF;
                                             mSelectedDeviceType = classType;
-                                            if (classType == 3) {
+                                            if (classType == 2) {
                                                 tvDeviceType.setText(mDeviceTypeList.get(1));
                                                 return;
                                             }
@@ -470,10 +474,10 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
 
     public void selectDeviceType(View view) {
         BottomDialog bottomDialog = new BottomDialog();
-        bottomDialog.setDatas(mDeviceTypeList, mSelectedDeviceType == 3 ? 1 : 0);
+        bottomDialog.setDatas(mDeviceTypeList, mSelectedDeviceType == 2 ? 1 : 0);
         bottomDialog.setListener(value -> {
             tvDeviceType.setText(mDeviceTypeList.get(value));
-            mSelectedDeviceType = value == 0 ? 1 : 3;
+            mSelectedDeviceType = value == 1 ? 2 : 0;
         });
         bottomDialog.show(getSupportFragmentManager());
     }
@@ -564,6 +568,12 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
         }
         for (int i = 0; i <= mMaxDR; i++) {
             mDRList.add(String.valueOf(i));
+        }
+        if (mSelectedRegion == 1 || mSelectedRegion == 2 || mSelectedRegion == 8) {
+            // US915,AU915,CN470
+            rlCH.setVisibility(View.VISIBLE);
+        } else {
+            rlCH.setVisibility(View.GONE);
         }
     }
 
@@ -696,6 +706,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
             orderTasks.add(OrderTaskAssembler.setLoraUploadMode(mSelectedMode + 1));
         }
         orderTasks.add(OrderTaskAssembler.setLoraMessageType(mSelectedMessageType));
+        orderTasks.add(OrderTaskAssembler.setLoraClassType(mSelectedDeviceType));
         savedParamsError = false;
         // 保存并连接
         orderTasks.add(OrderTaskAssembler.setLoraRegion(mSelectedRegion));

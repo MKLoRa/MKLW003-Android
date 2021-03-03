@@ -140,7 +140,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
 
     private BeaconInfoParseableImpl beaconInfoParseable;
     public String filterName;
-    public int filterRssi = -100;
+    public int filterRssi = -127;
 
     @Override
     public void onStartScan() {
@@ -177,7 +177,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
 
     private void updateDevices() {
         beaconInfos.clear();
-        if (!TextUtils.isEmpty(filterName) || filterRssi != -100) {
+        if (!TextUtils.isEmpty(filterName) || filterRssi != -127) {
             ArrayList<BeaconInfo> beaconInfosFilter = new ArrayList<>(beaconInfoHashMap.values());
             Iterator<BeaconInfo> iterator = beaconInfosFilter.iterator();
             while (iterator.hasNext()) {
@@ -268,7 +268,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
             public void onDone(String filterName, int filterRssi) {
                 LoRaLW003MainActivity.this.filterName = filterName;
                 LoRaLW003MainActivity.this.filterRssi = filterRssi;
-                if (!TextUtils.isEmpty(filterName) || filterRssi != -100) {
+                if (!TextUtils.isEmpty(filterName) || filterRssi != -127) {
                     rl_filter.setVisibility(View.VISIBLE);
                     rl_edit_filter.setVisibility(View.GONE);
                     StringBuilder stringBuilder = new StringBuilder();
@@ -276,7 +276,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
                         stringBuilder.append(filterName);
                         stringBuilder.append(";");
                     }
-                    if (filterRssi != -100) {
+                    if (filterRssi != -127) {
                         stringBuilder.append(String.format("%sdBm", filterRssi + ""));
                         stringBuilder.append(";");
                     }
@@ -310,7 +310,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
         rl_filter.setVisibility(View.GONE);
         rl_edit_filter.setVisibility(View.VISIBLE);
         filterName = "";
-        filterRssi = -100;
+        filterRssi = -127;
         if (isWindowLocked())
             return;
         if (animation == null) {

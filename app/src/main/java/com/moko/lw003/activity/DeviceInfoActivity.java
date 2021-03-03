@@ -802,8 +802,23 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
 
         @Override
         public void onDfuCompleted(String deviceAddress) {
-            ToastUtils.showToast(DeviceInfoActivity.this, "DFU Successfully!");
-            dismissDFUProgressDialog();
+            mDeviceConnectCount = 0;
+            if (!isFinishing() && mDFUDialog != null && mDFUDialog.isShowing()) {
+                mDFUDialog.dismiss();
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(DeviceInfoActivity.this);
+            builder.setTitle("Update Firmware");
+            builder.setCancelable(false);
+            builder.setMessage("Update firmware successfully!\nPlease reconnect the device.");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    isUpgrade = false;
+                    DeviceInfoActivity.this.setResult(RESULT_OK);
+                    finish();
+                }
+            });
+            builder.show();
         }
 
         @Override

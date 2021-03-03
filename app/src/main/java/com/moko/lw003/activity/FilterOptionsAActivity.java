@@ -50,7 +50,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
-    public static final String UUID_PATTERN = "[A-Fa-f0-9]{8}-(?:[A-Fa-f0-9]{4}-){3}[A-Fa-f0-9]{12}";
     private final String FILTER_ASCII = "\\A\\p{ASCII}*\\z";
     @BindView(R2.id.sb_rssi_filter)
     SeekBar sbRssiFilter;
@@ -115,7 +114,6 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
     @BindView(R2.id.tv_condition_tips)
     TextView tvConditionTips;
     private boolean mReceiverTag = false;
-    private Pattern pattern;
     private boolean savedParamsError;
 
     private ArrayList<String> filterRawDatas;
@@ -131,54 +129,6 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
         tvConditionTips.setText(getString(R.string.condition_tips, "A", "A"));
 
         sbRssiFilter.setOnSeekBarChangeListener(this);
-        pattern = Pattern.compile(UUID_PATTERN);
-        etIbeaconUuid.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String input = s.toString();
-                if (!pattern.matcher(input).matches()) {
-                    if (input.length() == 9 && !input.endsWith("-")) {
-                        String show = input.substring(0, 8) + "-" + input.substring(8, input.length());
-                        etIbeaconUuid.setText(show);
-                        etIbeaconUuid.setSelection(show.length());
-                    }
-                    if (input.length() == 14 && !input.endsWith("-")) {
-                        String show = input.substring(0, 13) + "-" + input.substring(13, input.length());
-                        etIbeaconUuid.setText(show);
-                        etIbeaconUuid.setSelection(show.length());
-                    }
-                    if (input.length() == 19 && !input.endsWith("-")) {
-                        String show = input.substring(0, 18) + "-" + input.substring(18, input.length());
-                        etIbeaconUuid.setText(show);
-                        etIbeaconUuid.setSelection(show.length());
-                    }
-                    if (input.length() == 24 && !input.endsWith("-")) {
-                        String show = input.substring(0, 23) + "-" + input.substring(23, input.length());
-                        etIbeaconUuid.setText(show);
-                        etIbeaconUuid.setSelection(show.length());
-                    }
-                    if (input.length() == 32 && input.indexOf("-") < 0) {
-                        StringBuilder stringBuilder = new StringBuilder(input);
-                        stringBuilder.insert(8, "-");
-                        stringBuilder.insert(13, "-");
-                        stringBuilder.insert(18, "-");
-                        stringBuilder.insert(23, "-");
-                        etIbeaconUuid.setText(stringBuilder.toString());
-                        etIbeaconUuid.setSelection(stringBuilder.toString().length());
-                    }
-                }
-            }
-        });
         InputFilter inputFilter = (source, start, end, dest, dstart, dend) -> {
             if (!(source + "").matches(FILTER_ASCII)) {
                 return "";
@@ -186,7 +136,7 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
 
             return null;
         };
-        etAdvName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10), inputFilter});
+        etAdvName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(29), inputFilter});
         EventBus.getDefault().register(this);
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
@@ -339,12 +289,7 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
                                             if (length > 1) {
                                                 byte[] uuidBytes = Arrays.copyOfRange(value, 5, 4 + length);
                                                 String filterUUID = MokoUtils.bytesToHexString(uuidBytes).toUpperCase();
-                                                StringBuilder stringBuilder = new StringBuilder(filterUUID);
-                                                stringBuilder.insert(8, "-");
-                                                stringBuilder.insert(13, "-");
-                                                stringBuilder.insert(18, "-");
-                                                stringBuilder.insert(23, "-");
-                                                etIbeaconUuid.setText(stringBuilder.toString());
+                                                etIbeaconUuid.setText(filterUUID);
                                             }
                                         }
                                         break;
@@ -387,7 +332,7 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
                                     case KEY_TRACKING_FILTER_ADV_RAW_DATA_A:
                                         if (length > 0) {
                                             final int enable = value[4] & 0xFF;
-                                            filterRawAdvDataEnable = enable > 5;
+                                            filterRawAdvDataEnable = enable > 0;
                                             ivRawAdvData.setImageResource(filterRawAdvDataEnable ? R.drawable.lw003_ic_checked : R.drawable.lw003_ic_unchecked);
                                             llRawDataFilter.setVisibility(filterRawAdvDataEnable ? View.VISIBLE : View.GONE);
                                             ivRawDataAdd.setVisibility(filterRawAdvDataEnable ? View.VISIBLE : View.GONE);
@@ -581,7 +526,6 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
         final String mac = etMacAddress.getText().toString();
         final String name = etAdvName.getText().toString();
         final String uuid = etIbeaconUuid.getText().toString();
-        String uuidStr = uuid.replaceAll("-", "");
         final String majorMin = etIbeaconMajorMin.getText().toString();
         final String majorMax = etIbeaconMajorMax.getText().toString();
         final String minorMin = etIbeaconMinorMin.getText().toString();
@@ -590,7 +534,7 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
         orderTasks.add(OrderTaskAssembler.setFilterRssiA(filterRssi));
         orderTasks.add(OrderTaskAssembler.setFilterMacA(filterMacEnable ? mac : "", cbMacAddress.isChecked()));
         orderTasks.add(OrderTaskAssembler.setFilterNameA(filterNameEnable ? name : "", cbAdvName.isChecked()));
-        orderTasks.add(OrderTaskAssembler.setFilterUUIDA(filterUUIDEnable ? uuidStr : "", cbIbeaconUuid.isChecked()));
+        orderTasks.add(OrderTaskAssembler.setFilterUUIDA(filterUUIDEnable ? uuid : "", cbIbeaconUuid.isChecked()));
         orderTasks.add(OrderTaskAssembler.setFilterMajorRangeA(
                 filterMajorEnable ? 1 : 0,
                 filterMajorEnable ? Integer.parseInt(majorMin) : 0,
@@ -631,7 +575,7 @@ public class FilterOptionsAActivity extends BaseActivity implements SeekBar.OnSe
             if (TextUtils.isEmpty(uuid))
                 return false;
             int length = uuid.length();
-            if (length != 36)
+            if (length % 2 != 0)
                 return false;
         }
         if (filterMajorEnable) {

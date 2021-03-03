@@ -752,6 +752,16 @@ public class ParamsTask extends OrderTask {
         };
     }
 
+    public void setLoraClassType(int type) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_LORA_CLASS_TYPE.getParamsKey(),
+                (byte) 0x01,
+                (byte) type
+        };
+    }
+
     public void setLoraMessageType(int type) {
         data = new byte[]{
                 (byte) 0xED,
