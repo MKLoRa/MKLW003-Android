@@ -415,16 +415,6 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void back(View view) {
-        backHome();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        backHome();
-    }
-
-    private void backHome() {
         finish();
     }
 
@@ -714,11 +704,11 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
         if (mSelectedRegion != 1 && mSelectedRegion != 2 && mSelectedRegion != 8) {
             orderTasks.add(OrderTaskAssembler.setLoraDutyCycleEnable(cbDutyCycle.isChecked() ? 1 : 0));
         }
-        orderTasks.add(OrderTaskAssembler.setLoraDR(mSelectedDr1));
         orderTasks.add(OrderTaskAssembler.setLoraADR(cbAdr.isChecked() ? 1 : 0));
         if (mSelectedRegion == 0 || mSelectedRegion == 1) {
             orderTasks.add(OrderTaskAssembler.setLoraUplinkDellTime(mSelectedUplinkDellTime));
         }
+        orderTasks.add(OrderTaskAssembler.setLoraDR(mSelectedDr1));
         orderTasks.add(OrderTaskAssembler.setReset());
         LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         showSyncingProgressDialog();

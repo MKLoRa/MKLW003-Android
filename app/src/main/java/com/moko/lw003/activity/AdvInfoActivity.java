@@ -263,7 +263,6 @@ public class AdvInfoActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         backHome();
     }
 

@@ -17,8 +17,6 @@
     <string name="company_name">MOKO TECHNOLOGY LTD.</string>
     <string name="about_title">ABOUT</string>
     <string name="company_website">www.mokosmart.com</string>
-    <string name="storage_interval">*The device will store the Non-Alarm BLE ADV data every %ds and the same MAC addree only be saved one time.</string>
-    <string name="alarm_trigger_rssi">*The device alarm  is triggered when the BLE RSSI scanned is greater than %ddbm.</string>
     <string name="rssi_filter">*The device will uplink valid ADV data with RSSI no less than %ddBm.</string>
 
     <string name="permission_storage_close_title">Storage permission is not available</string>
@@ -37,24 +35,9 @@
     <string name="title_setting">SETTINGS</string>
     <string name="title_device">DEVICE</string>
     <string name="lora_setting">LoRa Setting</string>
-    <string name="scan_window_tips">The setting of the scanning window represents the proportion of the scanning time. If you set to 0, the device will stop scanning.</string>
-    <string name="warning_range">(-127~%ddBm)</string>
-    <string name="warning_tips">* People gathering warning will take effect，when the BLE RSSI scanned is greater than %ddbm.</string>
-    <string name="low_battery_tips">*When the battery is less than or equal to %d%%, the red LED will flashe once every 30 seconds.</string>
     <string name="condition_tips">*Turn on the Filter Condition %s ,all filtration of this page will take effect.Turn off the Filter Condition %s, all filtration of this page will not take effect.</string>
 
-    <string-array name="tracking_notify">
-        <item>Off</item>
-        <item>Light</item>
-        <item>Vibration</item>
-        <item>Light+Vibration</item>
-    </string-array>
-    <string-array name="lora_connectable">
-        <item>Disconnected</item>
-        <item>Connected</item>
-        <item>Connecting</item>
-    </string-array>
-    <string-array name="region">
+    <string-array name="lw003_region">
         <item>AS923</item>
         <item>AU915</item>
         <item>CN470</item>
@@ -69,14 +52,5 @@
     <string-array name="upload_mode">
         <item>ABP</item>
         <item>OTAA</item>
-    </string-array>
-    <string-array name="message_type">
-        <item>Unconfirmed</item>
-        <item>Confirmed</item>
-    </string-array>
-    <string-array name="vibration_intensity">
-        <item>Low</item>
-        <item>Medium</item>
-        <item>Strong</item>
     </string-array>
 </resources>

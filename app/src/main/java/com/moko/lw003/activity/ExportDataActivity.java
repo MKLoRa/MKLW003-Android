@@ -85,6 +85,8 @@ public class ExportDataActivity extends BaseActivity {
     private boolean mIsBack;
     private Handler mHandler;
     private boolean mIsStart;
+    private int mStartTime;
+    private int mSum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +95,16 @@ public class ExportDataActivity extends BaseActivity {
         ButterKnife.bind(this);
         exportDatas = LoRaLW003MokoSupport.getInstance().exportDatas;
         storeString = LoRaLW003MokoSupport.getInstance().storeString;
+        mStartTime = LoRaLW003MokoSupport.getInstance().startTime;
+        mSum = LoRaLW003MokoSupport.getInstance().sum;
         if (exportDatas != null && exportDatas.size() > 0 && storeString != null) {
             mIsStart = true;
+            if (mStartTime > 0) {
+                etTime.setText(String.valueOf(mStartTime));
+            }
+            if (mSum > 0) {
+                tvSum.setText(String.format("Sum:%d", mSum));
+            }
             tvCount.setText(String.format("Count:%d", exportDatas.size()));
             tvExport.setEnabled(true);
             tvEmpty.setEnabled(true);
@@ -204,7 +214,11 @@ public class ExportDataActivity extends BaseActivity {
                                     exportData.rssi = rssi;
                                     exportData.mac = mac;
                                     exportData.rawData = rawData;
-                                    exportDatas.add(exportData);
+                                    if (mStartTime == 65535) {
+                                        exportDatas.add(0, exportData);
+                                    } else {
+                                        exportDatas.add(exportData);
+                                    }
                                     tvCount.setText(String.format("Count:%d", exportDatas.size()));
 
                                     storeString.append(String.format("Time:%s", time));
@@ -225,6 +239,7 @@ public class ExportDataActivity extends BaseActivity {
                                 byte[] sumBytes = Arrays.copyOfRange(value, 5, length);
                                 int sum = MokoUtils.toInt(sumBytes);
                                 tvSum.setText(String.format("Sum:%d", sum));
+                                LoRaLW003MokoSupport.getInstance().sum = sum;
                             }
 
                             if (mIsBack && !mIsSync) {
@@ -234,6 +249,7 @@ public class ExportDataActivity extends BaseActivity {
                                         dismissSyncProgressDialog();
                                         LoRaLW003MokoSupport.getInstance().exportDatas = exportDatas;
                                         LoRaLW003MokoSupport.getInstance().storeString = storeString;
+                                        LoRaLW003MokoSupport.getInstance().startTime = mStartTime;
                                         finish();
                                     }, 2000);
                                 }
@@ -295,6 +311,7 @@ public class ExportDataActivity extends BaseActivity {
                                                     dismissSyncProgressDialog();
                                                     LoRaLW003MokoSupport.getInstance().exportDatas = exportDatas;
                                                     LoRaLW003MokoSupport.getInstance().storeString = storeString;
+                                                    LoRaLW003MokoSupport.getInstance().startTime = mStartTime;
                                                     finish();
                                                 }, 2000);
                                             }
@@ -391,6 +408,7 @@ public class ExportDataActivity extends BaseActivity {
         }
         LoRaLW003MokoSupport.getInstance().exportDatas = exportDatas;
         LoRaLW003MokoSupport.getInstance().storeString = storeString;
+        LoRaLW003MokoSupport.getInstance().startTime = mStartTime;
         finish();
     }
 
@@ -414,6 +432,7 @@ public class ExportDataActivity extends BaseActivity {
             ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
             return;
         }
+        mStartTime = time;
         showSyncingProgressDialog();
         LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.readStorageData(time));
     }

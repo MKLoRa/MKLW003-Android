@@ -148,4 +148,6 @@ public class LoRaLW003MokoSupport extends MokoBleLib {
 
     public ArrayList<ExportData> exportDatas;
     public StringBuilder storeString;
+    public int startTime;
+    public int sum;
 }

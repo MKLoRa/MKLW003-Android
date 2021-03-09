@@ -116,7 +116,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
         rgOptions.setOnCheckedChangeListener(this);
         EventBus.getDefault().register(this);
         mUploadMode = getResources().getStringArray(R.array.upload_mode);
-        mRegions = getResources().getStringArray(R.array.region);
+        mRegions = getResources().getStringArray(R.array.lw003_region);
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
@@ -166,6 +166,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                 if (LoRaLW003MokoSupport.getInstance().exportDatas != null) {
                     LoRaLW003MokoSupport.getInstance().exportDatas.clear();
                     LoRaLW003MokoSupport.getInstance().storeString = null;
+                    LoRaLW003MokoSupport.getInstance().startTime = 0;
+                    LoRaLW003MokoSupport.getInstance().sum = 0;
                 }
                 showDisconnectDialog();
             }
@@ -453,7 +455,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
             dialog.show(getSupportFragmentManager());
         } else if (disConnectType == 1) {
             AlertMessageDialog dialog = new AlertMessageDialog();
-            dialog.setMessage("The Beacon is disconnected.");
+            dialog.setMessage("The device is disconnected!");
             dialog.setConfirm("OK");
             dialog.setCancelGone();
             dialog.setOnAlertConfirmListener(() -> {
@@ -465,7 +467,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
             if (LoRaLW003MokoSupport.getInstance().isBluetoothOpen() && !isUpgrade) {
                 AlertMessageDialog dialog = new AlertMessageDialog();
                 dialog.setTitle("Dismiss");
-                dialog.setMessage("The Beacon disconnected!");
+                dialog.setMessage("The device disconnected!");
                 dialog.setConfirm("Exit");
                 dialog.setCancelGone();
                 dialog.setOnAlertConfirmListener(() -> {
