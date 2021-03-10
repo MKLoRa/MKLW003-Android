@@ -24,7 +24,7 @@
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
             android:gravity="center"
-            android:text="The larger the value, the more sensitive the device judges the movement. Trigger Sensitivity is 0, the tamper detection will be off."
+            android:text="The lower the value, the more sensitive the device judges the movement. Trigger Sensitivity is 0, the tamper detection will be off."
             android:textSize="12sp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,11 +53,11 @@
 
             <SeekBar
                 android:id="@+id/sb_sensitivity"
-                style="@style/LW003SensitivitySeekbarStyle"
+                style="@style/LW003CustomSeekbarStyle"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="20dp"
-                android:max="255"
+                android:max="240"
                 android:maxHeight="2dp"
                 android:minHeight="2dp"
                 android:paddingStart="0dp"

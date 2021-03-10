@@ -610,14 +610,12 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-    public void setScanParams(@IntRange(from = 1, to = 20) int interval,
-                              @IntRange(from = 1, to = 20) int window) {
+    public void setScanParams(@IntRange(from = 1, to = 16) int window) {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_SCAN_PARAMS.getParamsKey(),
-                (byte) 0x02,
-                (byte) interval,
+                (byte) 0x01,
                 (byte) window
         };
     }

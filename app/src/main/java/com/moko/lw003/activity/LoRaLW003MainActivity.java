@@ -55,6 +55,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ConcurrentHashMap;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -78,7 +79,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
     @BindView(R2.id.tv_filter)
     TextView tv_filter;
     private boolean mReceiverTag = false;
-    private HashMap<String, BeaconInfo> beaconInfoHashMap;
+    private ConcurrentHashMap<String, BeaconInfo> beaconInfoHashMap;
     private ArrayList<BeaconInfo> beaconInfos;
     private BeaconListAdapter adapter;
     private Animation animation = null;
@@ -92,8 +93,8 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
         setContentView(R.layout.lw003_activity_main);
         ButterKnife.bind(this);
         LoRaLW003MokoSupport.getInstance().init(getApplicationContext());
-        mSavedPassword = SPUtiles.getStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD, "");
-        beaconInfoHashMap = new HashMap<>();
+        mSavedPassword = SPUtiles.getStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_LW003, "");
+        beaconInfoHashMap = new ConcurrentHashMap<>();
         beaconInfos = new ArrayList<>();
         adapter = new BeaconListAdapter();
         adapter.replaceData(beaconInfos);
@@ -206,6 +207,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
         } else {
             beaconInfos.addAll(beaconInfoHashMap.values());
         }
+        System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
         Collections.sort(beaconInfos, (lhs, rhs) -> {
             if (lhs.rssi > rhs.rssi) {
                 return -1;
@@ -451,7 +453,7 @@ public class LoRaLW003MainActivity extends BaseActivity implements MokoScanDevic
                             int result = value[4] & 0xFF;
                             if (1 == result) {
                                 mSavedPassword = mPassword;
-                                SPUtiles.setStringValue(LoRaLW003MainActivity.this, AppConstants.SP_KEY_SAVED_PASSWORD, mSavedPassword);
+                                SPUtiles.setStringValue(LoRaLW003MainActivity.this, AppConstants.SP_KEY_SAVED_PASSWORD_LW003, mSavedPassword);
                                 XLog.i("Success");
                                 Intent i = new Intent(LoRaLW003MainActivity.this, DeviceInfoActivity.class);
                                 startActivityForResult(i, AppConstants.REQUEST_CODE_DEVICE_INFO);

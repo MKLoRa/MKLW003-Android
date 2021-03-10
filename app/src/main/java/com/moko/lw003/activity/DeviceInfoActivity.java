@@ -345,9 +345,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                                         break;
                                     case KEY_SCAN_PARAMS:
                                         if (length > 0) {
-                                            int interval = value[4] & 0xFF;
-                                            int window = value[5] & 0xFF;
-                                            scannerFragment.setScanParams(interval, window);
+                                            int window = value[4] & 0xFF;
+                                            scannerFragment.setScanParams(window);
                                         }
                                         break;
                                     case KEY_OVER_LIMIT_ENABLE:

@@ -467,9 +467,9 @@ public class OrderTaskAssembler {
         return writeConfigTask;
     }
 
-    public static OrderTask setScanParams(int interval, int window) {
+    public static OrderTask setScanParams(int window) {
         ParamsTask writeConfigTask = new ParamsTask();
-        writeConfigTask.setScanParams(interval, window);
+        writeConfigTask.setScanParams(window);
         return writeConfigTask;
     }
 

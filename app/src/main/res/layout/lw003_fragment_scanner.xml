@@ -53,61 +53,18 @@
             app:layout_constraintTop_toBottomOf="@id/cb_scan_switch">
 
             <EditText
-                android:id="@+id/et_scan_interval"
+                android:id="@+id/et_scan_window"
                 android:layout_width="70dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="50dp"
                 android:gravity="center"
-                android:hint="1~20"
+                android:hint="1~16"
                 android:inputType="number"
                 android:maxLength="2"
                 android:textColor="@color/lw003_black_333333"
                 android:textSize="15sp"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="x5ms"
-                android:textColor="@color/lw003_black_333333"
-                android:textSize="15sp"
-                app:layout_constraintBaseline_toBaselineOf="@id/et_scan_interval"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="Scan Interval"
-                android:textColor="@color/lw003_black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@id/et_scan_interval"
-                app:layout_constraintLeft_toLeftOf="parent" />
-
-            <View
-                style="@style/lw003_divider_line"
-                android:layout_width="0dp"
-                android:layout_marginTop="10dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_scan_interval" />
-
-            <EditText
-                android:id="@+id/et_scan_window"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="50dp"
-                android:gravity="center"
-                android:hint="1~20"
-                android:inputType="number"
-                android:maxLength="2"
-                android:textColor="@color/lw003_black_333333"
-                android:textSize="15sp"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/et_scan_interval" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -137,6 +94,7 @@
                 android:text="*Scan window time can not be more than scan interval time. When the scan window time is equal to scan interval, BLE scan always on."
                 android:textColor="@color/lw003_black_333333"
                 android:textSize="12sp"
+                android:visibility="gone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/et_scan_window" />
 

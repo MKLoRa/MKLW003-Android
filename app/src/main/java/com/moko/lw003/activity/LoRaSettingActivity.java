@@ -226,10 +226,20 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
                                     case KEY_LORA_CH:
                                     case KEY_LORA_DUTY_CYCLE_ENABLE:
                                     case KEY_LORA_ADR:
-                                    case KEY_LORA_DR:
                                     case KEY_LORA_UPLINK_DELL_TIME:
                                         if (result != 1) {
                                             savedParamsError = true;
+                                        }
+                                        break;
+                                    case KEY_LORA_DR:
+                                        if (result != 1) {
+                                            savedParamsError = true;
+                                        }
+                                        if (savedParamsError) {
+                                            ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
+                                        } else {
+                                            showSyncingProgressDialog();
+                                            LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setReset());
                                         }
                                         break;
                                     case KEY_RESET:
@@ -709,7 +719,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
             orderTasks.add(OrderTaskAssembler.setLoraUplinkDellTime(mSelectedUplinkDellTime));
         }
         orderTasks.add(OrderTaskAssembler.setLoraDR(mSelectedDr1));
-        orderTasks.add(OrderTaskAssembler.setReset());
+//        orderTasks.add(OrderTaskAssembler.setReset());
         LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         showSyncingProgressDialog();
     }

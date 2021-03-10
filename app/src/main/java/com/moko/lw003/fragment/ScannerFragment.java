@@ -29,8 +29,6 @@ public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChange
     private static final String TAG = ScannerFragment.class.getSimpleName();
     @BindView(R2.id.cb_scan_switch)
     CheckBox cbScanSwitch;
-    @BindView(R2.id.et_scan_interval)
-    EditText etScanInterval;
     @BindView(R2.id.et_scan_window)
     EditText etScanWindow;
     @BindView(R2.id.cl_scan)
@@ -97,19 +95,11 @@ public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChange
 
     public boolean isValid() {
         if (cbScanSwitch.isChecked()) {
-            final String scanIntervalStr = etScanInterval.getText().toString();
-            if (TextUtils.isEmpty(scanIntervalStr))
-                return false;
-            final int interval = Integer.parseInt(scanIntervalStr);
-            if (interval < 1 || interval > 20)
-                return false;
             final String scanWindowStr = etScanWindow.getText().toString();
             if (TextUtils.isEmpty(scanWindowStr))
                 return false;
             final int scanWindow = Integer.parseInt(scanWindowStr);
-            if (scanWindow < 1 || scanWindow > 20)
-                return false;
-            if (scanWindow > interval)
+            if (scanWindow < 1 || scanWindow > 16)
                 return false;
         }
         if (cbOverLimitIndication.isChecked()) {
@@ -132,11 +122,9 @@ public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChange
     public void saveParams() {
         ArrayList<OrderTask> orderTasks = new ArrayList<>();
         if (cbScanSwitch.isChecked()) {
-            final String scanIntervalStr = etScanInterval.getText().toString();
             final String scanWindowStr = etScanWindow.getText().toString();
-            final int interval = Integer.parseInt(scanIntervalStr);
             final int scanWindow = Integer.parseInt(scanWindowStr);
-            orderTasks.add(OrderTaskAssembler.setScanParams(interval, scanWindow));
+            orderTasks.add(OrderTaskAssembler.setScanParams(scanWindow));
             orderTasks.add(OrderTaskAssembler.setScanEnable(1));
         } else {
             orderTasks.add(OrderTaskAssembler.setScanEnable(0));
@@ -162,8 +150,7 @@ public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChange
         cbScanSwitch.setChecked(enable == 1);
     }
 
-    public void setScanParams(int interval, int window) {
-        etScanInterval.setText(String.valueOf(interval));
+    public void setScanParams(int window) {
         etScanWindow.setText(String.valueOf(window));
     }
 
