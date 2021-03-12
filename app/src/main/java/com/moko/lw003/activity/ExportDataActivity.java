@@ -324,8 +324,8 @@ public class ExportDataActivity extends BaseActivity {
                                                 tvSync.setText("Stop");
                                             } else {
                                                 mIsSync = false;
-                                                tvEmpty.setEnabled(true);
                                                 if (exportDatas != null && exportDatas.size() > 0 && storeString != null) {
+                                                    tvEmpty.setEnabled(true);
                                                     tvExport.setEnabled(true);
                                                 }
                                                 ivSync.clearAnimation();
