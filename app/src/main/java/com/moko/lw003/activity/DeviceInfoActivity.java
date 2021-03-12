@@ -533,6 +533,18 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                     Toast.makeText(this, "file is not exists!", Toast.LENGTH_SHORT).show();
                 }
             }
+        } else if (requestCode == AppConstants.REQUEST_CODE_LORA_SETTING) {
+            if (resultCode == RESULT_OK) {
+                ivSave.postDelayed(() -> {
+                    showSyncingProgressDialog();
+                    List<OrderTask> orderTasks = new ArrayList<>();
+                    // setting
+                    orderTasks.add(OrderTaskAssembler.getLoraRegion());
+                    orderTasks.add(OrderTaskAssembler.getLoraMode());
+                    orderTasks.add(OrderTaskAssembler.getLoraClassType());
+                    LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+                }, 500);
+            }
         } else if (requestCode == AppConstants.REQUEST_CODE_NETWORK_CHECK_SETTING) {
             if (resultCode == RESULT_OK) {
                 ivSave.postDelayed(() -> {
@@ -869,7 +881,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     public void onLoraSetting(View view) {
-        startActivity(new Intent(this, LoRaSettingActivity.class));
+        Intent intent = new Intent(this, LoRaSettingActivity.class);
+        startActivityForResult(intent, AppConstants.REQUEST_CODE_LORA_SETTING);
     }
 
     public void onNetworkCheck(View view) {

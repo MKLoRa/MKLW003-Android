@@ -425,6 +425,16 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void back(View view) {
+        backHome();
+    }
+
+    @Override
+    public void onBackPressed() {
+        backHome();
+    }
+
+    private void backHome() {
+        setResult(RESULT_OK);
         finish();
     }
 
@@ -451,6 +461,7 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
         bottomDialog.setDatas(mRegionsList, mSelectedRegion);
         bottomDialog.setListener(value -> {
             if (mSelectedRegion != value) {
+                cbAdr.setChecked(true);
                 mSelectedRegion = value;
                 tvRegion.setText(mRegionsList.get(value));
                 initCHDRRange();
@@ -484,19 +495,14 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
 
     private void updateCHDR() {
         switch (mSelectedRegion) {
+            case 3:
             case 4:
             case 5:
             case 6:
             case 7:
-                // EU443、EU868、KR920、IN865
+                // CN779、EU443、EU868、KR920、IN865
                 mSelectedCh1 = 0;
                 mSelectedCh2 = 2;
-                mSelectedDr1 = 0;
-                break;
-            case 3:
-                // CN779
-                mSelectedCh1 = 0;
-                mSelectedCh2 = 5;
                 mSelectedDr1 = 0;
                 break;
             case 1:
@@ -528,17 +534,13 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
         mCHList = new ArrayList<>();
         mDRList = new ArrayList<>();
         switch (mSelectedRegion) {
+            case 3:
             case 4:
             case 5:
             case 6:
             case 7:
-                // EU443、EU868、KR920、IN865
+                // CN779、EU443、EU868、KR920、IN865
                 mMaxCH = 2;
-                mMaxDR = 5;
-                break;
-            case 3:
-                // CN779
-                mMaxCH = 5;
                 mMaxDR = 5;
                 break;
             case 1:
