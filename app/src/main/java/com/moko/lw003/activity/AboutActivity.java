@@ -25,7 +25,7 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.lw003_activity_about);
         ButterKnife.bind(this);
         if (!BuildConfig.IS_LIBRARY) {
-            appVersion.setText(String.format("Version:V%s", Utils.getVersionInfo(this)));
+            appVersion.setText(String.format("APP Version:V%s", Utils.getVersionInfo(this)));
         }
     }
 
