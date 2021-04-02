@@ -234,6 +234,8 @@ public class UplinkPayloadActivity extends BaseActivity {
     }
 
     public void onSave(View view) {
+        if (isWindowLocked())
+            return;
         if (isValid()) {
             showSyncingProgressDialog();
             saveParams();

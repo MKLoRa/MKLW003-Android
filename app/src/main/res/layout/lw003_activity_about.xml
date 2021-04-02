@@ -59,7 +59,18 @@
         android:layout_below="@id/app_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="V1.0"
+        android:text="APP Version:V1.0.1"
+        android:textColor="@color/lw003_grey_a8a8a8"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/fw_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_version"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="FW Version:V2.0"
         android:textColor="@color/lw003_grey_a8a8a8"
         android:textSize="17sp" />
 

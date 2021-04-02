@@ -422,6 +422,8 @@ public class ExportDataActivity extends BaseActivity {
     }
 
     public void onStart(View view) {
+        if (isWindowLocked())
+            return;
         final String timeStr = etTime.getText().toString();
         if (TextUtils.isEmpty(timeStr)) {
             ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
@@ -451,6 +453,8 @@ public class ExportDataActivity extends BaseActivity {
     }
 
     public void onEmpty(View view) {
+        if (isWindowLocked())
+            return;
         AlertMessageDialog dialog = new AlertMessageDialog();
         dialog.setTitle("Warning!");
         dialog.setMessage("Are you sure to empty the saved tracked datas?");
@@ -462,6 +466,8 @@ public class ExportDataActivity extends BaseActivity {
     }
 
     public void onExport(View view) {
+        if (isWindowLocked())
+            return;
         showSyncingProgressDialog();
         writeTrackedFile("");
         tvExport.postDelayed(() -> {

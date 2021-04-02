@@ -225,13 +225,13 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
                                     case KEY_LORA_CLASS_TYPE:
                                     case KEY_LORA_CH:
                                     case KEY_LORA_DUTY_CYCLE_ENABLE:
-                                    case KEY_LORA_ADR:
+                                    case KEY_LORA_DR:
                                     case KEY_LORA_UPLINK_DELL_TIME:
                                         if (result != 1) {
                                             savedParamsError = true;
                                         }
                                         break;
-                                    case KEY_LORA_DR:
+                                    case KEY_LORA_ADR:
                                         if (result != 1) {
                                             savedParamsError = true;
                                         }
@@ -439,6 +439,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void selectMode(View view) {
+        if (isWindowLocked())
+            return;
         BottomDialog bottomDialog = new BottomDialog();
         bottomDialog.setDatas(mModeList, mSelectedMode);
         bottomDialog.setListener(value -> {
@@ -457,6 +459,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void selectRegion(View view) {
+        if (isWindowLocked())
+            return;
         BottomDialog bottomDialog = new BottomDialog();
         bottomDialog.setDatas(mRegionsList, mSelectedRegion);
         bottomDialog.setListener(value -> {
@@ -474,6 +478,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void selectMessageType(View view) {
+        if (isWindowLocked())
+            return;
         BottomDialog bottomDialog = new BottomDialog();
         bottomDialog.setDatas(mMessageTypeList, mSelectedMessageType);
         bottomDialog.setListener(value -> {
@@ -484,6 +490,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void selectDeviceType(View view) {
+        if (isWindowLocked())
+            return;
         BottomDialog bottomDialog = new BottomDialog();
         bottomDialog.setDatas(mDeviceTypeList, mSelectedDeviceType == 2 ? 1 : 0);
         bottomDialog.setListener(value -> {
@@ -580,9 +588,10 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     private void initDutyCycle() {
-        if (mSelectedRegion != 1 && mSelectedRegion != 2 && mSelectedRegion != 8) {
+        if (mSelectedRegion == 3 || mSelectedRegion == 4
+                || mSelectedRegion == 5 || mSelectedRegion == 9) {
             cbDutyCycle.setChecked(false);
-            // EU868,CN779, EU433,AS923,KR920,IN865,and RU864
+            // CN779,EU433,EU868 and RU864
             llDutyCycle.setVisibility(View.VISIBLE);
         } else {
             llDutyCycle.setVisibility(View.GONE);
@@ -602,6 +611,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
 
 
     public void selectCh1(View view) {
+        if (isWindowLocked())
+            return;
         BottomDialog bottomDialog = new BottomDialog();
         bottomDialog.setDatas(mCHList, mSelectedCh1);
         bottomDialog.setListener(value -> {
@@ -616,6 +627,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void selectCh2(View view) {
+        if (isWindowLocked())
+            return;
         final ArrayList<String> ch2List = new ArrayList<>();
         for (int i = mSelectedCh1; i <= mMaxCH; i++) {
             ch2List.add(i + "");
@@ -630,6 +643,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void selectDr1(View view) {
+        if (isWindowLocked())
+            return;
         if (cbAdr.isChecked()) {
             return;
         }
@@ -643,6 +658,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void onUplinkDellTime(View view) {
+        if (isWindowLocked())
+            return;
         BottomDialog bottomDialog = new BottomDialog();
         bottomDialog.setDatas(mUplinkDellTimeList, mSelectedUplinkDellTime);
         bottomDialog.setListener(value -> {
@@ -653,6 +670,8 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
     }
 
     public void onSave(View view) {
+        if (isWindowLocked())
+            return;
         ArrayList<OrderTask> orderTasks = new ArrayList<>();
         if (mSelectedMode == 0) {
             String devEui = etDevEui.getText().toString();
@@ -713,14 +732,17 @@ public class LoRaSettingActivity extends BaseActivity implements CompoundButton.
         // 保存并连接
         orderTasks.add(OrderTaskAssembler.setLoraRegion(mSelectedRegion));
         orderTasks.add(OrderTaskAssembler.setLoraCH(mSelectedCh1, mSelectedCh2));
-        if (mSelectedRegion != 1 && mSelectedRegion != 2 && mSelectedRegion != 8) {
+        if (mSelectedRegion == 3 || mSelectedRegion == 4
+                || mSelectedRegion == 5 || mSelectedRegion == 9) {
+            // CN779,EU433,EU868 and RU864
             orderTasks.add(OrderTaskAssembler.setLoraDutyCycleEnable(cbDutyCycle.isChecked() ? 1 : 0));
         }
-        orderTasks.add(OrderTaskAssembler.setLoraADR(cbAdr.isChecked() ? 1 : 0));
         if (mSelectedRegion == 0 || mSelectedRegion == 1) {
             orderTasks.add(OrderTaskAssembler.setLoraUplinkDellTime(mSelectedUplinkDellTime));
         }
-        orderTasks.add(OrderTaskAssembler.setLoraDR(mSelectedDr1));
+        if (!cbAdr.isChecked())
+            orderTasks.add(OrderTaskAssembler.setLoraDR(mSelectedDr1));
+        orderTasks.add(OrderTaskAssembler.setLoraADR(cbAdr.isChecked() ? 1 : 0));
 //        orderTasks.add(OrderTaskAssembler.setReset());
         LoRaLW003MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         showSyncingProgressDialog();

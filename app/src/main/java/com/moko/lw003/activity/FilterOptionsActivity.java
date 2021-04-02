@@ -245,6 +245,8 @@ public class FilterOptionsActivity extends BaseActivity {
     }
 
     public void onRelation(View view) {
+        if (isWindowLocked())
+            return;
         BottomDialog dialog = new BottomDialog();
         dialog.setDatas(mValues, mSelected);
         dialog.setListener(value -> {
@@ -257,6 +259,8 @@ public class FilterOptionsActivity extends BaseActivity {
     }
 
     public void onRepeat(View view) {
+        if (isWindowLocked())
+            return;
         BottomDialog dialog = new BottomDialog();
         dialog.setDatas(mRepeatValues, mRepeatSelected);
         dialog.setListener(value -> {
@@ -269,10 +273,14 @@ public class FilterOptionsActivity extends BaseActivity {
     }
 
     public void onFilterA(View view) {
+        if (isWindowLocked())
+            return;
         startActivityForResult(new Intent(this, FilterOptionsAActivity.class), AppConstants.REQUEST_CODE_FILTER);
     }
 
     public void onFilterB(View view) {
+        if (isWindowLocked())
+            return;
         startActivityForResult(new Intent(this, FilterOptionsBActivity.class), AppConstants.REQUEST_CODE_FILTER);
     }
 

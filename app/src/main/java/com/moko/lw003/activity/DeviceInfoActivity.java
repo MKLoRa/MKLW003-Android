@@ -599,6 +599,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     public void onSave(View view) {
+        if (isWindowLocked())
+            return;
         if (radioBtnLora.isChecked()) {
             if (loraFragment.isValid()) {
                 showSyncingProgressDialog();
@@ -853,6 +855,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     };
 
     public void onChangePassword(View view) {
+        if (isWindowLocked())
+            return;
         final ChangePasswordDialog dialog = new ChangePasswordDialog(this);
         dialog.setOnPasswordClicked(password -> {
             showSyncingProgressDialog();
@@ -870,6 +874,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     public void onUpdateFirmware(View view) {
+        if (isWindowLocked())
+            return;
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -881,46 +887,64 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     public void onLoraSetting(View view) {
+        if (isWindowLocked())
+            return;
         Intent intent = new Intent(this, LoRaSettingActivity.class);
         startActivityForResult(intent, AppConstants.REQUEST_CODE_LORA_SETTING);
     }
 
     public void onNetworkCheck(View view) {
+        if (isWindowLocked())
+            return;
         Intent intent = new Intent(this, NetworkCheckActivity.class);
         startActivityForResult(intent, AppConstants.REQUEST_CODE_NETWORK_CHECK_SETTING);
     }
 
     public void onMulticastSetting(View view) {
+        if (isWindowLocked())
+            return;
         Intent intent = new Intent(this, MulticastSettingActivity.class);
         startActivityForResult(intent, AppConstants.REQUEST_CODE_MULTICAST_SETTING);
     }
 
     public void onUplinkPayload(View view) {
+        if (isWindowLocked())
+            return;
         startActivity(new Intent(this, UplinkPayloadActivity.class));
     }
 
     public void onFilterOptions(View view) {
+        if (isWindowLocked())
+            return;
         startActivity(new Intent(this, FilterOptionsActivity.class));
     }
 
     public void onAdvInfo(View view) {
+        if (isWindowLocked())
+            return;
         Intent intent = new Intent(this, AdvInfoActivity.class);
         startActivityForResult(intent, AppConstants.REQUEST_CODE_ADV);
     }
 
 
     public void onLocalDataSync(View view) {
+        if (isWindowLocked())
+            return;
         // 同步
         startActivity(new Intent(this, ExportDataActivity.class));
     }
 
     public void onTamperDetection(View view) {
+        if (isWindowLocked())
+            return;
         // 防拆
         settingFragment.showTamperDetectionDialog();
     }
 
 
     public void onPowerStatus(View view) {
+        if (isWindowLocked())
+            return;
         // 上电
         settingFragment.showPowerStatusDialog();
     }

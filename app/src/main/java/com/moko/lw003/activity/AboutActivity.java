@@ -25,7 +25,7 @@ public class AboutActivity extends BaseActivity {
         setContentView(R.layout.lw003_activity_about);
         ButterKnife.bind(this);
         if (!BuildConfig.IS_LIBRARY) {
-            appVersion.setText(String.format("Version:V%s", Utils.getVersionInfo(this)));
+            appVersion.setText(String.format("APP Version:V%s", Utils.getVersionInfo(this)));
         }
     }
 
@@ -34,6 +34,8 @@ public class AboutActivity extends BaseActivity {
     }
 
     public void onCompanyWebsite(View view) {
+        if (isWindowLocked())
+            return;
         Uri uri = Uri.parse("https://" + getString(R.string.company_website));
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);

@@ -510,7 +510,7 @@
                         android:layout_height="wrap_content"
                         android:paddingTop="6dp"
                         android:paddingBottom="6dp"
-                        android:text="*It is only used for EU868,CN779,EU433,AS923,KR920,IN865,and RU864. Off: The uplink report interval will not be limit by region freqency. On:The uplink report interval will be limit by region freqency."
+                        android:text="*It is only used for EU868,CN779,EU433 and RU864. Off: The uplink report interval will not be limit by region freqency. On:The uplink report interval will be limit by region freqency."
                         android:textColor="@color/lw003_black_333333"
                         android:textSize="15sp" />
 
