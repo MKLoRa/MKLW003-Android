@@ -525,7 +525,6 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                     final DfuServiceInitiator starter = new DfuServiceInitiator(mDeviceMac)
                             .setDeviceName(mDeviceName)
                             .setKeepBond(false)
-                            .setForeground(false)
                             .setDisableNotification(true);
                     starter.setZip(null, firmwareFilePath);
                     starter.start(this, DfuService.class);
