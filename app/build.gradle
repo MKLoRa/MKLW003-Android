@@ -6,17 +6,16 @@ if (!isLibrary.toBoolean()) {
 apply plugin: 'com.jakewharton.butterknife'
 
 android {
-    compileSdkVersion 31
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 33
 
     defaultConfig {
         if (!isLibrary.toBoolean()) {
             applicationId "com.moko.lw003"
         }
         minSdkVersion 18
-        targetSdkVersion 31
-        versionCode 5
-        versionName "1.0.4"
+        targetSdkVersion 33
+        versionCode 6
+        versionName "1.0.5"
     }
 
     buildTypes {
