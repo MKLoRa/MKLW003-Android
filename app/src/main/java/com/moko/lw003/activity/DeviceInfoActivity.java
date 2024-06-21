@@ -526,7 +526,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                             .setDeviceName(mDeviceName)
                             .setKeepBond(false)
                             .setForeground(false)
-                            .setMtu(23)
+                            .disableMtuRequest()
                             .setDisableNotification(true);
                     starter.setZip(null, firmwareFilePath);
                     starter.start(this, DfuService.class);
