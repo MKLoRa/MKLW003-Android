@@ -6,32 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.moko.lw003.R;
-import com.moko.lw003.R2;
 import com.moko.lw003.activity.DeviceInfoActivity;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import com.moko.lw003.databinding.Lw003FragmentDeviceBinding;
 
 public class DeviceFragment extends Fragment {
     private static final String TAG = DeviceFragment.class.getSimpleName();
-    @BindView(R2.id.tv_battery_voltage)
-    TextView tvBatteryVoltage;
-    @BindView(R2.id.tv_mac_address)
-    TextView tvMacAddress;
-    @BindView(R2.id.tv_product_model)
-    TextView tvProductModel;
-    @BindView(R2.id.tv_software_version)
-    TextView tvSoftwareVersion;
-    @BindView(R2.id.tv_firmware_version)
-    TextView tvFirmwareVersion;
-    @BindView(R2.id.tv_hardware_version)
-    TextView tvHardwareVersion;
-    @BindView(R2.id.tv_manufacture)
-    TextView tvManufacture;
-
+    private Lw003FragmentDeviceBinding mBind;
 
     private DeviceInfoActivity activity;
 
@@ -54,10 +35,9 @@ public class DeviceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
-        View view = inflater.inflate(R.layout.lw003_fragment_device, container, false);
-        ButterKnife.bind(this, view);
+        mBind = Lw003FragmentDeviceBinding.inflate(inflater, container, false);
         activity = (DeviceInfoActivity) getActivity();
-        return view;
+        return mBind.getRoot();
     }
 
 
@@ -74,30 +54,30 @@ public class DeviceFragment extends Fragment {
     }
 
     public void setBatteryValtage(int battery) {
-        tvBatteryVoltage.setText(String.format("%d%%", battery));
+        mBind.tvBatteryVoltage.setText(String.format("%d%%", battery));
     }
 
     public void setMacAddress(String macAddress) {
-        tvMacAddress.setText(macAddress);
+        mBind.tvMacAddress.setText(macAddress);
     }
 
     public void setProductModel(String productModel) {
-        tvProductModel.setText(productModel);
+        mBind.tvProductModel.setText(productModel);
     }
 
     public void setSoftwareVersion(String softwareVersion) {
-        tvSoftwareVersion.setText(softwareVersion);
+        mBind.tvSoftwareVersion.setText(softwareVersion);
     }
 
     public void setFirmwareVersion(String firmwareVersion) {
-        tvFirmwareVersion.setText(firmwareVersion);
+        mBind.tvFirmwareVersion.setText(firmwareVersion);
     }
 
     public void setHardwareVersion(String hardwareVersion) {
-        tvHardwareVersion.setText(hardwareVersion);
+        mBind.tvHardwareVersion.setText(hardwareVersion);
     }
 
     public void setManufacture(String manufacture) {
-        tvManufacture.setText(manufacture);
+        mBind.tvManufacture.setText(manufacture);
     }
 }

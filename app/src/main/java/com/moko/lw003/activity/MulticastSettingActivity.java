@@ -9,8 +9,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
@@ -18,10 +16,9 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.lw003.R;
-import com.moko.lw003.R2;
+import com.moko.lw003.databinding.Lw003ActivityAboutBinding;
+import com.moko.lw003.databinding.Lw003ActivityMulticastGroupBinding;
 import com.moko.lw003.dialog.AlertMessageDialog;
-import com.moko.lw003.dialog.LoadingMessageDialog;
 import com.moko.lw003.utils.ToastUtils;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
@@ -36,33 +33,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class MulticastSettingActivity extends BaseActivity {
 
-    @BindView(R2.id.cb_multicast_group)
-    CheckBox cbMulticastGroup;
-    @BindView(R2.id.et_mc_addr)
-    EditText etMcAddr;
-    @BindView(R2.id.et_mc_app_skey)
-    EditText etMcAppSkey;
-    @BindView(R2.id.et_mc_nwk_skey)
-    EditText etMcNwkSkey;
-    @BindView(R2.id.cl_multicast_group)
-    ConstraintLayout clMulticastGroup;
+    private Lw003ActivityMulticastGroupBinding mBind;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lw003_activity_multicast_group);
-        ButterKnife.bind(this);
+        mBind = Lw003ActivityMulticastGroupBinding.inflate(getLayoutInflater());
+        setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
-        cbMulticastGroup.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            clMulticastGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        mBind.cbMulticastGroup.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mBind.clMulticastGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         });
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
@@ -149,28 +133,28 @@ public class MulticastSettingActivity extends BaseActivity {
                                     case KEY_MULTICAST_ENABLE:
                                         if (length > 0) {
                                             int enable = value[4] & 0xFF;
-                                            cbMulticastGroup.setChecked(enable == 1);
+                                            mBind.cbMulticastGroup.setChecked(enable == 1);
                                         }
                                         break;
                                     case KEY_MULTICAST_ADDR:
                                         if (length > 0) {
                                             byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
                                             String addrStr = MokoUtils.bytesToHexString(rawDataBytes);
-                                            etMcAddr.setText(addrStr);
+                                            mBind.etMcAddr.setText(addrStr);
                                         }
                                         break;
                                     case KEY_MULTICAST_APPSKEY:
                                         if (length > 0) {
                                             byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
                                             String appSkeyStr = MokoUtils.bytesToHexString(rawDataBytes);
-                                            etMcAppSkey.setText(appSkeyStr);
+                                            mBind.etMcAppSkey.setText(appSkeyStr);
                                         }
                                         break;
                                     case KEY_MULTICAST_NWKSKEY:
                                         if (length > 0) {
                                             byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
                                             String nwkSkey = MokoUtils.bytesToHexString(rawDataBytes);
-                                            etMcNwkSkey.setText(nwkSkey);
+                                            mBind.etMcNwkSkey.setText(nwkSkey);
                                         }
                                         break;
                                 }
@@ -194,20 +178,20 @@ public class MulticastSettingActivity extends BaseActivity {
     }
 
     private boolean isValid() {
-        if (cbMulticastGroup.isChecked()) {
-            final String addrStr = etMcAddr.getText().toString();
+        if (mBind.cbMulticastGroup.isChecked()) {
+            final String addrStr = mBind.etMcAddr.getText().toString();
             if (TextUtils.isEmpty(addrStr))
                 return false;
             if (addrStr.length() != 8) {
                 return false;
             }
-            final String appSkeyStr = etMcAppSkey.getText().toString();
+            final String appSkeyStr = mBind.etMcAppSkey.getText().toString();
             if (TextUtils.isEmpty(appSkeyStr))
                 return false;
             if (appSkeyStr.length() != 32) {
                 return false;
             }
-            final String nwkSkeyStr = etMcNwkSkey.getText().toString();
+            final String nwkSkeyStr = mBind.etMcNwkSkey.getText().toString();
             if (TextUtils.isEmpty(nwkSkeyStr))
                 return false;
             if (nwkSkeyStr.length() != 32) {
@@ -221,10 +205,10 @@ public class MulticastSettingActivity extends BaseActivity {
 
 
     private void saveParams() {
-        if (cbMulticastGroup.isChecked()) {
-            final String addrStr = etMcAddr.getText().toString();
-            final String appSkeyStr = etMcAppSkey.getText().toString();
-            final String nwkSkeyStr = etMcNwkSkey.getText().toString();
+        if (mBind.cbMulticastGroup.isChecked()) {
+            final String addrStr = mBind.etMcAddr.getText().toString();
+            final String appSkeyStr = mBind.etMcAppSkey.getText().toString();
+            final String nwkSkeyStr = mBind.etMcNwkSkey.getText().toString();
             List<OrderTask> orderTasks = new ArrayList<>();
             orderTasks.add(OrderTaskAssembler.setMulticastAddr(addrStr));
             orderTasks.add(OrderTaskAssembler.setMulticastAppSKey(appSkeyStr));
@@ -269,23 +253,10 @@ public class MulticastSettingActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    private LoadingMessageDialog mLoadingMessageDialog;
-
-    public void showSyncingProgressDialog() {
-        mLoadingMessageDialog = new LoadingMessageDialog();
-        mLoadingMessageDialog.setMessage("Syncing..");
-        mLoadingMessageDialog.show(getSupportFragmentManager());
-
-    }
-
-    public void dismissSyncProgressDialog() {
-        if (mLoadingMessageDialog != null)
-            mLoadingMessageDialog.dismissAllowingStateLoss();
-    }
-
     public void onBack(View view) {
         backHome();
     }
+
     @Override
     public void onBackPressed() {
         backHome();

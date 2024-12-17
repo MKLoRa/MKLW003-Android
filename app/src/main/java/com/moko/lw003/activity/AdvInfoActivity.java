@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
@@ -18,10 +17,8 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.lw003.R;
-import com.moko.lw003.R2;
+import com.moko.lw003.databinding.Lw003ActivityAdvBinding;
 import com.moko.lw003.dialog.AlertMessageDialog;
-import com.moko.lw003.dialog.LoadingMessageDialog;
 import com.moko.lw003.utils.ToastUtils;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
@@ -36,16 +33,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class AdvInfoActivity extends BaseActivity {
 
     private final String FILTER_ASCII = "\\A\\p{ASCII}*\\z";
-    @BindView(R2.id.et_adv_name)
-    EditText etAdvName;
-    @BindView(R2.id.et_adv_interval)
-    EditText etAdvInterval;
+    private Lw003ActivityAdvBinding mBind;
 
 
     private boolean mReceiverTag = false;
@@ -54,8 +45,8 @@ public class AdvInfoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lw003_activity_adv);
-        ButterKnife.bind(this);
+        mBind = Lw003ActivityAdvBinding.inflate(getLayoutInflater());
+        setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         InputFilter inputFilter = (source, start, end, dest, dstart, dend) -> {
             if (!(source + "").matches(FILTER_ASCII)) {
@@ -64,7 +55,7 @@ public class AdvInfoActivity extends BaseActivity {
 
             return null;
         };
-        etAdvName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15), inputFilter});
+        mBind.etAdvName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(15), inputFilter});
 
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
@@ -168,13 +159,13 @@ public class AdvInfoActivity extends BaseActivity {
     }
 
     private void setDeviceName(String deviceName) {
-        etAdvName.setText(deviceName);
-        etAdvName.setSelection(deviceName.length());
+        mBind.etAdvName.setText(deviceName);
+        mBind.etAdvName.setSelection(deviceName.length());
     }
 
     private void setAdvInterval(int advInterval) {
-        etAdvInterval.setText(String.valueOf(advInterval));
-        etAdvInterval.setSelection(String.valueOf(advInterval).length());
+        mBind.etAdvInterval.setText(String.valueOf(advInterval));
+        mBind.etAdvInterval.setSelection(String.valueOf(advInterval).length());
     }
 
 
@@ -190,8 +181,8 @@ public class AdvInfoActivity extends BaseActivity {
     }
 
     private boolean isValid() {
-        final String advNameStr = etAdvName.getText().toString();
-        final String advIntervalStr = etAdvInterval.getText().toString();
+        final String advNameStr = mBind.etAdvName.getText().toString();
+        final String advIntervalStr = mBind.etAdvInterval.getText().toString();
         if (TextUtils.isEmpty(advNameStr))
             return false;
         if (TextUtils.isEmpty(advIntervalStr))
@@ -204,8 +195,8 @@ public class AdvInfoActivity extends BaseActivity {
 
 
     private void saveParams() {
-        final String advNameStr = etAdvName.getText().toString();
-        final String advIntervalStr = etAdvInterval.getText().toString();
+        final String advNameStr = mBind.etAdvName.getText().toString();
+        final String advIntervalStr = mBind.etAdvInterval.getText().toString();
         List<OrderTask> orderTasks = new ArrayList<>();
         orderTasks.add(OrderTaskAssembler.setDeviceName(advNameStr));
         int advInterval = Integer.parseInt(advIntervalStr);
@@ -243,20 +234,6 @@ public class AdvInfoActivity extends BaseActivity {
             unregisterReceiver(mReceiver);
         }
         EventBus.getDefault().unregister(this);
-    }
-
-    private LoadingMessageDialog mLoadingMessageDialog;
-
-    public void showSyncingProgressDialog() {
-        mLoadingMessageDialog = new LoadingMessageDialog();
-        mLoadingMessageDialog.setMessage("Syncing..");
-        mLoadingMessageDialog.show(getSupportFragmentManager());
-
-    }
-
-    public void dismissSyncProgressDialog() {
-        if (mLoadingMessageDialog != null)
-            mLoadingMessageDialog.dismissAllowingStateLoss();
     }
 
     public void onBack(View view) {

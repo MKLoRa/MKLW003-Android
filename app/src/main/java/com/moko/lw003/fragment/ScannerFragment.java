@@ -7,46 +7,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.moko.ble.lib.task.OrderTask;
-import com.moko.lw003.R;
-import com.moko.lw003.R2;
 import com.moko.lw003.activity.DeviceInfoActivity;
+import com.moko.lw003.databinding.Lw003FragmentScannerBinding;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
 
 import java.util.ArrayList;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChangeListener {
     private static final String TAG = ScannerFragment.class.getSimpleName();
-    @BindView(R2.id.cb_scan_switch)
-    CheckBox cbScanSwitch;
-    @BindView(R2.id.et_scan_window)
-    EditText etScanWindow;
-    @BindView(R2.id.cl_scan)
-    ConstraintLayout clScan;
-    @BindView(R2.id.cb_over_limit_indication)
-    CheckBox cbOverLimitIndication;
-    @BindView(R2.id.sb_over_limit_rssi)
-    SeekBar sbOverLimitRssi;
-    @BindView(R2.id.tv_over_limit_rssi_value)
-    TextView tvOverLimitRssiValue;
-    @BindView(R2.id.et_over_limit_mac_qty)
-    EditText etOverLimitMacQty;
-    @BindView(R2.id.et_over_limit_duration)
-    EditText etOverLimitDuration;
-    @BindView(R2.id.cl_over_limit)
-    ConstraintLayout clOverLimit;
-
-
+    private Lw003FragmentScannerBinding mBind;
     private DeviceInfoActivity activity;
 
     public ScannerFragment() {
@@ -68,17 +41,16 @@ public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChange
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
-        View view = inflater.inflate(R.layout.lw003_fragment_scanner, container, false);
-        ButterKnife.bind(this, view);
+        mBind = Lw003FragmentScannerBinding.inflate(inflater, container, false);
         activity = (DeviceInfoActivity) getActivity();
-        sbOverLimitRssi.setOnSeekBarChangeListener(this);
-        cbScanSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            clScan.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        mBind.sbOverLimitRssi.setOnSeekBarChangeListener(this);
+        mBind.cbScanSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mBind.clScan.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         });
-        cbOverLimitIndication.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            clOverLimit.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        mBind.cbOverLimitIndication.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mBind.clOverLimit.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         });
-        return view;
+        return mBind.getRoot();
     }
 
     @Override
@@ -94,22 +66,22 @@ public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChange
     }
 
     public boolean isValid() {
-        if (cbScanSwitch.isChecked()) {
-            final String scanWindowStr = etScanWindow.getText().toString();
+        if (mBind.cbScanSwitch.isChecked()) {
+            final String scanWindowStr = mBind.etScanWindow.getText().toString();
             if (TextUtils.isEmpty(scanWindowStr))
                 return false;
             final int scanWindow = Integer.parseInt(scanWindowStr);
             if (scanWindow < 1 || scanWindow > 16)
                 return false;
         }
-        if (cbOverLimitIndication.isChecked()) {
-            final String qtyStr = etOverLimitMacQty.getText().toString();
+        if (mBind.cbOverLimitIndication.isChecked()) {
+            final String qtyStr = mBind.etOverLimitMacQty.getText().toString();
             if (TextUtils.isEmpty(qtyStr))
                 return false;
             final int qty = Integer.parseInt(qtyStr);
             if (qty < 1 || qty > 255)
                 return false;
-            final String durationStr = etOverLimitDuration.getText().toString();
+            final String durationStr = mBind.etOverLimitDuration.getText().toString();
             if (TextUtils.isEmpty(durationStr))
                 return false;
             final int duration = Integer.parseInt(durationStr);
@@ -121,20 +93,20 @@ public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChange
 
     public void saveParams() {
         ArrayList<OrderTask> orderTasks = new ArrayList<>();
-        if (cbScanSwitch.isChecked()) {
-            final String scanWindowStr = etScanWindow.getText().toString();
+        if (mBind.cbScanSwitch.isChecked()) {
+            final String scanWindowStr = mBind.etScanWindow.getText().toString();
             final int scanWindow = Integer.parseInt(scanWindowStr);
             orderTasks.add(OrderTaskAssembler.setScanParams(scanWindow));
             orderTasks.add(OrderTaskAssembler.setScanEnable(1));
         } else {
             orderTasks.add(OrderTaskAssembler.setScanEnable(0));
         }
-        if (cbOverLimitIndication.isChecked()) {
-            final String qtyStr = etOverLimitMacQty.getText().toString();
-            final String durationStr = etOverLimitDuration.getText().toString();
+        if (mBind.cbOverLimitIndication.isChecked()) {
+            final String qtyStr = mBind.etOverLimitMacQty.getText().toString();
+            final String durationStr = mBind.etOverLimitDuration.getText().toString();
             final int qty = Integer.parseInt(qtyStr);
             final int duration = Integer.parseInt(durationStr);
-            final int rssi = sbOverLimitRssi.getProgress() - 127;
+            final int rssi = mBind.sbOverLimitRssi.getProgress() - 127;
 
             orderTasks.add(OrderTaskAssembler.setOverLimitRssi(rssi));
             orderTasks.add(OrderTaskAssembler.setOverLimitQty(qty));
@@ -147,36 +119,36 @@ public class ScannerFragment extends Fragment implements SeekBar.OnSeekBarChange
     }
 
     public void setScanEnable(int enable) {
-        cbScanSwitch.setChecked(enable == 1);
+        mBind.cbScanSwitch.setChecked(enable == 1);
     }
 
     public void setScanParams(int window) {
-        etScanWindow.setText(String.valueOf(window));
+        mBind.etScanWindow.setText(String.valueOf(window));
     }
 
     public void setOverLimitEnable(int enable) {
-        cbOverLimitIndication.setChecked(enable == 1);
+        mBind.cbOverLimitIndication.setChecked(enable == 1);
     }
 
 
     public void setOverLimitRssi(int rssi) {
         int progress = rssi + 127;
-        sbOverLimitRssi.setProgress(progress);
-        tvOverLimitRssiValue.setText(String.format("%ddBm", rssi));
+        mBind.sbOverLimitRssi.setProgress(progress);
+        mBind.tvOverLimitRssiValue.setText(String.format("%ddBm", rssi));
     }
 
     public void setOverLimitQty(int qty) {
-        etOverLimitMacQty.setText(String.valueOf(qty));
+        mBind.etOverLimitMacQty.setText(String.valueOf(qty));
     }
 
     public void setOverLimitDuration(int duration) {
-        etOverLimitDuration.setText(String.valueOf(duration));
+        mBind.etOverLimitDuration.setText(String.valueOf(duration));
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         int value = progress - 127;
-        tvOverLimitRssiValue.setText(String.format("%ddBm", value));
+        mBind.tvOverLimitRssiValue.setText(String.format("%ddBm", value));
     }
 
     @Override

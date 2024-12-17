@@ -17,11 +17,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.elvishew.xlog.XLog;
@@ -33,10 +29,10 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.lw003.AppConstants;
 import com.moko.lw003.R;
-import com.moko.lw003.R2;
+import com.moko.lw003.databinding.Lw003ActivityAboutBinding;
+import com.moko.lw003.databinding.Lw003ActivityDeviceInfoBinding;
 import com.moko.lw003.dialog.AlertMessageDialog;
 import com.moko.lw003.dialog.ChangePasswordDialog;
-import com.moko.lw003.dialog.LoadingMessageDialog;
 import com.moko.lw003.fragment.DeviceFragment;
 import com.moko.lw003.fragment.LoRaFragment;
 import com.moko.lw003.fragment.ScannerFragment;
@@ -62,8 +58,6 @@ import java.util.TimerTask;
 
 import androidx.annotation.IdRes;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import no.nordicsemi.android.dfu.DfuProgressListener;
 import no.nordicsemi.android.dfu.DfuProgressListenerAdapter;
 import no.nordicsemi.android.dfu.DfuServiceInitiator;
@@ -72,22 +66,7 @@ import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
 public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
     public static final int REQUEST_CODE_SELECT_FIRMWARE = 0x10;
 
-    @BindView(R2.id.frame_container)
-    FrameLayout frameContainer;
-    @BindView(R2.id.radioBtn_lora)
-    RadioButton radioBtnLora;
-    @BindView(R2.id.radioBtn_scanner)
-    RadioButton radioBtnScanner;
-    @BindView(R2.id.radioBtn_setting)
-    RadioButton radioBtnSetting;
-    @BindView(R2.id.radioBtn_device)
-    RadioButton radioBtnDevice;
-    @BindView(R2.id.rg_options)
-    RadioGroup rgOptions;
-    @BindView(R2.id.tv_title)
-    TextView tvTitle;
-    @BindView(R2.id.iv_save)
-    ImageView ivSave;
+    private Lw003ActivityDeviceInfoBinding mBind;
     private FragmentManager fragmentManager;
     private LoRaFragment loraFragment;
     private ScannerFragment scannerFragment;
@@ -107,13 +86,13 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lw003_activity_device_info);
-        ButterKnife.bind(this);
+        mBind = Lw003ActivityDeviceInfoBinding.inflate(getLayoutInflater());
+        setContentView(mBind.getRoot());
         fragmentManager = getFragmentManager();
         initFragment();
-        radioBtnLora.setChecked(true);
-        tvTitle.setText(R.string.title_lora);
-        rgOptions.setOnCheckedChangeListener(this);
+        mBind.radioBtnLora.setChecked(true);
+        mBind.tvTitle.setText(R.string.title_lora);
+        mBind.rgOptions.setOnCheckedChangeListener(this);
         EventBus.getDefault().register(this);
         mUploadMode = getResources().getStringArray(R.array.upload_mode);
         mRegions = getResources().getStringArray(R.array.lw003_region);
@@ -537,7 +516,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
             }
         } else if (requestCode == AppConstants.REQUEST_CODE_LORA_SETTING) {
             if (resultCode == RESULT_OK) {
-                ivSave.postDelayed(() -> {
+                mBind.ivSave.postDelayed(() -> {
                     showSyncingProgressDialog();
                     List<OrderTask> orderTasks = new ArrayList<>();
                     // setting
@@ -549,21 +528,21 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
             }
         } else if (requestCode == AppConstants.REQUEST_CODE_NETWORK_CHECK_SETTING) {
             if (resultCode == RESULT_OK) {
-                ivSave.postDelayed(() -> {
+                mBind.ivSave.postDelayed(() -> {
                     showSyncingProgressDialog();
                     LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getLoRaConnectable());
                 }, 500);
             }
         } else if (requestCode == AppConstants.REQUEST_CODE_MULTICAST_SETTING) {
             if (resultCode == RESULT_OK) {
-                ivSave.postDelayed(() -> {
+                mBind.ivSave.postDelayed(() -> {
                     showSyncingProgressDialog();
                     LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getMulticastEnable());
                 }, 500);
             }
         } else if (requestCode == AppConstants.REQUEST_CODE_ADV) {
             if (resultCode == RESULT_OK) {
-                ivSave.postDelayed(() -> {
+                mBind.ivSave.postDelayed(() -> {
                     showSyncingProgressDialog();
                     LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getAdvName());
                 }, 500);
@@ -582,20 +561,6 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
         EventBus.getDefault().unregister(this);
     }
 
-    private LoadingMessageDialog mLoadingMessageDialog;
-
-    public void showSyncingProgressDialog() {
-        mLoadingMessageDialog = new LoadingMessageDialog();
-        mLoadingMessageDialog.setMessage("Syncing..");
-        mLoadingMessageDialog.show(getSupportFragmentManager());
-
-    }
-
-    public void dismissSyncProgressDialog() {
-        if (mLoadingMessageDialog != null)
-            mLoadingMessageDialog.dismissAllowingStateLoss();
-    }
-
     public void onBack(View view) {
         back();
     }
@@ -603,7 +568,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     public void onSave(View view) {
         if (isWindowLocked())
             return;
-        if (radioBtnLora.isChecked()) {
+        if (mBind.radioBtnLora.isChecked()) {
             if (loraFragment.isValid()) {
                 showSyncingProgressDialog();
                 loraFragment.saveParams();
@@ -611,7 +576,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                 ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
             }
         }
-        if (radioBtnScanner.isChecked()) {
+        if (mBind.radioBtnScanner.isChecked()) {
             if (scannerFragment.isValid()) {
                 showSyncingProgressDialog();
                 scannerFragment.saveParams();
@@ -649,8 +614,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     private void showDeviceAndGetData() {
-        tvTitle.setText(R.string.title_device);
-        ivSave.setVisibility(View.GONE);
+        mBind.tvTitle.setText(R.string.title_device);
+        mBind.ivSave.setVisibility(View.GONE);
         fragmentManager.beginTransaction()
                 .hide(loraFragment)
                 .hide(scannerFragment)
@@ -671,8 +636,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     private void showSettingAndGetData() {
-        tvTitle.setText(R.string.title_setting);
-        ivSave.setVisibility(View.GONE);
+        mBind.tvTitle.setText(R.string.title_setting);
+        mBind.ivSave.setVisibility(View.GONE);
         fragmentManager.beginTransaction()
                 .hide(loraFragment)
                 .hide(scannerFragment)
@@ -689,8 +654,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     private void showScannerAndGetData() {
-        tvTitle.setText(R.string.title_scanner);
-        ivSave.setVisibility(View.VISIBLE);
+        mBind.tvTitle.setText(R.string.title_scanner);
+        mBind.ivSave.setVisibility(View.VISIBLE);
         fragmentManager.beginTransaction()
                 .hide(loraFragment)
                 .show(scannerFragment)
@@ -710,8 +675,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     private void showLoRaAndGetData() {
-        tvTitle.setText(R.string.title_lora);
-        ivSave.setVisibility(View.VISIBLE);
+        mBind.tvTitle.setText(R.string.title_lora);
+        mBind.ivSave.setVisibility(View.VISIBLE);
         fragmentManager.beginTransaction()
                 .show(loraFragment)
                 .hide(scannerFragment)

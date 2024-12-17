@@ -9,9 +9,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
@@ -19,11 +16,9 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.lw003.R;
-import com.moko.lw003.R2;
+import com.moko.lw003.databinding.Lw003ActivityUplinkPayloadBinding;
 import com.moko.lw003.dialog.AlertMessageDialog;
 import com.moko.lw003.dialog.BottomDialog;
-import com.moko.lw003.dialog.LoadingMessageDialog;
 import com.moko.lw003.utils.ToastUtils;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
@@ -38,9 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class UplinkPayloadActivity extends BaseActivity {
 
     // report data type
@@ -54,29 +46,7 @@ public class UplinkPayloadActivity extends BaseActivity {
     private static final int OPTIONAL_PAYLOAD_MAC = 8;
     private static final int OPTIONAL_PAYLOAD_TIMESTAMP = 16;
 
-
-    @BindView(R2.id.et_device_info_report_interval)
-    EditText etDeviceInfoReportInterval;
-    @BindView(R2.id.cb_report_type_ibeacon)
-    CheckBox cbReportTypeIbeacon;
-    @BindView(R2.id.cb_report_type_eddystone)
-    CheckBox cbReportTypeEddystone;
-    @BindView(R2.id.cb_report_type_unknow)
-    CheckBox cbReportTypeUnknow;
-    @BindView(R2.id.cb_report_content_timestamp)
-    CheckBox cbReportContentTimestamp;
-    @BindView(R2.id.cb_report_content_mac)
-    CheckBox cbReportContentMac;
-    @BindView(R2.id.cb_report_content_rssi)
-    CheckBox cbReportContentRssi;
-    @BindView(R2.id.cb_report_content_broadcast)
-    CheckBox cbReportContentBroadcast;
-    @BindView(R2.id.cb_report_content_response)
-    CheckBox cbReportContentResponse;
-    @BindView(R2.id.tv_report_data_max_length)
-    TextView tvReportDataMaxLength;
-    @BindView(R2.id.et_data_report_interval)
-    EditText etDataReportInterval;
+    private Lw003ActivityUplinkPayloadBinding mBind;
 
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
@@ -87,8 +57,8 @@ public class UplinkPayloadActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lw003_activity_uplink_payload);
-        ButterKnife.bind(this);
+        mBind = Lw003ActivityUplinkPayloadBinding.inflate(getLayoutInflater());
+        setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         mReportMaxLengthValues = new ArrayList<>();
         mReportMaxLengthValues.add("1");
@@ -181,32 +151,32 @@ public class UplinkPayloadActivity extends BaseActivity {
                                         if (length > 0) {
                                             byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
                                             final int interval = MokoUtils.toInt(rawDataBytes);
-                                            etDeviceInfoReportInterval.setText(String.valueOf(interval));
+                                            mBind.etDeviceInfoReportInterval.setText(String.valueOf(interval));
                                         }
                                         break;
                                     case KEY_UPLINK_DATA_TYPE:
                                         if (length > 0) {
                                             int optionalPayload = value[4] & 0xFF;
-                                            cbReportTypeIbeacon.setChecked((optionalPayload & OPTIONAL_PAYLOAD_IBEACON)
+                                            mBind.cbReportTypeIbeacon.setChecked((optionalPayload & OPTIONAL_PAYLOAD_IBEACON)
                                                     == OPTIONAL_PAYLOAD_IBEACON);
-                                            cbReportTypeEddystone.setChecked((optionalPayload & OPTIONAL_PAYLOAD_EDDYSTONE)
+                                            mBind.cbReportTypeEddystone.setChecked((optionalPayload & OPTIONAL_PAYLOAD_EDDYSTONE)
                                                     == OPTIONAL_PAYLOAD_EDDYSTONE);
-                                            cbReportTypeUnknow.setChecked((optionalPayload & OPTIONAL_PAYLOAD_UNKNOW)
+                                            mBind.cbReportTypeUnknow.setChecked((optionalPayload & OPTIONAL_PAYLOAD_UNKNOW)
                                                     == OPTIONAL_PAYLOAD_UNKNOW);
                                         }
                                         break;
                                     case KEY_UPLINK_DATA_CONTENT:
                                         if (length > 0) {
                                             int optionalPayload = value[4] & 0xFF;
-                                            cbReportContentTimestamp.setChecked((optionalPayload & OPTIONAL_PAYLOAD_TIMESTAMP)
+                                            mBind.cbReportContentTimestamp.setChecked((optionalPayload & OPTIONAL_PAYLOAD_TIMESTAMP)
                                                     == OPTIONAL_PAYLOAD_TIMESTAMP);
-                                            cbReportContentMac.setChecked((optionalPayload & OPTIONAL_PAYLOAD_MAC)
+                                            mBind.cbReportContentMac.setChecked((optionalPayload & OPTIONAL_PAYLOAD_MAC)
                                                     == OPTIONAL_PAYLOAD_MAC);
-                                            cbReportContentRssi.setChecked((optionalPayload & OPTIONAL_PAYLOAD_RSSI)
+                                            mBind.cbReportContentRssi.setChecked((optionalPayload & OPTIONAL_PAYLOAD_RSSI)
                                                     == OPTIONAL_PAYLOAD_RSSI);
-                                            cbReportContentBroadcast.setChecked((optionalPayload & OPTIONAL_PAYLOAD_BROADCAST_RAW_DATA)
+                                            mBind.cbReportContentBroadcast.setChecked((optionalPayload & OPTIONAL_PAYLOAD_BROADCAST_RAW_DATA)
                                                     == OPTIONAL_PAYLOAD_BROADCAST_RAW_DATA);
-                                            cbReportContentResponse.setChecked((optionalPayload & OPTIONAL_PAYLOAD_RESPONSE_RAW_DATA)
+                                            mBind.cbReportContentResponse.setChecked((optionalPayload & OPTIONAL_PAYLOAD_RESPONSE_RAW_DATA)
                                                     == OPTIONAL_PAYLOAD_RESPONSE_RAW_DATA);
                                         }
                                         break;
@@ -214,14 +184,14 @@ public class UplinkPayloadActivity extends BaseActivity {
                                         if (length > 0) {
                                             int maxLength = value[4] & 0xFF;
                                             mReportMaxLengthSelected = maxLength;
-                                            tvReportDataMaxLength.setText(mReportMaxLengthValues.get(maxLength));
+                                            mBind.tvReportDataMaxLength.setText(mReportMaxLengthValues.get(maxLength));
                                         }
                                         break;
                                     case KEY_DATA_REPORT_INTERVAL:
                                         if (length > 0) {
                                             byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
                                             int interval = MokoUtils.toInt(rawDataBytes);
-                                            etDataReportInterval.setText(String.valueOf(interval));
+                                            mBind.etDataReportInterval.setText(String.valueOf(interval));
                                         }
                                         break;
                                 }
@@ -245,13 +215,13 @@ public class UplinkPayloadActivity extends BaseActivity {
     }
 
     private boolean isValid() {
-        final String deviceIntervalStr = etDeviceInfoReportInterval.getText().toString();
+        final String deviceIntervalStr = mBind.etDeviceInfoReportInterval.getText().toString();
         if (TextUtils.isEmpty(deviceIntervalStr))
             return false;
         final int deviceInterval = Integer.parseInt(deviceIntervalStr);
         if (deviceInterval < 1 || deviceInterval > 14400)
             return false;
-        final String dataIntervalStr = etDataReportInterval.getText().toString();
+        final String dataIntervalStr = mBind.etDataReportInterval.getText().toString();
         if (TextUtils.isEmpty(dataIntervalStr))
             return false;
         final int dataInterval = Integer.parseInt(dataIntervalStr);
@@ -262,8 +232,8 @@ public class UplinkPayloadActivity extends BaseActivity {
 
 
     private void saveParams() {
-        final String deviceIntervalStr = etDeviceInfoReportInterval.getText().toString();
-        final String dataIntervalStr = etDataReportInterval.getText().toString();
+        final String deviceIntervalStr = mBind.etDeviceInfoReportInterval.getText().toString();
+        final String dataIntervalStr = mBind.etDataReportInterval.getText().toString();
         final int deviceInterval = Integer.parseInt(deviceIntervalStr);
         final int dataInterval = Integer.parseInt(dataIntervalStr);
         List<OrderTask> orderTasks = new ArrayList<>();
@@ -272,11 +242,11 @@ public class UplinkPayloadActivity extends BaseActivity {
         int iBeacon = 0;
         int eddystone = 0;
         int unknow = 0;
-        if (cbReportTypeIbeacon.isChecked())
+        if (mBind.cbReportTypeIbeacon.isChecked())
             iBeacon = OPTIONAL_PAYLOAD_IBEACON;
-        if (cbReportTypeEddystone.isChecked())
+        if (mBind.cbReportTypeEddystone.isChecked())
             eddystone = OPTIONAL_PAYLOAD_EDDYSTONE;
-        if (cbReportTypeUnknow.isChecked())
+        if (mBind.cbReportTypeUnknow.isChecked())
             unknow = OPTIONAL_PAYLOAD_UNKNOW;
         orderTasks.add(OrderTaskAssembler.setUplinkDataType(unknow | iBeacon | eddystone));
         int timestamp = 0;
@@ -284,15 +254,15 @@ public class UplinkPayloadActivity extends BaseActivity {
         int rssi = 0;
         int broadcast = 0;
         int response = 0;
-        if (cbReportContentTimestamp.isChecked())
+        if (mBind.cbReportContentTimestamp.isChecked())
             timestamp = OPTIONAL_PAYLOAD_TIMESTAMP;
-        if (cbReportContentMac.isChecked())
+        if (mBind.cbReportContentMac.isChecked())
             mac = OPTIONAL_PAYLOAD_MAC;
-        if (cbReportContentRssi.isChecked())
+        if (mBind.cbReportContentRssi.isChecked())
             rssi = OPTIONAL_PAYLOAD_RSSI;
-        if (cbReportContentBroadcast.isChecked())
+        if (mBind.cbReportContentBroadcast.isChecked())
             broadcast = OPTIONAL_PAYLOAD_BROADCAST_RAW_DATA;
-        if (cbReportContentResponse.isChecked())
+        if (mBind.cbReportContentResponse.isChecked())
             response = OPTIONAL_PAYLOAD_RESPONSE_RAW_DATA;
         orderTasks.add(OrderTaskAssembler.setUplinkDataContent(timestamp | mac | rssi | broadcast | response));
         orderTasks.add(OrderTaskAssembler.setUplinkDataMaxLength(mReportMaxLengthSelected));
@@ -332,20 +302,6 @@ public class UplinkPayloadActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    private LoadingMessageDialog mLoadingMessageDialog;
-
-    public void showSyncingProgressDialog() {
-        mLoadingMessageDialog = new LoadingMessageDialog();
-        mLoadingMessageDialog.setMessage("Syncing..");
-        mLoadingMessageDialog.show(getSupportFragmentManager());
-
-    }
-
-    public void dismissSyncProgressDialog() {
-        if (mLoadingMessageDialog != null)
-            mLoadingMessageDialog.dismissAllowingStateLoss();
-    }
-
     public void onBack(View view) {
         finish();
     }
@@ -355,7 +311,7 @@ public class UplinkPayloadActivity extends BaseActivity {
         dialog.setDatas(mReportMaxLengthValues, mReportMaxLengthSelected);
         dialog.setListener(value -> {
             mReportMaxLengthSelected = value;
-            tvReportDataMaxLength.setText(mReportMaxLengthValues.get(value));
+            mBind.tvReportDataMaxLength.setText(mReportMaxLengthValues.get(value));
         });
         dialog.show(getSupportFragmentManager());
     }

@@ -7,28 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.moko.lw003.R;
-import com.moko.lw003.R2;
 import com.moko.lw003.activity.DeviceInfoActivity;
+import com.moko.lw003.databinding.Lw003FragmentLoraBinding;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class LoRaFragment extends Fragment {
     private static final String TAG = LoRaFragment.class.getSimpleName();
-    @BindView(R2.id.tv_lora_info)
-    TextView tvLoraInfo;
-    @BindView(R2.id.tv_network_check)
-    TextView tvNetworkCheck;
-    @BindView(R2.id.tv_multicast_setting)
-    TextView tvMulticastSetting;
-    @BindView(R2.id.et_time_sync_interval)
-    EditText etTimeSyncInterval;
+    private Lw003FragmentLoraBinding mBind;
 
     private DeviceInfoActivity activity;
 
@@ -51,11 +38,9 @@ public class LoRaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
-        View view = inflater.inflate(R.layout.lw003_fragment_lora, container, false);
-        ButterKnife.bind(this, view);
+        mBind = Lw003FragmentLoraBinding.inflate(inflater, container, false);
         activity = (DeviceInfoActivity) getActivity();
-
-        return view;
+        return mBind.getRoot();
     }
 
     @Override
@@ -71,7 +56,7 @@ public class LoRaFragment extends Fragment {
     }
 
     public void setLoRaInfo(String loraInfo) {
-        tvLoraInfo.setText(loraInfo);
+        mBind.tvLoraInfo.setText(loraInfo);
     }
 
     public void setNetworkCheck(int networkCheck) {
@@ -87,15 +72,15 @@ public class LoRaFragment extends Fragment {
                 networkCheckDisPlay = "Connected";
                 break;
         }
-        tvNetworkCheck.setText(networkCheckDisPlay);
+        mBind.tvNetworkCheck.setText(networkCheckDisPlay);
     }
 
     public void setMulticastEnable(int enable) {
-        tvMulticastSetting.setText(enable == 1 ? "ON" : "OFF");
+        mBind.tvMulticastSetting.setText(enable == 1 ? "ON" : "OFF");
     }
 
     public boolean isValid() {
-        final String timeSyncIntervalStr = etTimeSyncInterval.getText().toString();
+        final String timeSyncIntervalStr = mBind.etTimeSyncInterval.getText().toString();
         if (TextUtils.isEmpty(timeSyncIntervalStr))
             return false;
         final int timeSyncInterval = Integer.parseInt(timeSyncIntervalStr);
@@ -106,13 +91,13 @@ public class LoRaFragment extends Fragment {
 
 
     public void saveParams() {
-        final String timeSyncIntervalStr = etTimeSyncInterval.getText().toString();
+        final String timeSyncIntervalStr = mBind.etTimeSyncInterval.getText().toString();
         final int timeSyncInterval = Integer.parseInt(timeSyncIntervalStr);
         LoRaLW003MokoSupport.getInstance().sendOrder(
                 OrderTaskAssembler.setTimeSyncInterval(timeSyncInterval));
     }
 
     public void setTimeSyncInterval(int interval) {
-        etTimeSyncInterval.setText(String.valueOf(interval));
+        mBind.etTimeSyncInterval.setText(String.valueOf(interval));
     }
 }

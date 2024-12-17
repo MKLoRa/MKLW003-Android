@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
@@ -16,11 +15,9 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.lw003.AppConstants;
-import com.moko.lw003.R;
-import com.moko.lw003.R2;
+import com.moko.lw003.databinding.Lw003ActivityFilterRelationBinding;
 import com.moko.lw003.dialog.AlertMessageDialog;
 import com.moko.lw003.dialog.BottomDialog;
-import com.moko.lw003.dialog.LoadingMessageDialog;
 import com.moko.lw003.utils.ToastUtils;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
@@ -35,19 +32,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class FilterOptionsActivity extends BaseActivity {
 
-    @BindView(R2.id.tv_condition_a)
-    TextView tvConditionA;
-    @BindView(R2.id.tv_condition_b)
-    TextView tvConditionB;
-    @BindView(R2.id.tv_relation)
-    TextView tvRelation;
-    @BindView(R2.id.tv_repeat)
-    TextView tvRepeat;
+    private Lw003ActivityFilterRelationBinding mBind;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
     private ArrayList<String> mValues;
@@ -61,8 +49,8 @@ public class FilterOptionsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lw003_activity_filter_relation);
-        ButterKnife.bind(this);
+        mBind = Lw003ActivityFilterRelationBinding.inflate(getLayoutInflater());
+        setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
@@ -155,33 +143,33 @@ public class FilterOptionsActivity extends BaseActivity {
                                     case KEY_TRACKING_FILTER_SWITCH_A:
                                         if (length == 1) {
                                             final int enable = value[4] & 0xFF;
-                                            tvConditionA.setText(enable == 0 ? "OFF" : "ON");
+                                            mBind.tvConditionA.setText(enable == 0 ? "OFF" : "ON");
                                             isFilterAEnable = enable == 1;
                                         }
                                         break;
                                     case KEY_TRACKING_FILTER_SWITCH_B:
                                         if (length == 1) {
                                             final int enable = value[4] & 0xFF;
-                                            tvConditionB.setText(enable == 0 ? "OFF" : "ON");
+                                            mBind.tvConditionB.setText(enable == 0 ? "OFF" : "ON");
                                             isFilterBEnable = enable == 1;
                                             if (isFilterAEnable && isFilterBEnable) {
-                                                tvRelation.setEnabled(true);
+                                                mBind.tvRelation.setEnabled(true);
                                             } else {
-                                                tvRelation.setEnabled(false);
+                                                mBind.tvRelation.setEnabled(false);
                                             }
                                         }
                                         break;
                                     case KEY_TRACKING_FILTER_A_B_RELATION:
                                         if (length == 1) {
                                             final int relation = value[4] & 0xFF;
-                                            tvRelation.setText(relation == 1 ? "And" : "Or");
+                                            mBind.tvRelation.setText(relation == 1 ? "And" : "Or");
                                             mSelected = relation;
                                         }
                                         break;
                                     case KEY_TRACKING_FILTER_REPEAT:
                                         if (length == 1) {
                                             final int repeat = value[4] & 0xFF;
-                                            tvRepeat.setText(mRepeatValues.get(repeat));
+                                            mBind.tvRepeat.setText(mRepeatValues.get(repeat));
                                             mRepeatSelected = repeat;
                                         }
                                         break;
@@ -226,20 +214,6 @@ public class FilterOptionsActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    private LoadingMessageDialog mLoadingMessageDialog;
-
-    public void showSyncingProgressDialog() {
-        mLoadingMessageDialog = new LoadingMessageDialog();
-        mLoadingMessageDialog.setMessage("Syncing..");
-        mLoadingMessageDialog.show(getSupportFragmentManager());
-
-    }
-
-    public void dismissSyncProgressDialog() {
-        if (mLoadingMessageDialog != null)
-            mLoadingMessageDialog.dismissAllowingStateLoss();
-    }
-
     public void onBack(View view) {
         finish();
     }
@@ -250,7 +224,7 @@ public class FilterOptionsActivity extends BaseActivity {
         BottomDialog dialog = new BottomDialog();
         dialog.setDatas(mValues, mSelected);
         dialog.setListener(value -> {
-            tvRelation.setText(value == 1 ? "And" : "Or");
+            mBind.tvRelation.setText(value == 1 ? "And" : "Or");
             mSelected = value;
             showSyncingProgressDialog();
             LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setFilterABRelation(value));
@@ -264,7 +238,7 @@ public class FilterOptionsActivity extends BaseActivity {
         BottomDialog dialog = new BottomDialog();
         dialog.setDatas(mRepeatValues, mRepeatSelected);
         dialog.setListener(value -> {
-            tvRepeat.setText(mRepeatValues.get(value));
+            mBind.tvRepeat.setText(mRepeatValues.get(value));
             mRepeatSelected = value;
             showSyncingProgressDialog();
             LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setFilterRepeat(value));
@@ -288,7 +262,7 @@ public class FilterOptionsActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == AppConstants.REQUEST_CODE_FILTER) {
-            tvRelation.postDelayed(() -> {
+            mBind.tvRelation.postDelayed(() -> {
                 showSyncingProgressDialog();
                 List<OrderTask> orderTasks = new ArrayList<>();
                 orderTasks.add(OrderTaskAssembler.getFilterSwitchA());

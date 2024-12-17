@@ -9,9 +9,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
@@ -19,10 +16,8 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.lw003.R;
-import com.moko.lw003.R2;
+import com.moko.lw003.databinding.Lw003ActivityNetworkCheckBinding;
 import com.moko.lw003.dialog.AlertMessageDialog;
-import com.moko.lw003.dialog.LoadingMessageDialog;
 import com.moko.lw003.utils.ToastUtils;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;
@@ -37,32 +32,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class NetworkCheckActivity extends BaseActivity {
 
 
-    @BindView(R2.id.cb_network_check)
-    CheckBox cbNetworkCheck;
-    @BindView(R2.id.et_network_check_interval)
-    EditText etNetworkCheckInterval;
-    @BindView(R2.id.tv_network_status)
-    TextView tvNetworkStatus;
-    @BindView(R2.id.cl_network_check_interval)
-    ConstraintLayout clNetworkCheckInterval;
+    private Lw003ActivityNetworkCheckBinding mBind;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lw003_activity_network_check);
-        ButterKnife.bind(this);
+        mBind = Lw003ActivityNetworkCheckBinding.inflate(getLayoutInflater());
+        setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
-        cbNetworkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            clNetworkCheckInterval.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+        mBind.cbNetworkCheck.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            mBind.clNetworkCheckInterval.setVisibility(isChecked ? View.VISIBLE : View.GONE);
         });
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
@@ -141,8 +125,8 @@ public class NetworkCheckActivity extends BaseActivity {
                                         if (length > 0) {
                                             byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
                                             int interval = MokoUtils.toInt(rawDataBytes);
-                                            cbNetworkCheck.setChecked(interval > 0);
-                                            etNetworkCheckInterval.setText(String.valueOf(interval));
+                                            mBind.cbNetworkCheck.setChecked(interval > 0);
+                                            mBind.etNetworkCheckInterval.setText(String.valueOf(interval));
                                         }
                                         break;
                                     case KEY_NETWORK_STATUS:
@@ -160,7 +144,7 @@ public class NetworkCheckActivity extends BaseActivity {
                                                     networkCheckDisPlay = "Connected";
                                                     break;
                                             }
-                                            tvNetworkStatus.setText(networkCheckDisPlay);
+                                            mBind.tvNetworkStatus.setText(networkCheckDisPlay);
                                         }
                                         break;
                                 }
@@ -184,13 +168,13 @@ public class NetworkCheckActivity extends BaseActivity {
     }
 
     private boolean isValid() {
-        if (cbNetworkCheck.isChecked()) {
-            final String intervalStr = etNetworkCheckInterval.getText().toString();
+        if (mBind.cbNetworkCheck.isChecked()) {
+            final String intervalStr = mBind.etNetworkCheckInterval.getText().toString();
             if (TextUtils.isEmpty(intervalStr))
                 return false;
             final int interval = Integer.parseInt(intervalStr);
             if (interval == 0) {
-                cbNetworkCheck.setChecked(false);
+                mBind.cbNetworkCheck.setChecked(false);
                 return true;
             }
             if (interval > 720)
@@ -203,8 +187,8 @@ public class NetworkCheckActivity extends BaseActivity {
 
 
     private void saveParams() {
-        if (cbNetworkCheck.isChecked()) {
-            final String intervalStr = etNetworkCheckInterval.getText().toString();
+        if (mBind.cbNetworkCheck.isChecked()) {
+            final String intervalStr = mBind.etNetworkCheckInterval.getText().toString();
             final int interval = Integer.parseInt(intervalStr);
             LoRaLW003MokoSupport.getInstance().sendOrder(
                     OrderTaskAssembler.setNetworkCheckInterval(interval));
@@ -244,20 +228,6 @@ public class NetworkCheckActivity extends BaseActivity {
             unregisterReceiver(mReceiver);
         }
         EventBus.getDefault().unregister(this);
-    }
-
-    private LoadingMessageDialog mLoadingMessageDialog;
-
-    public void showSyncingProgressDialog() {
-        mLoadingMessageDialog = new LoadingMessageDialog();
-        mLoadingMessageDialog.setMessage("Syncing..");
-        mLoadingMessageDialog.show(getSupportFragmentManager());
-
-    }
-
-    public void dismissSyncProgressDialog() {
-        if (mLoadingMessageDialog != null)
-            mLoadingMessageDialog.dismissAllowingStateLoss();
     }
 
 

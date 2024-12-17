@@ -6,11 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.moko.lw003.R;
-import com.moko.lw003.R2;
 import com.moko.lw003.activity.DeviceInfoActivity;
+import com.moko.lw003.databinding.Lw003FragmentSettingBinding;
 import com.moko.lw003.dialog.BottomDialog;
 import com.moko.lw003.dialog.TriggerSensitivityDialog;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
@@ -18,20 +16,9 @@ import com.moko.support.lw003.OrderTaskAssembler;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class SettingFragment extends Fragment {
     private static final String TAG = SettingFragment.class.getSimpleName();
-    @BindView(R2.id.tv_adv_info)
-    TextView tvAdvInfo;
-    @BindView(R2.id.tv_local_data_sync)
-    TextView tvLocalDataSync;
-    @BindView(R2.id.tv_tamper_detection)
-    TextView tvTamperDetection;
-    @BindView(R2.id.tv_default_power_status)
-    TextView tvDefaultPowerStatus;
-
+    private Lw003FragmentSettingBinding mBind;
     private DeviceInfoActivity activity;
     private ArrayList<String> mPowerStatusValues;
     private int mSelectedPowerStatus;
@@ -56,14 +43,13 @@ public class SettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
-        View view = inflater.inflate(R.layout.lw003_fragment_setting, container, false);
-        ButterKnife.bind(this, view);
+        mBind = Lw003FragmentSettingBinding.inflate(inflater, container, false);
         activity = (DeviceInfoActivity) getActivity();
         mPowerStatusValues = new ArrayList<>();
         mPowerStatusValues.add("Switch Off");
         mPowerStatusValues.add("Switch On");
         mPowerStatusValues.add("Revert to last status");
-        return view;
+        return mBind.getRoot();
     }
 
 
@@ -80,21 +66,21 @@ public class SettingFragment extends Fragment {
     }
 
     public void setDeviceName(String deviceName) {
-        tvAdvInfo.setText(deviceName);
+        mBind.tvAdvInfo.setText(deviceName);
     }
 
     public void setTamperDetection(int enable, int triggerSensitivity) {
         mTriggerSensitivity = triggerSensitivity;
         if (enable == 0) {
-            tvTamperDetection.setText("OFF");
+            mBind.tvTamperDetection.setText("OFF");
         } else {
-            tvTamperDetection.setText(String.valueOf(triggerSensitivity));
+            mBind.tvTamperDetection.setText(String.valueOf(triggerSensitivity));
         }
     }
 
     public void setPowerStatus(int status) {
         mSelectedPowerStatus = status;
-        tvDefaultPowerStatus.setText(mPowerStatusValues.get(status));
+        mBind.tvDefaultPowerStatus.setText(mPowerStatusValues.get(status));
     }
 
     public void showTamperDetectionDialog() {
@@ -103,9 +89,9 @@ public class SettingFragment extends Fragment {
         dialog.setOnSensitivityClicked(sensitivity -> {
             mTriggerSensitivity = sensitivity;
             if (sensitivity == 0) {
-                tvTamperDetection.setText("OFF");
+                mBind.tvTamperDetection.setText("OFF");
             } else {
-                tvTamperDetection.setText(String.valueOf(sensitivity));
+                mBind.tvTamperDetection.setText(String.valueOf(sensitivity));
             }
             activity.showSyncingProgressDialog();
             LoRaLW003MokoSupport.getInstance().sendOrder(
@@ -118,7 +104,7 @@ public class SettingFragment extends Fragment {
         BottomDialog dialog = new BottomDialog();
         dialog.setDatas(mPowerStatusValues, mSelectedPowerStatus);
         dialog.setListener(value -> {
-            tvDefaultPowerStatus.setText(mPowerStatusValues.get(value));
+            mBind.tvDefaultPowerStatus.setText(mPowerStatusValues.get(value));
             activity.showSyncingProgressDialog();
             LoRaLW003MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setPowerStatus(value));
         });

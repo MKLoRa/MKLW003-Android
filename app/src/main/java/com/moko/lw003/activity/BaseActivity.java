@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.os.SystemClock;
 
 import com.elvishew.xlog.XLog;
+import com.moko.lw003.dialog.LoadingDialog;
+import com.moko.lw003.dialog.LoadingMessageDialog;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -58,5 +60,41 @@ public class BaseActivity extends FragmentActivity {
 
     public boolean isLocationPermissionOpen() {
         return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private LoadingMessageDialog mLoadingMessageDialog;
+
+    public void showSyncingProgressDialog() {
+        if (null != mLoadingMessageDialog && mLoadingMessageDialog.isAdded() && !mLoadingMessageDialog.isDetached()) {
+            mLoadingMessageDialog.dismissAllowingStateLoss();
+        }
+        mLoadingMessageDialog = null;
+        mLoadingMessageDialog = new LoadingMessageDialog();
+        mLoadingMessageDialog.setMessage("Syncing..");
+        mLoadingMessageDialog.show(getSupportFragmentManager());
+    }
+
+    public void dismissSyncProgressDialog() {
+        if (mLoadingMessageDialog != null && mLoadingMessageDialog.isAdded() && !mLoadingMessageDialog.isDetached())
+            mLoadingMessageDialog.dismissAllowingStateLoss();
+    }
+
+    private LoadingDialog mLoadingDialog;
+
+    public void showLoadingProgressDialog() {
+        if (null != mLoadingDialog && mLoadingDialog.isAdded() && !mLoadingDialog.isDetached()) {
+            mLoadingDialog.dismissAllowingStateLoss();
+        }
+        mLoadingDialog = null;
+        mLoadingDialog = new LoadingDialog();
+        if (!mLoadingDialog.isAdded())
+            mLoadingDialog.show(getSupportFragmentManager());
+    }
+
+    public void dismissLoadingProgressDialog() {
+        if (mLoadingDialog != null && mLoadingDialog.isAdded() && !mLoadingDialog.isDetached()) {
+            mLoadingDialog.dismissAllowingStateLoss();
+            mLoadingDialog = null;
+        }
     }
 }
