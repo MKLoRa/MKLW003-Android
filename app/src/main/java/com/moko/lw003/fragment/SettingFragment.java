@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.moko.lib.loraui.dialog.BottomDialog;
 import com.moko.lw003.activity.DeviceInfoActivity;
 import com.moko.lw003.databinding.Lw003FragmentSettingBinding;
-import com.moko.lw003.dialog.BottomDialog;
 import com.moko.lw003.dialog.TriggerSensitivityDialog;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
 import com.moko.support.lw003.OrderTaskAssembler;

@@ -12,8 +12,8 @@ import android.os.Looper;
 import android.provider.Settings;
 
 import com.elvishew.xlog.XLog;
+import com.moko.lib.loraui.dialog.PermissionDialog;
 import com.moko.lw003.R;
-import com.moko.lw003.dialog.PermissionDialog;
 import com.moko.lw003.utils.Utils;
 import com.permissionx.guolindev.PermissionX;
 

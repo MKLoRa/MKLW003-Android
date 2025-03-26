@@ -19,11 +19,11 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
+import com.moko.lib.loraui.dialog.AlertMessageDialog;
 import com.moko.lw003.AppConstants;
 import com.moko.lw003.R;
 import com.moko.lw003.adapter.ExportDataListAdapter;
 import com.moko.lw003.databinding.Lw003ActivityExportDataBinding;
-import com.moko.lw003.dialog.AlertMessageDialog;
 import com.moko.lw003.utils.ToastUtils;
 import com.moko.lw003.utils.Utils;
 import com.moko.support.lw003.LoRaLW003MokoSupport;
@@ -287,7 +287,7 @@ public class ExportDataActivity extends BaseActivity {
                                                 mIsSync = true;
                                                 mBind.tvEmpty.setEnabled(false);
                                                 mBind.tvExport.setEnabled(false);
-                                                Animation animation = AnimationUtils.loadAnimation(this, R.anim.lw003_rotate_refresh);
+                                                Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_refresh);
                                                 mBind.ivSync.startAnimation(animation);
                                                 mBind.tvSync.setText("Stop");
                                             } else {
@@ -310,7 +310,7 @@ public class ExportDataActivity extends BaseActivity {
                                             mBind.tvStart.setEnabled(false);
                                             mBind.tvEmpty.setEnabled(false);
                                             mBind.tvExport.setEnabled(false);
-                                            Animation animation = AnimationUtils.loadAnimation(this, R.anim.lw003_rotate_refresh);
+                                            Animation animation = AnimationUtils.loadAnimation(this, R.anim.rotate_refresh);
                                             mBind.ivSync.startAnimation(animation);
                                             mBind.tvSync.setText("Stop");
                                         }
